@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `bitstream_io` crate.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, bitstream_io">
+
+    <title>bitstream_io - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'></p><script>window.sidebarCurrent = {name: 'bitstream_io', ty: 'mod', relpath: '../'};</script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content mod">
+<h1 class='fqn'><span class='in-band'>Crate <a class='mod' href=''>bitstream_io</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a class='srclink' href='../src/bitstream_io/lib.rs.html#9-282' title='goto source code'>[src]</a></span></h1>
+<div class='docblock'><p>Traits and helpers for bitstream handling functionality</p>
+
+<p>Bitstream readers are for reading signed and unsigned integer
+values from a stream whose sizes may not be whole bytes.
+Bitstream writers are for writing signed and unsigned integer
+values to a stream, also potentially un-aligned at a whole byte.</p>
+
+<p>Both big-endian and little-endian streams are supported.</p>
+
+<p>The only requirement for wrapped reader streams is that they must
+implement the <code>BufRead</code> trait, and the only requirement
+for writer streams is that they must implement the <code>Write</code> trait.</p>
+
+<p>In addition, reader streams do not consume any more bytes
+from the underlying reader than necessary, buffering only a
+single partial byte as needed.
+Writer streams also write out all whole bytes as they are accumulated.</p>
+
+<p>Readers and writers are also designed to work with integer
+types of any possible size.  Many of Rust&#39;s built-in integer types are
+supported by default, but others can be added with minimal effort.</p>
+
+<h2 id='type-sizes' class='section-header'><a href='#type-sizes'>Type Sizes</a></h2>
+<p>Because both the type sizes and bit counts are variable,
+it is the responsibity of the programmer to ensure that
+the capacity of one&#39;s variables does not exceed the
+requested bit count when reading or writing.
+Otherwise, an overflow error panic may occur.</p>
+
+<p>For example, reading 8 bits from the stream to a 32-bit variable
+is harmless (the topmost 24 bits are left empty),
+but reading 32 bits from the stream to an 8-bit variable
+may result in a panic.
+Similarly, writing a 32-bit variable to 8 bits is also harmless
+(the topmost 24 bits are ignored), but writing an 8-bit variable
+to 32 bits in the stream may cause a panic.</p>
+</div><h2 id='reexports' class='section-header'><a href="#reexports">Reexports</a></h2>
+<table><tr><td><code>pub use read::<a class='trait' href='../bitstream_io/read/trait.BitRead.html' title='bitstream_io::read::BitRead'>BitRead</a>;</code></td></tr><tr><td><code>pub use read::<a class='struct' href='../bitstream_io/read/struct.BitReaderBE.html' title='bitstream_io::read::BitReaderBE'>BitReaderBE</a>;</code></td></tr><tr><td><code>pub use read::<a class='struct' href='../bitstream_io/read/struct.BitReaderLE.html' title='bitstream_io::read::BitReaderLE'>BitReaderLE</a>;</code></td></tr><tr><td><code>pub use write::<a class='trait' href='../bitstream_io/write/trait.BitWrite.html' title='bitstream_io::write::BitWrite'>BitWrite</a>;</code></td></tr><tr><td><code>pub use write::<a class='struct' href='../bitstream_io/write/struct.BitWriterBE.html' title='bitstream_io::write::BitWriterBE'>BitWriterBE</a>;</code></td></tr><tr><td><code>pub use write::<a class='struct' href='../bitstream_io/write/struct.BitWriterLE.html' title='bitstream_io::write::BitWriterLE'>BitWriterLE</a>;</code></td></tr></table><h2 id='modules' class='section-header'><a href="#modules">Modules</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class='mod' href='read/index.html'
+                                  title='bitstream_io::read'>read</a></td>
+                           <td class='docblock-short'>
+                                <p>Traits and implementations for reading bits from a stream.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='mod' href='write/index.html'
+                                  title='bitstream_io::write'>write</a></td>
+                           <td class='docblock-short'>
+                                <p>Traits and implementations for writing bits to a stream.</p>
+                           </td>
+                       </tr></table><h2 id='structs' class='section-header'><a href="#structs">Structs</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.BitQueueBE.html'
+                                  title='bitstream_io::BitQueueBE'>BitQueueBE</a></td>
+                           <td class='docblock-short'>
+                                <p>A wrapper around some unsigned type to turn it into a big-endian queue.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.BitQueueLE.html'
+                                  title='bitstream_io::BitQueueLE'>BitQueueLE</a></td>
+                           <td class='docblock-short'>
+                                <p>A wrapper around some unsigned type to turn it into a little-endian queue.</p>
+                           </td>
+                       </tr></table><h2 id='traits' class='section-header'><a href="#traits">Traits</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class='trait' href='trait.BitQueue.html'
+                                  title='bitstream_io::BitQueue'>BitQueue</a></td>
+                           <td class='docblock-short'>
+                                <p>This trait is for treating numeric types as a queue of bits
+which values can be pushed to and popped from in
+order to implement bitstream readers and writers.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='trait' href='trait.Numeric.html'
+                                  title='bitstream_io::Numeric'>Numeric</a></td>
+                           <td class='docblock-short'>
+                                <p>This trait extends many common integer types (both unsigned and signed)
+with a few trivial methods so that they can be used
+with the bitstream handling traits.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='trait' href='trait.SignedNumeric.html'
+                                  title='bitstream_io::SignedNumeric'>SignedNumeric</a></td>
+                           <td class='docblock-short'>
+                                <p>This trait extends many common signed integer types
+so that they can be used with the bitstream handling traits.</p>
+                           </td>
+                       </tr></table></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../";
+        window.currentCrate = "bitstream_io";
+    </script>
+    <script src="../jquery.js"></script>
+    <script src="../main.js"></script>
+    <script defer src="../search-index.js"></script>
+</body>
+</html>

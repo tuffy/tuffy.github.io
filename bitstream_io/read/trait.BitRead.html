@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `BitRead` trait in crate `bitstream_io`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, BitRead">
+
+    <title>bitstream_io::read::BitRead - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'><a href='../index.html'>bitstream_io</a>::<wbr><a href='index.html'>read</a></p><script>window.sidebarCurrent = {name: 'BitRead', ty: 'trait', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content trait">
+<h1 class='fqn'><span class='in-band'>Trait <a href='../index.html'>bitstream_io</a>::<wbr><a href='index.html'>read</a>::<wbr><a class='trait' href=''>BitRead</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a class='srclink' href='../../src/bitstream_io/read.rs.html#69-133' title='goto source code'>[src]</a></span></h1>
+<pre class='rust trait'>pub trait BitRead {
+    fn <a href='#tymethod.read' class='fnname'>read</a>&lt;U&gt;(&amp;mut self, bits: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u32.html'>u32</a>) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;U, <a class='struct' href='https://doc.rust-lang.org/nightly/std/io/error/struct.Error.html' title='std::io::error::Error'>Error</a>&gt; <span class='where'>where U: <a class='trait' href='../../bitstream_io/trait.Numeric.html' title='bitstream_io::Numeric'>Numeric</a></span>;
+    fn <a href='#tymethod.read_signed' class='fnname'>read_signed</a>&lt;S&gt;(&amp;mut self, bits: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u32.html'>u32</a>) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;S, <a class='struct' href='https://doc.rust-lang.org/nightly/std/io/error/struct.Error.html' title='std::io::error::Error'>Error</a>&gt; <span class='where'>where S: <a class='trait' href='../../bitstream_io/trait.SignedNumeric.html' title='bitstream_io::SignedNumeric'>SignedNumeric</a></span>;
+    fn <a href='#tymethod.skip' class='fnname'>skip</a>(&amp;mut self, bits: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u32.html'>u32</a>) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>()</a>, <a class='struct' href='https://doc.rust-lang.org/nightly/std/io/error/struct.Error.html' title='std::io::error::Error'>Error</a>&gt;;
+    fn <a href='#tymethod.read_bytes' class='fnname'>read_bytes</a>(&amp;mut self, buf: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.slice.html'>&amp;mut [</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u8.html'>u8</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.slice.html'>]</a>) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>()</a>, <a class='struct' href='https://doc.rust-lang.org/nightly/std/io/error/struct.Error.html' title='std::io::error::Error'>Error</a>&gt;;
+    fn <a href='#tymethod.byte_aligned' class='fnname'>byte_aligned</a>(&amp;self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a>;
+    fn <a href='#tymethod.byte_align' class='fnname'>byte_align</a>(&amp;mut self);
+
+    fn <a href='#method.read_unary0' class='fnname'>read_unary0</a>(&amp;mut self) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u32.html'>u32</a>, <a class='struct' href='https://doc.rust-lang.org/nightly/std/io/error/struct.Error.html' title='std::io::error::Error'>Error</a>&gt; { ... }
+    fn <a href='#method.read_unary1' class='fnname'>read_unary1</a>(&amp;mut self) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u32.html'>u32</a>, <a class='struct' href='https://doc.rust-lang.org/nightly/std/io/error/struct.Error.html' title='std::io::error::Error'>Error</a>&gt; { ... }
+}</pre><div class='docblock'><p>For reading bit values from an underlying stream in a given endianness.</p>
+</div>
+            <h2 id='required-methods'>Required Methods</h2>
+            <div class='methods'>
+        <h3 id='tymethod.read' class='method stab '><span id='read.v' class='invisible'><code>fn <a href='#tymethod.read' class='fnname'>read</a>&lt;U&gt;(&amp;mut self, bits: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u32.html'>u32</a>) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;U, <a class='struct' href='https://doc.rust-lang.org/nightly/std/io/error/struct.Error.html' title='std::io::error::Error'>Error</a>&gt; <span class='where'>where U: <a class='trait' href='../../bitstream_io/trait.Numeric.html' title='bitstream_io::Numeric'>Numeric</a></span></code></span></h3><div class='docblock'><p>Reads an unsigned value from the stream with
+the given number of bits.  This method assumes
+that the programmer is using an output type
+sufficiently large to hold those bits.</p>
+</div><h3 id='tymethod.read_signed' class='method stab '><span id='read_signed.v' class='invisible'><code>fn <a href='#tymethod.read_signed' class='fnname'>read_signed</a>&lt;S&gt;(&amp;mut self, bits: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u32.html'>u32</a>) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;S, <a class='struct' href='https://doc.rust-lang.org/nightly/std/io/error/struct.Error.html' title='std::io::error::Error'>Error</a>&gt; <span class='where'>where S: <a class='trait' href='../../bitstream_io/trait.SignedNumeric.html' title='bitstream_io::SignedNumeric'>SignedNumeric</a></span></code></span></h3><div class='docblock'><p>Reads a twos-complement signed value from the stream with
+the given number of bits.  This method assumes
+that the programmer is using an output type
+sufficiently large to hold those bits.</p>
+</div><h3 id='tymethod.skip' class='method stab '><span id='skip.v' class='invisible'><code>fn <a href='#tymethod.skip' class='fnname'>skip</a>(&amp;mut self, bits: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u32.html'>u32</a>) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>()</a>, <a class='struct' href='https://doc.rust-lang.org/nightly/std/io/error/struct.Error.html' title='std::io::error::Error'>Error</a>&gt;</code></span></h3><div class='docblock'><p>Skips the given number of bits in the stream.
+Since this method does not need an accumulator,
+it may be slightly faster than reading to an empty variable.
+In addition, since there is no accumulator,
+there is no upper limit on the number of bits
+which may be skipped.
+These bits are still read from the stream, however,
+and are never skipped via a <code>seek</code> method.</p>
+</div><h3 id='tymethod.read_bytes' class='method stab '><span id='read_bytes.v' class='invisible'><code>fn <a href='#tymethod.read_bytes' class='fnname'>read_bytes</a>(&amp;mut self, buf: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.slice.html'>&amp;mut [</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u8.html'>u8</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.slice.html'>]</a>) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>()</a>, <a class='struct' href='https://doc.rust-lang.org/nightly/std/io/error/struct.Error.html' title='std::io::error::Error'>Error</a>&gt;</code></span></h3><div class='docblock'><p>Completely fills the given buffer with whole bytes.
+If the stream is already byte-aligned, it will map
+to a faster <code>read_exact</code> call.  Otherwise it will read
+bytes individually in 8-bit increments.</p>
+</div><h3 id='tymethod.byte_aligned' class='method stab '><span id='byte_aligned.v' class='invisible'><code>fn <a href='#tymethod.byte_aligned' class='fnname'>byte_aligned</a>(&amp;self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></span></h3><div class='docblock'><p>Returns true if the stream is aligned at a whole byte.</p>
+</div><h3 id='tymethod.byte_align' class='method stab '><span id='byte_align.v' class='invisible'><code>fn <a href='#tymethod.byte_align' class='fnname'>byte_align</a>(&amp;mut self)</code></span></h3><div class='docblock'><p>Throws away all unread bit values until the next whole byte.</p>
+</div></div>
+            <h2 id='provided-methods'>Provided Methods</h2>
+            <div class='methods'>
+        <h3 id='method.read_unary0' class='method stab '><span id='read_unary0.v' class='invisible'><code>fn <a href='#method.read_unary0' class='fnname'>read_unary0</a>(&amp;mut self) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u32.html'>u32</a>, <a class='struct' href='https://doc.rust-lang.org/nightly/std/io/error/struct.Error.html' title='std::io::error::Error'>Error</a>&gt;</code></span></h3><div class='docblock'><p>Counts the number of 1 bits in the stream until the next
+0 bit and returns the amount read.
+Because this field is variably-sized and may be large,
+its output is always a <code>u32</code> type.</p>
+</div><h3 id='method.read_unary1' class='method stab '><span id='read_unary1.v' class='invisible'><code>fn <a href='#method.read_unary1' class='fnname'>read_unary1</a>(&amp;mut self) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u32.html'>u32</a>, <a class='struct' href='https://doc.rust-lang.org/nightly/std/io/error/struct.Error.html' title='std::io::error::Error'>Error</a>&gt;</code></span></h3><div class='docblock'><p>Counts the number of 0 bits in the stream until the next
+1 bit and returns the amount read.
+Because this field is variably-sized and may be large,
+its output is always a <code>u32</code> type.</p>
+</div></div>
+        <h2 id='implementors'>Implementors</h2>
+        <ul class='item-list' id='implementors-list'>
+    <li><code>impl&lt;'a&gt; BitRead for <a class='struct' href='../../bitstream_io/read/struct.BitReaderBE.html' title='bitstream_io::read::BitReaderBE'>BitReaderBE</a>&lt;'a&gt;</code></li>
+<li><code>impl&lt;'a&gt; BitRead for <a class='struct' href='../../bitstream_io/read/struct.BitReaderLE.html' title='bitstream_io::read::BitReaderLE'>BitReaderLE</a>&lt;'a&gt;</code></li>
+</ul><script type="text/javascript" async
+                         src="../../implementors/bitstream_io/read/trait.BitRead.js">
+                 </script></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../../";
+        window.currentCrate = "bitstream_io";
+    </script>
+    <script src="../../jquery.js"></script>
+    <script src="../../main.js"></script>
+    <script defer src="../../search-index.js"></script>
+</body>
+</html>

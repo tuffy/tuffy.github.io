@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["BitReaderBE","A wrapper for reading values from a big-endian stream."],["BitReaderLE","A wrapper for reading values from a little-endian stream."]],"trait":[["BitRead","For reading bit values from an underlying stream in a given endianness."]]});
