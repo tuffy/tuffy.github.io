@@ -47,7 +47,7 @@
                    <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                        [<span class='inner'>&#x2212;</span>]
                    </a>
-               </span><a class='srclink' href='../../src/bitstream_io/write.rs.html#9-279' title='goto source code'>[src]</a></span></h1>
+               </span><a class='srclink' href='../../src/bitstream_io/write.rs.html#9-526' title='goto source code'>[src]</a></span></h1>
 <div class='docblock'><p>Traits and implementations for writing bits to a stream.</p>
 
 <h2 id='example' class='section-header'><a href='#example'>Example</a></h2>
@@ -60,10 +60,10 @@
     <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>writer</span> <span class='op'>=</span> <span class='ident'>BitWriterBE</span>::<span class='ident'>new</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>flac</span>);
     <span class='ident'>writer</span>.<span class='ident'>write_bytes</span>(<span class='string'>b&quot;fLaC&quot;</span>).<span class='ident'>unwrap</span>();
 
-    <span class='kw'>let</span> <span class='ident'>last_block</span>: <span class='ident'>u8</span> <span class='op'>=</span> <span class='number'>0</span>;
+    <span class='kw'>let</span> <span class='ident'>last_block</span>: <span class='ident'>bool</span> <span class='op'>=</span> <span class='bool-val'>false</span>;
     <span class='kw'>let</span> <span class='ident'>block_type</span>: <span class='ident'>u8</span> <span class='op'>=</span> <span class='number'>0</span>;
     <span class='kw'>let</span> <span class='ident'>block_size</span>: <span class='ident'>u32</span> <span class='op'>=</span> <span class='number'>34</span>;
-    <span class='ident'>writer</span>.<span class='ident'>write</span>(<span class='number'>1</span>, <span class='ident'>last_block</span>).<span class='ident'>unwrap</span>();
+    <span class='ident'>writer</span>.<span class='ident'>write_bit</span>(<span class='ident'>last_block</span>).<span class='ident'>unwrap</span>();
     <span class='ident'>writer</span>.<span class='ident'>write</span>(<span class='number'>7</span>, <span class='ident'>block_type</span>).<span class='ident'>unwrap</span>();
     <span class='ident'>writer</span>.<span class='ident'>write</span>(<span class='number'>24</span>, <span class='ident'>block_size</span>).<span class='ident'>unwrap</span>();
 

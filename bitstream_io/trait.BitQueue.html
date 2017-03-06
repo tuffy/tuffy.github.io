@@ -47,13 +47,14 @@
                    <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                        [<span class='inner'>&#x2212;</span>]
                    </a>
-               </span><a class='srclink' href='../src/bitstream_io/lib.rs.html#144-173' title='goto source code'>[src]</a></span></h1>
+               </span><a class='srclink' href='../src/bitstream_io/lib.rs.html#146-178' title='goto source code'>[src]</a></span></h1>
 <pre class='rust trait'>pub trait BitQueue&lt;N:&nbsp;<a class='trait' href='../bitstream_io/trait.Numeric.html' title='bitstream_io::Numeric'>Numeric</a>&gt; {
     fn <a href='#tymethod.set' class='fnname'>set</a>(&amp;mut self, value: N, bits: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u32.html'>u32</a>);
     fn <a href='#tymethod.value' class='fnname'>value</a>(self) -&gt; N;
     fn <a href='#tymethod.len' class='fnname'>len</a>(&amp;self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u32.html'>u32</a>;
     fn <a href='#tymethod.push' class='fnname'>push</a>(&amp;mut self, bits: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u32.html'>u32</a>, value: N);
     fn <a href='#tymethod.pop' class='fnname'>pop</a>(&amp;mut self, bits: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u32.html'>u32</a>) -&gt; N;
+    fn <a href='#tymethod.drop' class='fnname'>drop</a>(&amp;mut self, bits: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u32.html'>u32</a>);
 
     fn <a href='#method.is_empty' class='fnname'>is_empty</a>(&amp;self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a> { ... }
     fn <a href='#method.clear' class='fnname'>clear</a>(&amp;mut self) { ... }
@@ -74,6 +75,7 @@ the size of the type being pushed onto.</p>
 with the given number of bits.
 Returns queue&#39;s whole contents if the requested number of bits
 exceeds the size of the queue.</p>
+</div><h3 id='tymethod.drop' class='method stab '><span id='drop.v' class='invisible'><code>fn <a href='#tymethod.drop' class='fnname'>drop</a>(&amp;mut self, bits: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u32.html'>u32</a>)</code></span></h3><div class='docblock'><p>Drops the given number of bits from the queue without returning them</p>
 </div></div>
             <h2 id='provided-methods'>Provided Methods</h2>
             <div class='methods'>

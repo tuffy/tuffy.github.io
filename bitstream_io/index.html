@@ -47,7 +47,7 @@
                    <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                        [<span class='inner'>&#x2212;</span>]
                    </a>
-               </span><a class='srclink' href='../src/bitstream_io/lib.rs.html#9-282' title='goto source code'>[src]</a></span></h1>
+               </span><a class='srclink' href='../src/bitstream_io/lib.rs.html#9-366' title='goto source code'>[src]</a></span></h1>
 <div class='docblock'><p>Traits and helpers for bitstream handling functionality</p>
 
 <p>Bitstream readers are for reading signed and unsigned integer
@@ -58,7 +58,7 @@ values to a stream, also potentially un-aligned at a whole byte.</p>
 <p>Both big-endian and little-endian streams are supported.</p>
 
 <p>The only requirement for wrapped reader streams is that they must
-implement the <code>BufRead</code> trait, and the only requirement
+implement the <code>Read</code> trait, and the only requirement
 for writer streams is that they must implement the <code>Write</code> trait.</p>
 
 <p>In addition, reader streams do not consume any more bytes
@@ -67,8 +67,8 @@ single partial byte as needed.
 Writer streams also write out all whole bytes as they are accumulated.</p>
 
 <p>Readers and writers are also designed to work with integer
-types of any possible size.  Many of Rust&#39;s built-in integer types are
-supported by default, but others can be added with minimal effort.</p>
+types of any possible size.
+Many of Rust&#39;s built-in integer types are supported by default.</p>
 
 <h2 id='type-sizes' class='section-header'><a href='#type-sizes'>Type Sizes</a></h2>
 <p>Because both the type sizes and bit counts are variable,
@@ -87,6 +87,14 @@ to 32 bits in the stream may cause a panic.</p>
 </div><h2 id='reexports' class='section-header'><a href="#reexports">Reexports</a></h2>
 <table><tr><td><code>pub use read::<a class='trait' href='../bitstream_io/read/trait.BitRead.html' title='bitstream_io::read::BitRead'>BitRead</a>;</code></td></tr><tr><td><code>pub use read::<a class='struct' href='../bitstream_io/read/struct.BitReaderBE.html' title='bitstream_io::read::BitReaderBE'>BitReaderBE</a>;</code></td></tr><tr><td><code>pub use read::<a class='struct' href='../bitstream_io/read/struct.BitReaderLE.html' title='bitstream_io::read::BitReaderLE'>BitReaderLE</a>;</code></td></tr><tr><td><code>pub use write::<a class='trait' href='../bitstream_io/write/trait.BitWrite.html' title='bitstream_io::write::BitWrite'>BitWrite</a>;</code></td></tr><tr><td><code>pub use write::<a class='struct' href='../bitstream_io/write/struct.BitWriterBE.html' title='bitstream_io::write::BitWriterBE'>BitWriterBE</a>;</code></td></tr><tr><td><code>pub use write::<a class='struct' href='../bitstream_io/write/struct.BitWriterLE.html' title='bitstream_io::write::BitWriterLE'>BitWriterLE</a>;</code></td></tr></table><h2 id='modules' class='section-header'><a href="#modules">Modules</a></h2>
 <table>
+                       <tr class=' module-item'>
+                           <td><a class='mod' href='huffman/index.html'
+                                  title='bitstream_io::huffman'>huffman</a></td>
+                           <td class='docblock-short'>
+                                <p>Traits and implementations for reading or writing Huffman codes
+from or to a stream.</p>
+                           </td>
+                       </tr>
                        <tr class=' module-item'>
                            <td><a class='mod' href='read/index.html'
                                   title='bitstream_io::read'>read</a></td>

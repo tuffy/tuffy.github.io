@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["HuffmanTreeError",""],["ReadHuffmanTree",""]],"struct":[["WriteHuffmanTree",""]]});
