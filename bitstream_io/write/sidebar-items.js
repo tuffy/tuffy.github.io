@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["BitWriterBE","A wrapper for writing values to a big-endian stream."],["BitWriterLE","A wrapper for writing values to a little-endian stream."]],"trait":[["BitWrite","For writing bit values to an underlying stream in a given endianness."]]});
+initSidebarItems({"struct":[["BitWriter","For writing bit values to an underlying stream in a given endianness."]]});

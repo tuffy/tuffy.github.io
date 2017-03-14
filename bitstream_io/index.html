@@ -47,7 +47,7 @@
                    <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                        [<span class='inner'>&#x2212;</span>]
                    </a>
-               </span><a class='srclink' href='../src/bitstream_io/lib.rs.html#9-366' title='goto source code'>[src]</a></span></h1>
+               </span><a class='srclink' href='../src/bitstream_io/lib.rs.html#9-384' title='goto source code'>[src]</a></span></h1>
 <div class='docblock'><p>Traits and helpers for bitstream handling functionality</p>
 
 <p>Bitstream readers are for reading signed and unsigned integer
@@ -85,7 +85,7 @@ Similarly, writing a 32-bit variable to 8 bits is also harmless
 (the topmost 24 bits are ignored), but writing an 8-bit variable
 to 32 bits in the stream may cause a panic.</p>
 </div><h2 id='reexports' class='section-header'><a href="#reexports">Reexports</a></h2>
-<table><tr><td><code>pub use read::<a class='trait' href='../bitstream_io/read/trait.BitRead.html' title='bitstream_io::read::BitRead'>BitRead</a>;</code></td></tr><tr><td><code>pub use read::<a class='struct' href='../bitstream_io/read/struct.BitReaderBE.html' title='bitstream_io::read::BitReaderBE'>BitReaderBE</a>;</code></td></tr><tr><td><code>pub use read::<a class='struct' href='../bitstream_io/read/struct.BitReaderLE.html' title='bitstream_io::read::BitReaderLE'>BitReaderLE</a>;</code></td></tr><tr><td><code>pub use write::<a class='trait' href='../bitstream_io/write/trait.BitWrite.html' title='bitstream_io::write::BitWrite'>BitWrite</a>;</code></td></tr><tr><td><code>pub use write::<a class='struct' href='../bitstream_io/write/struct.BitWriterBE.html' title='bitstream_io::write::BitWriterBE'>BitWriterBE</a>;</code></td></tr><tr><td><code>pub use write::<a class='struct' href='../bitstream_io/write/struct.BitWriterLE.html' title='bitstream_io::write::BitWriterLE'>BitWriterLE</a>;</code></td></tr></table><h2 id='modules' class='section-header'><a href="#modules">Modules</a></h2>
+<table><tr><td><code>pub use read::<a class='struct' href='../bitstream_io/read/struct.BitReader.html' title='bitstream_io::read::BitReader'>BitReader</a>;</code></td></tr><tr><td><code>pub use write::<a class='struct' href='../bitstream_io/write/struct.BitWriter.html' title='bitstream_io::write::BitWriter'>BitWriter</a>;</code></td></tr></table><h2 id='modules' class='section-header'><a href="#modules">Modules</a></h2>
 <table>
                        <tr class=' module-item'>
                            <td><a class='mod' href='huffman/index.html'
@@ -111,27 +111,32 @@ from or to a stream.</p>
                        </tr></table><h2 id='structs' class='section-header'><a href="#structs">Structs</a></h2>
 <table>
                        <tr class=' module-item'>
-                           <td><a class='struct' href='struct.BitQueueBE.html'
-                                  title='bitstream_io::BitQueueBE'>BitQueueBE</a></td>
+                           <td><a class='struct' href='struct.BigEndian.html'
+                                  title='bitstream_io::BigEndian'>BigEndian</a></td>
                            <td class='docblock-short'>
-                                <p>A wrapper around some unsigned type to turn it into a big-endian queue.</p>
+                                
                            </td>
                        </tr>
                        <tr class=' module-item'>
-                           <td><a class='struct' href='struct.BitQueueLE.html'
-                                  title='bitstream_io::BitQueueLE'>BitQueueLE</a></td>
+                           <td><a class='struct' href='struct.BitQueue.html'
+                                  title='bitstream_io::BitQueue'>BitQueue</a></td>
                            <td class='docblock-short'>
-                                <p>A wrapper around some unsigned type to turn it into a little-endian queue.</p>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.LittleEndian.html'
+                                  title='bitstream_io::LittleEndian'>LittleEndian</a></td>
+                           <td class='docblock-short'>
+                                
                            </td>
                        </tr></table><h2 id='traits' class='section-header'><a href="#traits">Traits</a></h2>
 <table>
                        <tr class=' module-item'>
-                           <td><a class='trait' href='trait.BitQueue.html'
-                                  title='bitstream_io::BitQueue'>BitQueue</a></td>
+                           <td><a class='trait' href='trait.Endianness.html'
+                                  title='bitstream_io::Endianness'>Endianness</a></td>
                            <td class='docblock-short'>
-                                <p>This trait is for treating numeric types as a queue of bits
-which values can be pushed to and popped from in
-order to implement bitstream readers and writers.</p>
+                                
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -149,6 +154,21 @@ with the bitstream handling traits.</p>
                            <td class='docblock-short'>
                                 <p>This trait extends many common signed integer types
 so that they can be used with the bitstream handling traits.</p>
+                           </td>
+                       </tr></table><h2 id='types' class='section-header'><a href="#types">Type Definitions</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class='type' href='type.BE.html'
+                                  title='bitstream_io::BE'>BE</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='type' href='type.LE.html'
+                                  title='bitstream_io::LE'>LE</a></td>
+                           <td class='docblock-short'>
+                                
                            </td>
                        </tr></table></section>
     <section id='search' class="content hidden"></section>
