@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["HuffmanTreeError",""],["ReadHuffmanTree",""]],"struct":[["WriteHuffmanTree",""]]});
+initSidebarItems({"enum":[["HuffmanTreeError",""],["ReadHuffmanTree",""]],"fn":[["compile_read_tree","Given a vector of symbol/code pairs, compiles a Huffman tree for reading."],["compile_write_tree","Given a vector of symbol/code pairs, compiles a Huffman tree for writing."]],"struct":[["WriteHuffmanTree",""]]});

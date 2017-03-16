@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["BitReader",""]]});
+initSidebarItems({"struct":[["BitReader","For reading non-aligned bits from a stream of bytes in a given endianness."]]});
