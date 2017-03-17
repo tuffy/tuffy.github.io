@@ -9,6 +9,7 @@
 
     <title>bitstream_io::BitQueue - Rust</title>
 
+    <link rel="stylesheet" type="text/css" href="../normalize.css">
     <link rel="stylesheet" type="text/css" href="../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../main.css">
     
@@ -47,10 +48,10 @@
                    <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                        [<span class='inner'>&#x2212;</span>]
                    </a>
-               </span><a class='srclink' href='../src/bitstream_io/lib.rs.html#305-309' title='goto source code'>[src]</a></span></h1>
+               </span><a class='srclink' href='../src/bitstream_io/lib.rs.html#311-315' title='goto source code'>[src]</a></span></h1>
 <pre class='rust struct'>pub struct BitQueue&lt;E:&nbsp;<a class='trait' href='../bitstream_io/trait.Endianness.html' title='bitstream_io::Endianness'>Endianness</a>, N:&nbsp;<a class='trait' href='../bitstream_io/trait.Numeric.html' title='bitstream_io::Numeric'>Numeric</a>&gt; { /* fields omitted */ }</pre><div class='docblock'><p>A queue for efficiently pushing bits onto a value
 and popping them off a value.</p>
-</div><h2 id='methods'>Methods</h2><h3 class='impl'><span class='in-band'><code>impl&lt;E:&nbsp;<a class='trait' href='../bitstream_io/trait.Endianness.html' title='bitstream_io::Endianness'>Endianness</a>, N:&nbsp;<a class='trait' href='../bitstream_io/trait.Numeric.html' title='bitstream_io::Numeric'>Numeric</a>&gt; <a class='struct' href='../bitstream_io/struct.BitQueue.html' title='bitstream_io::BitQueue'>BitQueue</a>&lt;E, N&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/bitstream_io/lib.rs.html#311-391' title='goto source code'>[src]</a></span></h3>
+</div><h2 id='methods'>Methods</h2><h3 class='impl'><span class='in-band'><code>impl&lt;E:&nbsp;<a class='trait' href='../bitstream_io/trait.Endianness.html' title='bitstream_io::Endianness'>Endianness</a>, N:&nbsp;<a class='trait' href='../bitstream_io/trait.Numeric.html' title='bitstream_io::Numeric'>Numeric</a>&gt; <a class='struct' href='../bitstream_io/struct.BitQueue.html' title='bitstream_io::BitQueue'>BitQueue</a>&lt;E, N&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/bitstream_io/lib.rs.html#317-405' title='goto source code'>[src]</a></span></h3>
 <div class='impl-items'><h4 id='method.new' class='method'><span id='new.v' class='invisible'><code>fn <a href='#method.new' class='fnname'>new</a>() -&gt; <a class='struct' href='../bitstream_io/struct.BitQueue.html' title='bitstream_io::BitQueue'>BitQueue</a>&lt;E, N&gt;</code></span></h4>
 <div class='docblock'><p>Returns a new empty queue</p>
 </div><h4 id='method.from_value' class='method'><span id='from_value.v' class='invisible'><code>fn <a href='#method.from_value' class='fnname'>from_value</a>(value: N, bits: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u32.html'>u32</a>) -&gt; <a class='struct' href='../bitstream_io/struct.BitQueue.html' title='bitstream_io::BitQueue'>BitQueue</a>&lt;E, N&gt;</code></span></h4>
@@ -61,8 +62,12 @@ and popping them off a value.</p>
 <div class='docblock'><p>Consumes the queue and returns its current value</p>
 </div><h4 id='method.len' class='method'><span id='len.v' class='invisible'><code>fn <a href='#method.len' class='fnname'>len</a>(&amp;self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u32.html'>u32</a></code></span></h4>
 <div class='docblock'><p>Returns the total bits in the queue</p>
+</div><h4 id='method.max_len' class='method'><span id='max_len.v' class='invisible'><code>fn <a href='#method.max_len' class='fnname'>max_len</a>(&amp;self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u32.html'>u32</a></code></span></h4>
+<div class='docblock'><p>Returns the maximum bits the queue can hold</p>
 </div><h4 id='method.is_empty' class='method'><span id='is_empty.v' class='invisible'><code>fn <a href='#method.is_empty' class='fnname'>is_empty</a>(&amp;self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></span></h4>
 <div class='docblock'><p>Returns true if the queue is empty</p>
+</div><h4 id='method.is_full' class='method'><span id='is_full.v' class='invisible'><code>fn <a href='#method.is_full' class='fnname'>is_full</a>(&amp;self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></span></h4>
+<div class='docblock'><p>Returns true if the queue is full</p>
 </div><h4 id='method.clear' class='method'><span id='clear.v' class='invisible'><code>fn <a href='#method.clear' class='fnname'>clear</a>(&amp;mut self)</code></span></h4>
 <div class='docblock'><p>Drops all values in the queue</p>
 </div><h4 id='method.all_0' class='method'><span id='all_0.v' class='invisible'><code>fn <a href='#method.all_0' class='fnname'>all_0</a>(&amp;self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></span></h4>
@@ -82,7 +87,7 @@ and returns the amount of 0 bits popped</p>
 </div><h4 id='method.pop_1' class='method'><span id='pop_1.v' class='invisible'><code>fn <a href='#method.pop_1' class='fnname'>pop_1</a>(&amp;mut self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u32.html'>u32</a></code></span></h4>
 <div class='docblock'><p>Pops all 1 bits up to and including the next 0 bit
 and returns the amount of 1 bits popped</p>
-</div></div><h3 class='impl'><span class='in-band'><code>impl&lt;E:&nbsp;<a class='trait' href='../bitstream_io/trait.Endianness.html' title='bitstream_io::Endianness'>Endianness</a>&gt; <a class='struct' href='../bitstream_io/struct.BitQueue.html' title='bitstream_io::BitQueue'>BitQueue</a>&lt;E, <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u8.html'>u8</a>&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/bitstream_io/lib.rs.html#393-398' title='goto source code'>[src]</a></span></h3>
+</div></div><h3 class='impl'><span class='in-band'><code>impl&lt;E:&nbsp;<a class='trait' href='../bitstream_io/trait.Endianness.html' title='bitstream_io::Endianness'>Endianness</a>&gt; <a class='struct' href='../bitstream_io/struct.BitQueue.html' title='bitstream_io::BitQueue'>BitQueue</a>&lt;E, <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u8.html'>u8</a>&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/bitstream_io/lib.rs.html#407-412' title='goto source code'>[src]</a></span></h3>
 <div class='impl-items'><h4 id='method.to_state' class='method'><span id='to_state.v' class='invisible'><code>fn <a href='#method.to_state' class='fnname'>to_state</a>(&amp;self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u8.html'>u8</a></code></span></h4>
 </div></section>
     <section id='search' class="content hidden"></section>

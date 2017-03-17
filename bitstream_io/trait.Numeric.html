@@ -9,6 +9,7 @@
 
     <title>bitstream_io::Numeric - Rust</title>
 
+    <link rel="stylesheet" type="text/css" href="../normalize.css">
     <link rel="stylesheet" type="text/css" href="../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../main.css">
     
@@ -63,14 +64,14 @@ with the bitstream handling traits.</p>
 </div>
             <h2 id='required-methods'>Required Methods</h2>
             <div class='methods'>
-        <h3 id='tymethod.one' class='method stab '><span id='one.v' class='invisible'><code>fn <a href='#tymethod.one' class='fnname'>one</a>() -&gt; Self</code></span></h3><div class='docblock'><p>The value of 1 in this type</p>
-</div><h3 id='tymethod.is_zero' class='method stab '><span id='is_zero.v' class='invisible'><code>fn <a href='#tymethod.is_zero' class='fnname'>is_zero</a>(self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></span></h3><div class='docblock'><p>Returns true if this value is 0, in its type</p>
-</div><h3 id='tymethod.from_u8' class='method stab '><span id='from_u8.v' class='invisible'><code>fn <a href='#tymethod.from_u8' class='fnname'>from_u8</a>(u: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u8.html'>u8</a>) -&gt; Self</code></span></h3><div class='docblock'><p>Returns a <code>u8</code> value in this type</p>
-</div><h3 id='tymethod.to_u8' class='method stab '><span id='to_u8.v' class='invisible'><code>fn <a href='#tymethod.to_u8' class='fnname'>to_u8</a>(self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u8.html'>u8</a></code></span></h3><div class='docblock'><p>Assuming 0 &lt;= value &lt; 256, returns this value as a <code>u8</code> type</p>
-</div><h3 id='tymethod.count_ones' class='method stab '><span id='count_ones.v' class='invisible'><code>fn <a href='#tymethod.count_ones' class='fnname'>count_ones</a>(self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u32.html'>u32</a></code></span></h3><div class='docblock'><p>Counts the number of 1 bits</p>
-</div><h3 id='tymethod.leading_zeros' class='method stab '><span id='leading_zeros.v' class='invisible'><code>fn <a href='#tymethod.leading_zeros' class='fnname'>leading_zeros</a>(self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u32.html'>u32</a></code></span></h3><div class='docblock'><p>Counts the number of leading zeros</p>
-</div><h3 id='tymethod.trailing_zeros' class='method stab '><span id='trailing_zeros.v' class='invisible'><code>fn <a href='#tymethod.trailing_zeros' class='fnname'>trailing_zeros</a>(self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u32.html'>u32</a></code></span></h3><div class='docblock'><p>Counts the number of trailing zeros</p>
-</div><h3 id='tymethod.bits_size' class='method stab '><span id='bits_size.v' class='invisible'><code>fn <a href='#tymethod.bits_size' class='fnname'>bits_size</a>() -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u32.html'>u32</a></code></span></h3><div class='docblock'><p>Size of type in bits</p>
+        <h3 id='tymethod.one' class='method'><span id='one.v' class='invisible'><code>fn <a href='#tymethod.one' class='fnname'>one</a>() -&gt; Self</code></span></h3><div class='docblock'><p>The value of 1 in this type</p>
+</div><h3 id='tymethod.is_zero' class='method'><span id='is_zero.v' class='invisible'><code>fn <a href='#tymethod.is_zero' class='fnname'>is_zero</a>(self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></span></h3><div class='docblock'><p>Returns true if this value is 0, in its type</p>
+</div><h3 id='tymethod.from_u8' class='method'><span id='from_u8.v' class='invisible'><code>fn <a href='#tymethod.from_u8' class='fnname'>from_u8</a>(u: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u8.html'>u8</a>) -&gt; Self</code></span></h3><div class='docblock'><p>Returns a <code>u8</code> value in this type</p>
+</div><h3 id='tymethod.to_u8' class='method'><span id='to_u8.v' class='invisible'><code>fn <a href='#tymethod.to_u8' class='fnname'>to_u8</a>(self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u8.html'>u8</a></code></span></h3><div class='docblock'><p>Assuming 0 &lt;= value &lt; 256, returns this value as a <code>u8</code> type</p>
+</div><h3 id='tymethod.count_ones' class='method'><span id='count_ones.v' class='invisible'><code>fn <a href='#tymethod.count_ones' class='fnname'>count_ones</a>(self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u32.html'>u32</a></code></span></h3><div class='docblock'><p>Counts the number of 1 bits</p>
+</div><h3 id='tymethod.leading_zeros' class='method'><span id='leading_zeros.v' class='invisible'><code>fn <a href='#tymethod.leading_zeros' class='fnname'>leading_zeros</a>(self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u32.html'>u32</a></code></span></h3><div class='docblock'><p>Counts the number of leading zeros</p>
+</div><h3 id='tymethod.trailing_zeros' class='method'><span id='trailing_zeros.v' class='invisible'><code>fn <a href='#tymethod.trailing_zeros' class='fnname'>trailing_zeros</a>(self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u32.html'>u32</a></code></span></h3><div class='docblock'><p>Counts the number of trailing zeros</p>
+</div><h3 id='tymethod.bits_size' class='method'><span id='bits_size.v' class='invisible'><code>fn <a href='#tymethod.bits_size' class='fnname'>bits_size</a>() -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u32.html'>u32</a></code></span></h3><div class='docblock'><p>Size of type in bits</p>
 </div></div>
         <h2 id='implementors'>Implementors</h2>
         <ul class='item-list' id='implementors-list'>

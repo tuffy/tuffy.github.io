@@ -9,6 +9,7 @@
 
     <title>lib.rs.html -- source</title>
 
+    <link rel="stylesheet" type="text/css" href="../../normalize.css">
     <link rel="stylesheet" type="text/css" href="../../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../../main.css">
     
@@ -324,6 +325,136 @@
 <span id="280">280</span>
 <span id="281">281</span>
 <span id="282">282</span>
+<span id="283">283</span>
+<span id="284">284</span>
+<span id="285">285</span>
+<span id="286">286</span>
+<span id="287">287</span>
+<span id="288">288</span>
+<span id="289">289</span>
+<span id="290">290</span>
+<span id="291">291</span>
+<span id="292">292</span>
+<span id="293">293</span>
+<span id="294">294</span>
+<span id="295">295</span>
+<span id="296">296</span>
+<span id="297">297</span>
+<span id="298">298</span>
+<span id="299">299</span>
+<span id="300">300</span>
+<span id="301">301</span>
+<span id="302">302</span>
+<span id="303">303</span>
+<span id="304">304</span>
+<span id="305">305</span>
+<span id="306">306</span>
+<span id="307">307</span>
+<span id="308">308</span>
+<span id="309">309</span>
+<span id="310">310</span>
+<span id="311">311</span>
+<span id="312">312</span>
+<span id="313">313</span>
+<span id="314">314</span>
+<span id="315">315</span>
+<span id="316">316</span>
+<span id="317">317</span>
+<span id="318">318</span>
+<span id="319">319</span>
+<span id="320">320</span>
+<span id="321">321</span>
+<span id="322">322</span>
+<span id="323">323</span>
+<span id="324">324</span>
+<span id="325">325</span>
+<span id="326">326</span>
+<span id="327">327</span>
+<span id="328">328</span>
+<span id="329">329</span>
+<span id="330">330</span>
+<span id="331">331</span>
+<span id="332">332</span>
+<span id="333">333</span>
+<span id="334">334</span>
+<span id="335">335</span>
+<span id="336">336</span>
+<span id="337">337</span>
+<span id="338">338</span>
+<span id="339">339</span>
+<span id="340">340</span>
+<span id="341">341</span>
+<span id="342">342</span>
+<span id="343">343</span>
+<span id="344">344</span>
+<span id="345">345</span>
+<span id="346">346</span>
+<span id="347">347</span>
+<span id="348">348</span>
+<span id="349">349</span>
+<span id="350">350</span>
+<span id="351">351</span>
+<span id="352">352</span>
+<span id="353">353</span>
+<span id="354">354</span>
+<span id="355">355</span>
+<span id="356">356</span>
+<span id="357">357</span>
+<span id="358">358</span>
+<span id="359">359</span>
+<span id="360">360</span>
+<span id="361">361</span>
+<span id="362">362</span>
+<span id="363">363</span>
+<span id="364">364</span>
+<span id="365">365</span>
+<span id="366">366</span>
+<span id="367">367</span>
+<span id="368">368</span>
+<span id="369">369</span>
+<span id="370">370</span>
+<span id="371">371</span>
+<span id="372">372</span>
+<span id="373">373</span>
+<span id="374">374</span>
+<span id="375">375</span>
+<span id="376">376</span>
+<span id="377">377</span>
+<span id="378">378</span>
+<span id="379">379</span>
+<span id="380">380</span>
+<span id="381">381</span>
+<span id="382">382</span>
+<span id="383">383</span>
+<span id="384">384</span>
+<span id="385">385</span>
+<span id="386">386</span>
+<span id="387">387</span>
+<span id="388">388</span>
+<span id="389">389</span>
+<span id="390">390</span>
+<span id="391">391</span>
+<span id="392">392</span>
+<span id="393">393</span>
+<span id="394">394</span>
+<span id="395">395</span>
+<span id="396">396</span>
+<span id="397">397</span>
+<span id="398">398</span>
+<span id="399">399</span>
+<span id="400">400</span>
+<span id="401">401</span>
+<span id="402">402</span>
+<span id="403">403</span>
+<span id="404">404</span>
+<span id="405">405</span>
+<span id="406">406</span>
+<span id="407">407</span>
+<span id="408">408</span>
+<span id="409">409</span>
+<span id="410">410</span>
+<span id="411">411</span>
+<span id="412">412</span>
 </pre><pre class='rust '>
 <span class='comment'>// Copyright 2017 Brian Langenberger</span>
 <span class='comment'>//</span>
@@ -343,7 +474,7 @@
 <span class='doccomment'>//! Both big-endian and little-endian streams are supported.</span>
 <span class='doccomment'>//!</span>
 <span class='doccomment'>//! The only requirement for wrapped reader streams is that they must</span>
-<span class='doccomment'>//! implement the `BufRead` trait, and the only requirement</span>
+<span class='doccomment'>//! implement the `Read` trait, and the only requirement</span>
 <span class='doccomment'>//! for writer streams is that they must implement the `Write` trait.</span>
 <span class='doccomment'>//!</span>
 <span class='doccomment'>//! In addition, reader streams do not consume any more bytes</span>
@@ -352,8 +483,8 @@
 <span class='doccomment'>//! Writer streams also write out all whole bytes as they are accumulated.</span>
 <span class='doccomment'>//!</span>
 <span class='doccomment'>//! Readers and writers are also designed to work with integer</span>
-<span class='doccomment'>//! types of any possible size.  Many of Rust&#39;s built-in integer types are</span>
-<span class='doccomment'>//! supported by default, but others can be added with minimal effort.</span>
+<span class='doccomment'>//! types of any possible size.</span>
+<span class='doccomment'>//! Many of Rust&#39;s built-in integer types are supported by default.</span>
 <span class='doccomment'>//!</span>
 <span class='doccomment'>//! ## Type Sizes</span>
 <span class='doccomment'>//!</span>
@@ -371,19 +502,16 @@
 <span class='doccomment'>//! (the topmost 24 bits are ignored), but writing an 8-bit variable</span>
 <span class='doccomment'>//! to 32 bits in the stream may cause a panic.</span>
 
-<span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>ops</span>::{<span class='ident'>Shl</span>, <span class='ident'>ShlAssign</span>, <span class='ident'>Shr</span>, <span class='ident'>ShrAssign</span>, <span class='ident'>Rem</span>, <span class='ident'>RemAssign</span>, <span class='ident'>BitOrAssign</span>};
+<span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>ops</span>::{<span class='ident'>Shl</span>, <span class='ident'>ShlAssign</span>, <span class='ident'>Shr</span>, <span class='ident'>ShrAssign</span>, <span class='ident'>Rem</span>, <span class='ident'>RemAssign</span>, <span class='ident'>BitOrAssign</span>,
+               <span class='ident'>BitXor</span>, <span class='ident'>Not</span>, <span class='ident'>Sub</span>};
+<span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>marker</span>::<span class='ident'>PhantomData</span>;
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>fmt</span>::<span class='ident'>Debug</span>;
 
 <span class='kw'>pub</span> <span class='kw'>mod</span> <span class='ident'>read</span>;
 <span class='kw'>pub</span> <span class='kw'>mod</span> <span class='ident'>write</span>;
-
-<span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>read</span>::<span class='ident'>BitRead</span>;
-<span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>read</span>::<span class='ident'>BitReaderBE</span>;
-<span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>read</span>::<span class='ident'>BitReaderLE</span>;
-
-<span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>write</span>::<span class='ident'>BitWrite</span>;
-<span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>write</span>::<span class='ident'>BitWriterBE</span>;
-<span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>write</span>::<span class='ident'>BitWriterLE</span>;
+<span class='kw'>pub</span> <span class='kw'>mod</span> <span class='ident'>huffman</span>;
+<span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>read</span>::<span class='ident'>BitReader</span>;
+<span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>write</span>::<span class='ident'>BitWriter</span>;
 
 
 <span class='doccomment'>/// This trait extends many common integer types (both unsigned and signed)</span>
@@ -393,7 +521,8 @@
     <span class='ident'>Shl</span><span class='op'>&lt;</span><span class='ident'>u32</span>,<span class='ident'>Output</span><span class='op'>=</span><span class='self'>Self</span><span class='op'>&gt;</span> <span class='op'>+</span> <span class='ident'>ShlAssign</span><span class='op'>&lt;</span><span class='ident'>u32</span><span class='op'>&gt;</span> <span class='op'>+</span>
     <span class='ident'>Shr</span><span class='op'>&lt;</span><span class='ident'>u32</span>,<span class='ident'>Output</span><span class='op'>=</span><span class='self'>Self</span><span class='op'>&gt;</span> <span class='op'>+</span> <span class='ident'>ShrAssign</span><span class='op'>&lt;</span><span class='ident'>u32</span><span class='op'>&gt;</span> <span class='op'>+</span>
     <span class='ident'>Rem</span><span class='op'>&lt;</span><span class='self'>Self</span>,<span class='ident'>Output</span><span class='op'>=</span><span class='self'>Self</span><span class='op'>&gt;</span> <span class='op'>+</span> <span class='ident'>RemAssign</span><span class='op'>&lt;</span><span class='self'>Self</span><span class='op'>&gt;</span> <span class='op'>+</span>
-    <span class='ident'>BitOrAssign</span><span class='op'>&lt;</span><span class='self'>Self</span><span class='op'>&gt;</span> {
+    <span class='ident'>BitOrAssign</span><span class='op'>&lt;</span><span class='self'>Self</span><span class='op'>&gt;</span> <span class='op'>+</span> <span class='ident'>BitXor</span><span class='op'>&lt;</span><span class='self'>Self</span>,<span class='ident'>Output</span><span class='op'>=</span><span class='self'>Self</span><span class='op'>&gt;</span> <span class='op'>+</span> <span class='ident'>Not</span><span class='op'>&lt;</span><span class='ident'>Output</span><span class='op'>=</span><span class='self'>Self</span><span class='op'>&gt;</span> <span class='op'>+</span>
+    <span class='ident'>Sub</span><span class='op'>&lt;</span><span class='self'>Self</span>,<span class='ident'>Output</span><span class='op'>=</span><span class='self'>Self</span><span class='op'>&gt;</span> {
 
     <span class='doccomment'>/// The value of 1 in this type</span>
     <span class='kw'>fn</span> <span class='ident'>one</span>() <span class='op'>-&gt;</span> <span class='self'>Self</span>;
@@ -406,10 +535,22 @@
 
     <span class='doccomment'>/// Assuming 0 &lt;= value &lt; 256, returns this value as a `u8` type</span>
     <span class='kw'>fn</span> <span class='ident'>to_u8</span>(<span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>u8</span>;
+
+    <span class='doccomment'>/// Counts the number of 1 bits</span>
+    <span class='kw'>fn</span> <span class='ident'>count_ones</span>(<span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>u32</span>;
+
+    <span class='doccomment'>/// Counts the number of leading zeros</span>
+    <span class='kw'>fn</span> <span class='ident'>leading_zeros</span>(<span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>u32</span>;
+
+    <span class='doccomment'>/// Counts the number of trailing zeros</span>
+    <span class='kw'>fn</span> <span class='ident'>trailing_zeros</span>(<span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>u32</span>;
+
+    <span class='doccomment'>/// Size of type in bits</span>
+    <span class='kw'>fn</span> <span class='ident'>bits_size</span>() <span class='op'>-&gt;</span> <span class='ident'>u32</span>;
 }
 
 <span class='macro'>macro_rules</span><span class='macro'>!</span> <span class='ident'>define_numeric</span> {
-    (<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>t</span>:<span class='ident'>ty</span>) <span class='op'>=&gt;</span> {
+    (<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>t</span>:<span class='ident'>ty</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>bits</span>:<span class='ident'>expr</span>) <span class='op'>=&gt;</span> {
         <span class='kw'>impl</span> <span class='ident'>Numeric</span> <span class='kw'>for</span> <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>t</span> {
             <span class='attribute'>#[<span class='ident'>inline</span>(<span class='ident'>always</span>)]</span>
             <span class='kw'>fn</span> <span class='ident'>one</span>() <span class='op'>-&gt;</span> <span class='self'>Self</span> {<span class='number'>1</span>}
@@ -419,6 +560,14 @@
             <span class='kw'>fn</span> <span class='ident'>from_u8</span>(<span class='ident'>u</span>: <span class='ident'>u8</span>) <span class='op'>-&gt;</span> <span class='self'>Self</span> {<span class='ident'>u</span> <span class='kw'>as</span> <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>t</span>}
             <span class='attribute'>#[<span class='ident'>inline</span>(<span class='ident'>always</span>)]</span>
             <span class='kw'>fn</span> <span class='ident'>to_u8</span>(<span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>u8</span> {<span class='self'>self</span> <span class='kw'>as</span> <span class='ident'>u8</span>}
+            <span class='attribute'>#[<span class='ident'>inline</span>(<span class='ident'>always</span>)]</span>
+            <span class='kw'>fn</span> <span class='ident'>count_ones</span>(<span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>u32</span> {<span class='self'>self</span>.<span class='ident'>count_ones</span>()}
+            <span class='attribute'>#[<span class='ident'>inline</span>(<span class='ident'>always</span>)]</span>
+            <span class='kw'>fn</span> <span class='ident'>leading_zeros</span>(<span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>u32</span> {<span class='self'>self</span>.<span class='ident'>leading_zeros</span>()}
+            <span class='attribute'>#[<span class='ident'>inline</span>(<span class='ident'>always</span>)]</span>
+            <span class='kw'>fn</span> <span class='ident'>trailing_zeros</span>(<span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>u32</span> {<span class='self'>self</span>.<span class='ident'>trailing_zeros</span>()}
+            <span class='attribute'>#[<span class='ident'>inline</span>(<span class='ident'>always</span>)]</span>
+            <span class='kw'>fn</span> <span class='ident'>bits_size</span>() <span class='op'>-&gt;</span> <span class='ident'>u32</span> {<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>bits</span>}
         }
     }
 }
@@ -451,160 +600,272 @@
     }
 }
 
-<span class='macro'>define_numeric</span><span class='macro'>!</span>(<span class='ident'>u8</span>);
-<span class='macro'>define_numeric</span><span class='macro'>!</span>(<span class='ident'>i8</span>);
-<span class='macro'>define_numeric</span><span class='macro'>!</span>(<span class='ident'>u16</span>);
-<span class='macro'>define_numeric</span><span class='macro'>!</span>(<span class='ident'>i16</span>);
-<span class='macro'>define_numeric</span><span class='macro'>!</span>(<span class='ident'>u32</span>);
-<span class='macro'>define_numeric</span><span class='macro'>!</span>(<span class='ident'>i32</span>);
-<span class='macro'>define_numeric</span><span class='macro'>!</span>(<span class='ident'>u64</span>);
-<span class='macro'>define_numeric</span><span class='macro'>!</span>(<span class='ident'>i64</span>);
+<span class='macro'>define_numeric</span><span class='macro'>!</span>(<span class='ident'>u8</span>, <span class='number'>8</span>);
+<span class='macro'>define_numeric</span><span class='macro'>!</span>(<span class='ident'>i8</span>, <span class='number'>8</span>);
+<span class='macro'>define_numeric</span><span class='macro'>!</span>(<span class='ident'>u16</span>, <span class='number'>16</span>);
+<span class='macro'>define_numeric</span><span class='macro'>!</span>(<span class='ident'>i16</span>, <span class='number'>16</span>);
+<span class='macro'>define_numeric</span><span class='macro'>!</span>(<span class='ident'>u32</span>, <span class='number'>32</span>);
+<span class='macro'>define_numeric</span><span class='macro'>!</span>(<span class='ident'>i32</span>, <span class='number'>32</span>);
+<span class='macro'>define_numeric</span><span class='macro'>!</span>(<span class='ident'>u64</span>, <span class='number'>64</span>);
+<span class='macro'>define_numeric</span><span class='macro'>!</span>(<span class='ident'>i64</span>, <span class='number'>64</span>);
 
 <span class='macro'>define_signed_numeric</span><span class='macro'>!</span>(<span class='ident'>i8</span>);
 <span class='macro'>define_signed_numeric</span><span class='macro'>!</span>(<span class='ident'>i16</span>);
 <span class='macro'>define_signed_numeric</span><span class='macro'>!</span>(<span class='ident'>i32</span>);
 <span class='macro'>define_signed_numeric</span><span class='macro'>!</span>(<span class='ident'>i64</span>);
 
-<span class='doccomment'>/// This trait is for treating numeric types as a queue of bits</span>
-<span class='doccomment'>/// which values can be pushed to and popped from in</span>
-<span class='doccomment'>/// order to implement bitstream readers and writers.</span>
-<span class='kw'>pub</span> <span class='kw'>trait</span> <span class='ident'>BitQueue</span><span class='op'>&lt;</span><span class='ident'>N</span>: <span class='ident'>Numeric</span><span class='op'>&gt;</span> {
-    <span class='doccomment'>/// Discards queue&#39;s current status and sets it to new bits and value</span>
-    <span class='kw'>fn</span> <span class='ident'>set</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>value</span>: <span class='ident'>N</span>, <span class='ident'>bits</span>: <span class='ident'>u32</span>);
+<span class='doccomment'>/// A stream&#39;s endianness, or byte order, for determining</span>
+<span class='doccomment'>/// how bits should be read.</span>
+<span class='doccomment'>///</span>
+<span class='doccomment'>/// It comes in `BigEndian` and `LittleEndian` varieties</span>
+<span class='doccomment'>/// (which may be shortened to `BE` and `LE`)</span>
+<span class='doccomment'>/// and is not something programmers should have to implement</span>
+<span class='doccomment'>/// in most cases.</span>
+<span class='kw'>pub</span> <span class='kw'>trait</span> <span class='ident'>Endianness</span> {
+    <span class='kw'>fn</span> <span class='ident'>push</span><span class='op'>&lt;</span><span class='ident'>N</span><span class='op'>&gt;</span>(<span class='ident'>bits_acc</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>u32</span>,
+               <span class='ident'>value_acc</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>N</span>,
+               <span class='ident'>bits</span>: <span class='ident'>u32</span>,
+               <span class='ident'>value</span>: <span class='ident'>N</span>) <span class='kw'>where</span> <span class='ident'>N</span>: <span class='ident'>Numeric</span>;
 
-    <span class='doccomment'>/// Consumes queue and returns its internal value</span>
-    <span class='kw'>fn</span> <span class='ident'>value</span>(<span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>N</span>;
+    <span class='kw'>fn</span> <span class='ident'>pop</span><span class='op'>&lt;</span><span class='ident'>N</span><span class='op'>&gt;</span>(<span class='ident'>bits_acc</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>u32</span>,
+              <span class='ident'>value_acc</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>N</span>,
+              <span class='ident'>bits</span>: <span class='ident'>u32</span>) <span class='op'>-&gt;</span> <span class='ident'>N</span> <span class='kw'>where</span> <span class='ident'>N</span>: <span class='ident'>Numeric</span>;
 
-    <span class='doccomment'>/// Current length of queue, in bits</span>
-    <span class='kw'>fn</span> <span class='ident'>len</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>u32</span>;
+    <span class='kw'>fn</span> <span class='ident'>drop</span><span class='op'>&lt;</span><span class='ident'>N</span><span class='op'>&gt;</span>(<span class='ident'>bits_acc</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>u32</span>,
+               <span class='ident'>value_acc</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>N</span>,
+               <span class='ident'>bits</span>: <span class='ident'>u32</span>) <span class='kw'>where</span> <span class='ident'>N</span>: <span class='ident'>Numeric</span>;
 
-    <span class='doccomment'>/// Whether or not the queue is empty</span>
-    <span class='attribute'>#[<span class='ident'>inline</span>(<span class='ident'>always</span>)]</span>
-    <span class='kw'>fn</span> <span class='ident'>is_empty</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>bool</span> {<span class='self'>self</span>.<span class='ident'>len</span>() <span class='op'>==</span> <span class='number'>0</span>}
+    <span class='kw'>fn</span> <span class='ident'>next_zeros</span><span class='op'>&lt;</span><span class='ident'>N</span><span class='op'>&gt;</span>(<span class='ident'>bits</span>: <span class='ident'>u32</span>, <span class='ident'>value</span>: <span class='ident'>N</span>) <span class='op'>-&gt;</span> <span class='ident'>u32</span> <span class='kw'>where</span> <span class='ident'>N</span>: <span class='ident'>Numeric</span>;
 
-    <span class='doccomment'>/// Discards queue&#39;s current status and sets bits and value to 0</span>
-    <span class='attribute'>#[<span class='ident'>inline</span>(<span class='ident'>always</span>)]</span>
-    <span class='kw'>fn</span> <span class='ident'>clear</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>) {<span class='self'>self</span>.<span class='ident'>set</span>(<span class='ident'>N</span>::<span class='ident'>default</span>(), <span class='number'>0</span>)}
-
-    <span class='doccomment'>/// Pushes a new value onto the back of the queue</span>
-    <span class='doccomment'>/// using the given number of bits.</span>
-    <span class='doccomment'>/// May panic if the total number of bits exceeds</span>
-    <span class='doccomment'>/// the size of the type being pushed onto.</span>
-    <span class='kw'>fn</span> <span class='ident'>push</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>bits</span>: <span class='ident'>u32</span>, <span class='ident'>value</span>: <span class='ident'>N</span>);
-
-    <span class='doccomment'>/// Pops a value from the front of the queue</span>
-    <span class='doccomment'>/// with the given number of bits.</span>
-    <span class='doccomment'>/// Returns queue&#39;s whole contents if the requested number of bits</span>
-    <span class='doccomment'>/// exceeds the size of the queue.</span>
-    <span class='kw'>fn</span> <span class='ident'>pop</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>bits</span>: <span class='ident'>u32</span>) <span class='op'>-&gt;</span> <span class='ident'>N</span>;
+    <span class='kw'>fn</span> <span class='ident'>next_ones</span><span class='op'>&lt;</span><span class='ident'>N</span><span class='op'>&gt;</span>(<span class='ident'>bits</span>: <span class='ident'>u32</span>, <span class='ident'>value</span>: <span class='ident'>N</span>) <span class='op'>-&gt;</span> <span class='ident'>u32</span> <span class='kw'>where</span> <span class='ident'>N</span>: <span class='ident'>Numeric</span>;
 }
 
-<span class='doccomment'>/// A wrapper around some unsigned type to turn it into a big-endian queue.</span>
-<span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>BitQueueBE</span><span class='op'>&lt;</span><span class='ident'>N</span>: <span class='ident'>Numeric</span><span class='op'>&gt;</span> {<span class='ident'>value</span>: <span class='ident'>N</span>, <span class='ident'>bits</span>: <span class='ident'>u32</span>}
+<span class='doccomment'>/// Big-endian, or most significant bits first</span>
+<span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>BigEndian</span> {}
 
-<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>N</span>: <span class='ident'>Numeric</span><span class='op'>&gt;</span> <span class='ident'>BitQueueBE</span><span class='op'>&lt;</span><span class='ident'>N</span><span class='op'>&gt;</span> {
-    <span class='doccomment'>/// Wraps an existing value in a big-endian bit queue</span>
-    <span class='doccomment'>/// with the given number of bits.</span>
-    <span class='doccomment'>/// It is up to the programmer to ensure that the value</span>
-    <span class='doccomment'>/// is not larger than the given number of bits can contain.</span>
+<span class='doccomment'>/// Big-endian, or most significant bits first</span>
+<span class='kw'>pub</span> <span class='kw'>type</span> <span class='ident'>BE</span> <span class='op'>=</span> <span class='ident'>BigEndian</span>;
+
+<span class='kw'>impl</span> <span class='ident'>Endianness</span> <span class='kw'>for</span> <span class='ident'>BigEndian</span> {
     <span class='attribute'>#[<span class='ident'>inline</span>]</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>from_value</span>(<span class='ident'>value</span>: <span class='ident'>N</span>, <span class='ident'>bits</span>: <span class='ident'>u32</span>) <span class='op'>-&gt;</span> <span class='ident'>BitQueueBE</span><span class='op'>&lt;</span><span class='ident'>N</span><span class='op'>&gt;</span> {
-        <span class='ident'>BitQueueBE</span>{<span class='ident'>value</span>: <span class='ident'>value</span>, <span class='ident'>bits</span>: <span class='ident'>bits</span>}
-    }
-
-    <span class='doccomment'>/// Creates an empty queue with a value and bit count of 0.</span>
-    <span class='attribute'>#[<span class='ident'>inline</span>]</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>() <span class='op'>-&gt;</span> <span class='ident'>BitQueueBE</span><span class='op'>&lt;</span><span class='ident'>N</span><span class='op'>&gt;</span> {
-        <span class='ident'>BitQueueBE</span>{<span class='ident'>value</span>: <span class='ident'>N</span>::<span class='ident'>default</span>(), <span class='ident'>bits</span>: <span class='number'>0</span>}
-    }
-}
-
-<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>N</span>: <span class='ident'>Numeric</span><span class='op'>&gt;</span> <span class='ident'>BitQueue</span><span class='op'>&lt;</span><span class='ident'>N</span><span class='op'>&gt;</span> <span class='kw'>for</span> <span class='ident'>BitQueueBE</span><span class='op'>&lt;</span><span class='ident'>N</span><span class='op'>&gt;</span> {
-    <span class='attribute'>#[<span class='ident'>inline</span>]</span>
-    <span class='kw'>fn</span> <span class='ident'>set</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>value</span>: <span class='ident'>N</span>, <span class='ident'>bits</span>: <span class='ident'>u32</span>) {
-        <span class='self'>self</span>.<span class='ident'>value</span> <span class='op'>=</span> <span class='ident'>value</span>; <span class='self'>self</span>.<span class='ident'>bits</span> <span class='op'>=</span> <span class='ident'>bits</span>;
-    }
-
-    <span class='attribute'>#[<span class='ident'>inline</span>(<span class='ident'>always</span>)]</span>
-    <span class='kw'>fn</span> <span class='ident'>value</span>(<span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>N</span> {<span class='self'>self</span>.<span class='ident'>value</span>}
-
-    <span class='attribute'>#[<span class='ident'>inline</span>(<span class='ident'>always</span>)]</span>
-    <span class='kw'>fn</span> <span class='ident'>len</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>u32</span> {<span class='self'>self</span>.<span class='ident'>bits</span>}
-
-    <span class='kw'>fn</span> <span class='ident'>push</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>bits</span>: <span class='ident'>u32</span>, <span class='ident'>value</span>: <span class='ident'>N</span>) {
-        <span class='kw'>if</span> <span class='op'>!</span><span class='self'>self</span>.<span class='ident'>value</span>.<span class='ident'>is_zero</span>() {
-            <span class='self'>self</span>.<span class='ident'>value</span> <span class='op'>&lt;&lt;=</span> <span class='ident'>bits</span>;
+    <span class='kw'>fn</span> <span class='ident'>push</span><span class='op'>&lt;</span><span class='ident'>N</span><span class='op'>&gt;</span>(<span class='ident'>bits_acc</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>u32</span>,
+               <span class='ident'>value_acc</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>N</span>,
+               <span class='ident'>bits</span>: <span class='ident'>u32</span>,
+               <span class='ident'>value</span>: <span class='ident'>N</span>) <span class='kw'>where</span> <span class='ident'>N</span>: <span class='ident'>Numeric</span> {
+        <span class='kw'>if</span> <span class='op'>!</span><span class='ident'>value_acc</span>.<span class='ident'>is_zero</span>() {
+            <span class='kw-2'>*</span><span class='ident'>value_acc</span> <span class='op'>&lt;&lt;=</span> <span class='ident'>bits</span>;
         }
-        <span class='self'>self</span>.<span class='ident'>value</span> <span class='op'>|=</span> <span class='ident'>value</span>;
-        <span class='self'>self</span>.<span class='ident'>bits</span> <span class='op'>+=</span> <span class='ident'>bits</span>;
+        <span class='kw-2'>*</span><span class='ident'>value_acc</span> <span class='op'>|=</span> <span class='ident'>value</span>;
+        <span class='kw-2'>*</span><span class='ident'>bits_acc</span> <span class='op'>+=</span> <span class='ident'>bits</span>;
     }
 
-    <span class='kw'>fn</span> <span class='ident'>pop</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>bits</span>: <span class='ident'>u32</span>) <span class='op'>-&gt;</span> <span class='ident'>N</span> {
-        <span class='kw'>if</span> <span class='ident'>bits</span> <span class='op'>&lt;</span> <span class='self'>self</span>.<span class='ident'>bits</span> {
-            <span class='kw'>let</span> <span class='ident'>offset</span> <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>bits</span> <span class='op'>-</span> <span class='ident'>bits</span>;
-            <span class='kw'>let</span> <span class='ident'>to_return</span> <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>value</span> <span class='op'>&gt;&gt;</span> <span class='ident'>offset</span>;
-            <span class='self'>self</span>.<span class='ident'>value</span> <span class='op'>%=</span> <span class='ident'>N</span>::<span class='ident'>one</span>() <span class='op'>&lt;&lt;</span> <span class='ident'>offset</span>;
-            <span class='self'>self</span>.<span class='ident'>bits</span> <span class='op'>-=</span> <span class='ident'>bits</span>;
+    <span class='attribute'>#[<span class='ident'>inline</span>]</span>
+    <span class='kw'>fn</span> <span class='ident'>pop</span><span class='op'>&lt;</span><span class='ident'>N</span><span class='op'>&gt;</span>(<span class='ident'>bits_acc</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>u32</span>,
+              <span class='ident'>value_acc</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>N</span>,
+              <span class='ident'>bits</span>: <span class='ident'>u32</span>) <span class='op'>-&gt;</span> <span class='ident'>N</span> <span class='kw'>where</span> <span class='ident'>N</span>: <span class='ident'>Numeric</span> {
+        <span class='kw'>if</span> <span class='ident'>bits</span> <span class='op'>&lt;</span> <span class='kw-2'>*</span><span class='ident'>bits_acc</span> {
+            <span class='kw'>let</span> <span class='ident'>offset</span> <span class='op'>=</span> <span class='kw-2'>*</span><span class='ident'>bits_acc</span> <span class='op'>-</span> <span class='ident'>bits</span>;
+            <span class='kw'>let</span> <span class='ident'>to_return</span> <span class='op'>=</span> <span class='kw-2'>*</span><span class='ident'>value_acc</span> <span class='op'>&gt;&gt;</span> <span class='ident'>offset</span>;
+            <span class='kw-2'>*</span><span class='ident'>value_acc</span> <span class='op'>%=</span> <span class='ident'>N</span>::<span class='ident'>one</span>() <span class='op'>&lt;&lt;</span> <span class='ident'>offset</span>;
+            <span class='kw-2'>*</span><span class='ident'>bits_acc</span> <span class='op'>-=</span> <span class='ident'>bits</span>;
             <span class='ident'>to_return</span>
         } <span class='kw'>else</span> {
-            <span class='kw'>let</span> <span class='ident'>to_return</span> <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>value</span>;
-            <span class='self'>self</span>.<span class='ident'>value</span> <span class='op'>=</span> <span class='ident'>N</span>::<span class='ident'>default</span>();
-            <span class='self'>self</span>.<span class='ident'>bits</span> <span class='op'>=</span> <span class='number'>0</span>;
+            <span class='kw'>let</span> <span class='ident'>to_return</span> <span class='op'>=</span> <span class='kw-2'>*</span><span class='ident'>value_acc</span>;
+            <span class='kw-2'>*</span><span class='ident'>value_acc</span> <span class='op'>=</span> <span class='ident'>N</span>::<span class='ident'>default</span>();
+            <span class='kw-2'>*</span><span class='ident'>bits_acc</span> <span class='op'>=</span> <span class='number'>0</span>;
             <span class='ident'>to_return</span>
+        }
+    }
+
+    <span class='attribute'>#[<span class='ident'>inline</span>]</span>
+    <span class='kw'>fn</span> <span class='ident'>drop</span><span class='op'>&lt;</span><span class='ident'>N</span><span class='op'>&gt;</span>(<span class='ident'>bits_acc</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>u32</span>,
+               <span class='ident'>value_acc</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>N</span>,
+               <span class='ident'>bits</span>: <span class='ident'>u32</span>) <span class='kw'>where</span> <span class='ident'>N</span>: <span class='ident'>Numeric</span> {
+        <span class='kw'>if</span> <span class='ident'>bits</span> <span class='op'>&lt;</span> <span class='kw-2'>*</span><span class='ident'>bits_acc</span> {
+            <span class='kw-2'>*</span><span class='ident'>value_acc</span> <span class='op'>%=</span> <span class='ident'>N</span>::<span class='ident'>one</span>() <span class='op'>&lt;&lt;</span> (<span class='kw-2'>*</span><span class='ident'>bits_acc</span> <span class='op'>-</span> <span class='ident'>bits</span>);
+            <span class='kw-2'>*</span><span class='ident'>bits_acc</span> <span class='op'>-=</span> <span class='ident'>bits</span>;
+        } <span class='kw'>else</span> {
+            <span class='kw-2'>*</span><span class='ident'>value_acc</span> <span class='op'>=</span> <span class='ident'>N</span>::<span class='ident'>default</span>();
+            <span class='kw-2'>*</span><span class='ident'>bits_acc</span> <span class='op'>=</span> <span class='number'>0</span>;
+        }
+    }
+
+    <span class='attribute'>#[<span class='ident'>inline</span>]</span>
+    <span class='kw'>fn</span> <span class='ident'>next_zeros</span><span class='op'>&lt;</span><span class='ident'>N</span><span class='op'>&gt;</span>(<span class='ident'>bits</span>: <span class='ident'>u32</span>, <span class='ident'>value</span>: <span class='ident'>N</span>) <span class='op'>-&gt;</span> <span class='ident'>u32</span> <span class='kw'>where</span> <span class='ident'>N</span>: <span class='ident'>Numeric</span> {
+        <span class='ident'>value</span>.<span class='ident'>leading_zeros</span>() <span class='op'>-</span> (<span class='ident'>N</span>::<span class='ident'>bits_size</span>() <span class='op'>-</span> <span class='ident'>bits</span>)
+    }
+
+    <span class='attribute'>#[<span class='ident'>inline</span>]</span>
+    <span class='kw'>fn</span> <span class='ident'>next_ones</span><span class='op'>&lt;</span><span class='ident'>N</span><span class='op'>&gt;</span>(<span class='ident'>bits</span>: <span class='ident'>u32</span>, <span class='ident'>value</span>: <span class='ident'>N</span>) <span class='op'>-&gt;</span> <span class='ident'>u32</span> <span class='kw'>where</span> <span class='ident'>N</span>: <span class='ident'>Numeric</span> {
+        <span class='kw'>if</span> <span class='ident'>bits</span> <span class='op'>&lt;</span> <span class='ident'>N</span>::<span class='ident'>bits_size</span>() {
+            (<span class='ident'>value</span> <span class='op'>^</span> ((<span class='ident'>N</span>::<span class='ident'>one</span>() <span class='op'>&lt;&lt;</span> <span class='ident'>bits</span>) <span class='op'>-</span> <span class='ident'>N</span>::<span class='ident'>one</span>())).<span class='ident'>leading_zeros</span>() <span class='op'>-</span>
+            (<span class='ident'>N</span>::<span class='ident'>bits_size</span>() <span class='op'>-</span> <span class='ident'>bits</span>)
+        } <span class='kw'>else</span> {
+            (<span class='op'>!</span><span class='ident'>value</span>).<span class='ident'>leading_zeros</span>()
         }
     }
 }
 
-<span class='doccomment'>/// A wrapper around some unsigned type to turn it into a little-endian queue.</span>
-<span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>BitQueueLE</span><span class='op'>&lt;</span><span class='ident'>N</span>: <span class='ident'>Numeric</span><span class='op'>&gt;</span> {<span class='ident'>value</span>: <span class='ident'>N</span>, <span class='ident'>bits</span>: <span class='ident'>u32</span>}
+<span class='doccomment'>/// Little-endian, or least significant bits first</span>
+<span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>LittleEndian</span> {}
 
-<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>N</span>: <span class='ident'>Numeric</span><span class='op'>&gt;</span> <span class='ident'>BitQueueLE</span><span class='op'>&lt;</span><span class='ident'>N</span><span class='op'>&gt;</span> {
-    <span class='doccomment'>/// Wraps an existing value in a little-endian bit queue</span>
-    <span class='doccomment'>/// with the given number of bits.</span>
-    <span class='doccomment'>/// It is up to the programmer to ensure that the value</span>
-    <span class='doccomment'>/// is not larger than the given number of bits can contain.</span>
+<span class='doccomment'>/// Little-endian, or least significant bits first</span>
+<span class='kw'>pub</span> <span class='kw'>type</span> <span class='ident'>LE</span> <span class='op'>=</span> <span class='ident'>LittleEndian</span>;
+
+<span class='kw'>impl</span> <span class='ident'>Endianness</span> <span class='kw'>for</span> <span class='ident'>LittleEndian</span> {
     <span class='attribute'>#[<span class='ident'>inline</span>]</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>from_value</span>(<span class='ident'>value</span>: <span class='ident'>N</span>, <span class='ident'>bits</span>: <span class='ident'>u32</span>) <span class='op'>-&gt;</span> <span class='ident'>BitQueueLE</span><span class='op'>&lt;</span><span class='ident'>N</span><span class='op'>&gt;</span> {
-        <span class='ident'>BitQueueLE</span>{<span class='ident'>value</span>: <span class='ident'>value</span>, <span class='ident'>bits</span>: <span class='ident'>bits</span>}
+    <span class='kw'>fn</span> <span class='ident'>push</span><span class='op'>&lt;</span><span class='ident'>N</span><span class='op'>&gt;</span>(<span class='ident'>bits_acc</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>u32</span>,
+               <span class='ident'>value_acc</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>N</span>,
+               <span class='ident'>bits</span>: <span class='ident'>u32</span>,
+               <span class='kw-2'>mut</span> <span class='ident'>value</span>: <span class='ident'>N</span>) <span class='kw'>where</span> <span class='ident'>N</span>: <span class='ident'>Numeric</span> {
+        <span class='ident'>value</span> <span class='op'>&lt;&lt;=</span> <span class='kw-2'>*</span><span class='ident'>bits_acc</span>;
+        <span class='kw-2'>*</span><span class='ident'>value_acc</span> <span class='op'>|=</span> <span class='ident'>value</span>;
+        <span class='kw-2'>*</span><span class='ident'>bits_acc</span> <span class='op'>+=</span> <span class='ident'>bits</span>;
     }
 
-    <span class='doccomment'>/// Creates an empty queue with a value and bit count of 0.</span>
     <span class='attribute'>#[<span class='ident'>inline</span>]</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>() <span class='op'>-&gt;</span> <span class='ident'>BitQueueLE</span><span class='op'>&lt;</span><span class='ident'>N</span><span class='op'>&gt;</span> {
-        <span class='ident'>BitQueueLE</span>{<span class='ident'>value</span>: <span class='ident'>N</span>::<span class='ident'>default</span>(), <span class='ident'>bits</span>: <span class='number'>0</span>}
-    }
-}
-
-<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>N</span>: <span class='ident'>Numeric</span><span class='op'>&gt;</span> <span class='ident'>BitQueue</span><span class='op'>&lt;</span><span class='ident'>N</span><span class='op'>&gt;</span> <span class='kw'>for</span> <span class='ident'>BitQueueLE</span><span class='op'>&lt;</span><span class='ident'>N</span><span class='op'>&gt;</span> {
-    <span class='attribute'>#[<span class='ident'>inline</span>]</span>
-    <span class='kw'>fn</span> <span class='ident'>set</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>value</span>: <span class='ident'>N</span>, <span class='ident'>bits</span>: <span class='ident'>u32</span>) {
-        <span class='self'>self</span>.<span class='ident'>value</span> <span class='op'>=</span> <span class='ident'>value</span>; <span class='self'>self</span>.<span class='ident'>bits</span> <span class='op'>=</span> <span class='ident'>bits</span>;
-    }
-
-    <span class='attribute'>#[<span class='ident'>inline</span>(<span class='ident'>always</span>)]</span>
-    <span class='kw'>fn</span> <span class='ident'>value</span>(<span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>N</span> {<span class='self'>self</span>.<span class='ident'>value</span>}
-
-    <span class='attribute'>#[<span class='ident'>inline</span>(<span class='ident'>always</span>)]</span>
-    <span class='kw'>fn</span> <span class='ident'>len</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>u32</span> {<span class='self'>self</span>.<span class='ident'>bits</span>}
-
-    <span class='kw'>fn</span> <span class='ident'>push</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>bits</span>: <span class='ident'>u32</span>, <span class='kw-2'>mut</span> <span class='ident'>value</span>: <span class='ident'>N</span>) {
-        <span class='ident'>value</span> <span class='op'>&lt;&lt;=</span> <span class='self'>self</span>.<span class='ident'>bits</span>;
-        <span class='self'>self</span>.<span class='ident'>value</span> <span class='op'>|=</span> <span class='ident'>value</span>;
-        <span class='self'>self</span>.<span class='ident'>bits</span> <span class='op'>+=</span> <span class='ident'>bits</span>;
-    }
-
-    <span class='kw'>fn</span> <span class='ident'>pop</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>bits</span>: <span class='ident'>u32</span>) <span class='op'>-&gt;</span> <span class='ident'>N</span> {
-        <span class='kw'>if</span> <span class='ident'>bits</span> <span class='op'>&lt;</span> <span class='self'>self</span>.<span class='ident'>bits</span> {
-            <span class='kw'>let</span> <span class='ident'>to_return</span> <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>value</span> <span class='op'>%</span> (<span class='ident'>N</span>::<span class='ident'>one</span>() <span class='op'>&lt;&lt;</span> <span class='ident'>bits</span>);
-            <span class='self'>self</span>.<span class='ident'>value</span> <span class='op'>&gt;&gt;=</span> <span class='ident'>bits</span>;
-            <span class='self'>self</span>.<span class='ident'>bits</span> <span class='op'>-=</span> <span class='ident'>bits</span>;
+    <span class='kw'>fn</span> <span class='ident'>pop</span><span class='op'>&lt;</span><span class='ident'>N</span><span class='op'>&gt;</span>(<span class='ident'>bits_acc</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>u32</span>,
+              <span class='ident'>value_acc</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>N</span>,
+              <span class='ident'>bits</span>: <span class='ident'>u32</span>) <span class='op'>-&gt;</span> <span class='ident'>N</span> <span class='kw'>where</span> <span class='ident'>N</span>: <span class='ident'>Numeric</span> {
+        <span class='kw'>if</span> <span class='ident'>bits</span> <span class='op'>&lt;</span> <span class='kw-2'>*</span><span class='ident'>bits_acc</span> {
+            <span class='kw'>let</span> <span class='ident'>to_return</span> <span class='op'>=</span> <span class='kw-2'>*</span><span class='ident'>value_acc</span> <span class='op'>%</span> (<span class='ident'>N</span>::<span class='ident'>one</span>() <span class='op'>&lt;&lt;</span> <span class='ident'>bits</span>);
+            <span class='kw-2'>*</span><span class='ident'>value_acc</span> <span class='op'>&gt;&gt;=</span> <span class='ident'>bits</span>;
+            <span class='kw-2'>*</span><span class='ident'>bits_acc</span> <span class='op'>-=</span> <span class='ident'>bits</span>;
             <span class='ident'>to_return</span>
         } <span class='kw'>else</span> {
-            <span class='kw'>let</span> <span class='ident'>to_return</span> <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>value</span>;
-            <span class='self'>self</span>.<span class='ident'>value</span> <span class='op'>=</span> <span class='ident'>N</span>::<span class='ident'>default</span>();
-            <span class='self'>self</span>.<span class='ident'>bits</span> <span class='op'>=</span> <span class='number'>0</span>;
+            <span class='kw'>let</span> <span class='ident'>to_return</span> <span class='op'>=</span> <span class='kw-2'>*</span><span class='ident'>value_acc</span>;
+            <span class='kw-2'>*</span><span class='ident'>value_acc</span> <span class='op'>=</span> <span class='ident'>N</span>::<span class='ident'>default</span>();
+            <span class='kw-2'>*</span><span class='ident'>bits_acc</span> <span class='op'>=</span> <span class='number'>0</span>;
             <span class='ident'>to_return</span>
         }
+    }
+
+    <span class='attribute'>#[<span class='ident'>inline</span>]</span>
+    <span class='kw'>fn</span> <span class='ident'>drop</span><span class='op'>&lt;</span><span class='ident'>N</span><span class='op'>&gt;</span>(<span class='ident'>bits_acc</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>u32</span>,
+               <span class='ident'>value_acc</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>N</span>,
+               <span class='ident'>bits</span>: <span class='ident'>u32</span>) <span class='kw'>where</span> <span class='ident'>N</span>: <span class='ident'>Numeric</span> {
+        <span class='kw'>if</span> <span class='ident'>bits</span> <span class='op'>&lt;</span> <span class='kw-2'>*</span><span class='ident'>bits_acc</span> {
+            <span class='kw-2'>*</span><span class='ident'>value_acc</span> <span class='op'>&gt;&gt;=</span> <span class='ident'>bits</span>;
+            <span class='kw-2'>*</span><span class='ident'>bits_acc</span> <span class='op'>-=</span> <span class='ident'>bits</span>;
+        } <span class='kw'>else</span> {
+            <span class='kw-2'>*</span><span class='ident'>value_acc</span> <span class='op'>=</span> <span class='ident'>N</span>::<span class='ident'>default</span>();
+            <span class='kw-2'>*</span><span class='ident'>bits_acc</span> <span class='op'>=</span> <span class='number'>0</span>;
+        }
+    }
+
+    <span class='attribute'>#[<span class='ident'>inline</span>(<span class='ident'>always</span>)]</span>
+    <span class='kw'>fn</span> <span class='ident'>next_zeros</span><span class='op'>&lt;</span><span class='ident'>N</span><span class='op'>&gt;</span>(_: <span class='ident'>u32</span>, <span class='ident'>value</span>: <span class='ident'>N</span>) <span class='op'>-&gt;</span> <span class='ident'>u32</span> <span class='kw'>where</span> <span class='ident'>N</span>: <span class='ident'>Numeric</span> {
+        <span class='ident'>value</span>.<span class='ident'>trailing_zeros</span>()
+    }
+
+    <span class='attribute'>#[<span class='ident'>inline</span>]</span>
+    <span class='kw'>fn</span> <span class='ident'>next_ones</span><span class='op'>&lt;</span><span class='ident'>N</span><span class='op'>&gt;</span>(_: <span class='ident'>u32</span>, <span class='ident'>value</span>: <span class='ident'>N</span>) <span class='op'>-&gt;</span> <span class='ident'>u32</span> <span class='kw'>where</span> <span class='ident'>N</span>: <span class='ident'>Numeric</span> {
+        (<span class='ident'>value</span> <span class='op'>^</span> <span class='op'>!</span><span class='ident'>N</span>::<span class='ident'>default</span>()).<span class='ident'>trailing_zeros</span>()
+    }
+}
+
+<span class='doccomment'>/// A queue for efficiently pushing bits onto a value</span>
+<span class='doccomment'>/// and popping them off a value.</span>
+<span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>BitQueue</span><span class='op'>&lt;</span><span class='ident'>E</span>: <span class='ident'>Endianness</span>, <span class='ident'>N</span>: <span class='ident'>Numeric</span><span class='op'>&gt;</span> {
+    <span class='ident'>phantom</span>: <span class='ident'>PhantomData</span><span class='op'>&lt;</span><span class='ident'>E</span><span class='op'>&gt;</span>,
+    <span class='ident'>value</span>: <span class='ident'>N</span>,
+    <span class='ident'>bits</span>: <span class='ident'>u32</span>,
+}
+
+<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>E</span>: <span class='ident'>Endianness</span>, <span class='ident'>N</span>: <span class='ident'>Numeric</span><span class='op'>&gt;</span> <span class='ident'>BitQueue</span><span class='op'>&lt;</span><span class='ident'>E</span>, <span class='ident'>N</span><span class='op'>&gt;</span> {
+    <span class='doccomment'>/// Returns a new empty queue</span>
+    <span class='attribute'>#[<span class='ident'>inline</span>]</span>
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>() <span class='op'>-&gt;</span> <span class='ident'>BitQueue</span><span class='op'>&lt;</span><span class='ident'>E</span>, <span class='ident'>N</span><span class='op'>&gt;</span> {
+        <span class='ident'>BitQueue</span>{<span class='ident'>phantom</span>: <span class='ident'>PhantomData</span>, <span class='ident'>value</span>: <span class='ident'>N</span>::<span class='ident'>default</span>(), <span class='ident'>bits</span>: <span class='number'>0</span>}
+    }
+
+    <span class='doccomment'>/// Creates a new queue from the given value with the given size</span>
+    <span class='attribute'>#[<span class='ident'>inline</span>]</span>
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>from_value</span>(<span class='ident'>value</span>: <span class='ident'>N</span>, <span class='ident'>bits</span>: <span class='ident'>u32</span>) <span class='op'>-&gt;</span> <span class='ident'>BitQueue</span><span class='op'>&lt;</span><span class='ident'>E</span>,<span class='ident'>N</span><span class='op'>&gt;</span> {
+        <span class='ident'>BitQueue</span>{<span class='ident'>phantom</span>: <span class='ident'>PhantomData</span>, <span class='ident'>value</span>: <span class='ident'>value</span>, <span class='ident'>bits</span>: <span class='ident'>bits</span>}
+    }
+
+    <span class='doccomment'>/// Sets the queue to a given value with the given number of bits</span>
+    <span class='attribute'>#[<span class='ident'>inline</span>]</span>
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>set</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>value</span>: <span class='ident'>N</span>, <span class='ident'>bits</span>: <span class='ident'>u32</span>) {
+        <span class='self'>self</span>.<span class='ident'>value</span> <span class='op'>=</span> <span class='ident'>value</span>;
+        <span class='self'>self</span>.<span class='ident'>bits</span> <span class='op'>=</span> <span class='ident'>bits</span>;
+    }
+
+    <span class='doccomment'>/// Consumes the queue and returns its current value</span>
+    <span class='attribute'>#[<span class='ident'>inline</span>(<span class='ident'>always</span>)]</span>
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>value</span>(<span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>N</span> {<span class='self'>self</span>.<span class='ident'>value</span>}
+
+    <span class='doccomment'>/// Returns the total bits in the queue</span>
+    <span class='attribute'>#[<span class='ident'>inline</span>(<span class='ident'>always</span>)]</span>
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>len</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>u32</span> {<span class='self'>self</span>.<span class='ident'>bits</span>}
+
+    <span class='doccomment'>/// Returns the maximum bits the queue can hold</span>
+    <span class='attribute'>#[<span class='ident'>inline</span>(<span class='ident'>always</span>)]</span>
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>max_len</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>u32</span> {<span class='ident'>N</span>::<span class='ident'>bits_size</span>()}
+
+    <span class='doccomment'>/// Returns true if the queue is empty</span>
+    <span class='attribute'>#[<span class='ident'>inline</span>(<span class='ident'>always</span>)]</span>
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>is_empty</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>bool</span> {<span class='self'>self</span>.<span class='ident'>bits</span> <span class='op'>==</span> <span class='number'>0</span>}
+
+    <span class='doccomment'>/// Returns true if the queue is full</span>
+    <span class='attribute'>#[<span class='ident'>inline</span>(<span class='ident'>always</span>)]</span>
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>is_full</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>bool</span> {<span class='self'>self</span>.<span class='ident'>bits</span> <span class='op'>==</span> <span class='ident'>N</span>::<span class='ident'>bits_size</span>()}
+
+    <span class='doccomment'>/// Drops all values in the queue</span>
+    <span class='attribute'>#[<span class='ident'>inline</span>(<span class='ident'>always</span>)]</span>
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>clear</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>) {<span class='self'>self</span>.<span class='ident'>set</span>(<span class='ident'>N</span>::<span class='ident'>default</span>(), <span class='number'>0</span>)}
+
+    <span class='doccomment'>/// Returns true if all bits remaining in the queue are 0</span>
+    <span class='attribute'>#[<span class='ident'>inline</span>(<span class='ident'>always</span>)]</span>
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>all_0</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>bool</span> {<span class='self'>self</span>.<span class='ident'>value</span>.<span class='ident'>count_ones</span>() <span class='op'>==</span> <span class='number'>0</span>}
+
+    <span class='doccomment'>/// Returns true if all bits remaining in the queue are 1</span>
+    <span class='attribute'>#[<span class='ident'>inline</span>(<span class='ident'>always</span>)]</span>
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>all_1</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>bool</span> {<span class='self'>self</span>.<span class='ident'>value</span>.<span class='ident'>count_ones</span>() <span class='op'>==</span> <span class='self'>self</span>.<span class='ident'>bits</span>}
+
+    <span class='doccomment'>/// Pushes a value with the given number of bits onto the tail of the queue</span>
+    <span class='attribute'>#[<span class='ident'>inline</span>(<span class='ident'>always</span>)]</span>
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>push</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>bits</span>: <span class='ident'>u32</span>, <span class='ident'>value</span>: <span class='ident'>N</span>) {
+        <span class='ident'>E</span>::<span class='ident'>push</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>.<span class='ident'>bits</span>, <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>.<span class='ident'>value</span>, <span class='ident'>bits</span>, <span class='ident'>value</span>)
+    }
+
+    <span class='doccomment'>/// Pops a value with the given number of bits from the head of the queue</span>
+    <span class='attribute'>#[<span class='ident'>inline</span>(<span class='ident'>always</span>)]</span>
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>pop</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>bits</span>: <span class='ident'>u32</span>) <span class='op'>-&gt;</span> <span class='ident'>N</span> {
+        <span class='ident'>E</span>::<span class='ident'>pop</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>.<span class='ident'>bits</span>, <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>.<span class='ident'>value</span>, <span class='ident'>bits</span>)
+    }
+
+    <span class='doccomment'>/// Drops the given number of bits from the head of the queue</span>
+    <span class='doccomment'>/// without returning them.</span>
+    <span class='attribute'>#[<span class='ident'>inline</span>(<span class='ident'>always</span>)]</span>
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>drop</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>bits</span>: <span class='ident'>u32</span>) {
+        <span class='ident'>E</span>::<span class='ident'>drop</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>.<span class='ident'>bits</span>, <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>.<span class='ident'>value</span>, <span class='ident'>bits</span>)
+    }
+
+    <span class='doccomment'>/// Pops all 0 bits up to and including the next 1 bit</span>
+    <span class='doccomment'>/// and returns the amount of 0 bits popped</span>
+    <span class='attribute'>#[<span class='ident'>inline</span>]</span>
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>pop_0</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>u32</span> {
+        <span class='kw'>let</span> <span class='ident'>zeros</span> <span class='op'>=</span> <span class='ident'>E</span>::<span class='ident'>next_zeros</span>(<span class='self'>self</span>.<span class='ident'>bits</span>, <span class='self'>self</span>.<span class='ident'>value</span>);
+        <span class='self'>self</span>.<span class='ident'>drop</span>(<span class='ident'>zeros</span> <span class='op'>+</span> <span class='number'>1</span>);
+        <span class='ident'>zeros</span>
+    }
+
+    <span class='doccomment'>/// Pops all 1 bits up to and including the next 0 bit</span>
+    <span class='doccomment'>/// and returns the amount of 1 bits popped</span>
+    <span class='attribute'>#[<span class='ident'>inline</span>]</span>
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>pop_1</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>u32</span> {
+        <span class='kw'>let</span> <span class='ident'>ones</span> <span class='op'>=</span> <span class='ident'>E</span>::<span class='ident'>next_ones</span>(<span class='self'>self</span>.<span class='ident'>bits</span>, <span class='self'>self</span>.<span class='ident'>value</span>);
+        <span class='self'>self</span>.<span class='ident'>drop</span>(<span class='ident'>ones</span> <span class='op'>+</span> <span class='number'>1</span>);
+        <span class='ident'>ones</span>
+    }
+}
+
+<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>E</span>: <span class='ident'>Endianness</span><span class='op'>&gt;</span> <span class='ident'>BitQueue</span><span class='op'>&lt;</span><span class='ident'>E</span>, <span class='ident'>u8</span><span class='op'>&gt;</span> {
+    <span class='attribute'>#[<span class='ident'>inline</span>(<span class='ident'>always</span>)]</span>
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>to_state</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>u8</span> {
+        (<span class='number'>1</span> <span class='op'>&lt;&lt;</span> <span class='self'>self</span>.<span class='ident'>bits</span>) <span class='op'>|</span> <span class='self'>self</span>.<span class='ident'>value</span>
     }
 }
 </pre>
