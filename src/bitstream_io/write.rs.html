@@ -581,6 +581,61 @@
 <span id="536">536</span>
 <span id="537">537</span>
 <span id="538">538</span>
+<span id="539">539</span>
+<span id="540">540</span>
+<span id="541">541</span>
+<span id="542">542</span>
+<span id="543">543</span>
+<span id="544">544</span>
+<span id="545">545</span>
+<span id="546">546</span>
+<span id="547">547</span>
+<span id="548">548</span>
+<span id="549">549</span>
+<span id="550">550</span>
+<span id="551">551</span>
+<span id="552">552</span>
+<span id="553">553</span>
+<span id="554">554</span>
+<span id="555">555</span>
+<span id="556">556</span>
+<span id="557">557</span>
+<span id="558">558</span>
+<span id="559">559</span>
+<span id="560">560</span>
+<span id="561">561</span>
+<span id="562">562</span>
+<span id="563">563</span>
+<span id="564">564</span>
+<span id="565">565</span>
+<span id="566">566</span>
+<span id="567">567</span>
+<span id="568">568</span>
+<span id="569">569</span>
+<span id="570">570</span>
+<span id="571">571</span>
+<span id="572">572</span>
+<span id="573">573</span>
+<span id="574">574</span>
+<span id="575">575</span>
+<span id="576">576</span>
+<span id="577">577</span>
+<span id="578">578</span>
+<span id="579">579</span>
+<span id="580">580</span>
+<span id="581">581</span>
+<span id="582">582</span>
+<span id="583">583</span>
+<span id="584">584</span>
+<span id="585">585</span>
+<span id="586">586</span>
+<span id="587">587</span>
+<span id="588">588</span>
+<span id="589">589</span>
+<span id="590">590</span>
+<span id="591">591</span>
+<span id="592">592</span>
+<span id="593">593</span>
 </pre><pre class='rust '>
 <span class='comment'>// Copyright 2017 Brian Langenberger</span>
 <span class='comment'>//</span>
@@ -593,6 +648,11 @@
 <span class='doccomment'>//! Traits and implementations for writing bits to a stream.</span>
 <span class='doccomment'>//!</span>
 <span class='doccomment'>//! ## Example</span>
+<span class='doccomment'>//!</span>
+<span class='doccomment'>//! Writing the initial STREAMINFO block to a FLAC file,</span>
+<span class='doccomment'>//! as documented in its</span>
+<span class='doccomment'>//! [specification](https://xiph.org/flac/format.html#stream).</span>
+<span class='doccomment'>//!</span>
 <span class='doccomment'>//! ```</span>
 <span class='doccomment'>//! use std::io::Write;</span>
 <span class='doccomment'>//! use bitstream_io::{BE, BitWriter};</span>
@@ -600,8 +660,11 @@
 <span class='doccomment'>//! let mut flac: Vec&lt;u8&gt; = Vec::new();</span>
 <span class='doccomment'>//! {</span>
 <span class='doccomment'>//!     let mut writer = BitWriter::&lt;BE&gt;::new(&amp;mut flac);</span>
+<span class='doccomment'>//!</span>
+<span class='doccomment'>//!     // stream marker</span>
 <span class='doccomment'>//!     writer.write_bytes(b&quot;fLaC&quot;).unwrap();</span>
 <span class='doccomment'>//!</span>
+<span class='doccomment'>//!     // metadata block header</span>
 <span class='doccomment'>//!     let last_block: bool = false;</span>
 <span class='doccomment'>//!     let block_type: u8 = 0;</span>
 <span class='doccomment'>//!     let block_size: u32 = 34;</span>
@@ -609,6 +672,7 @@
 <span class='doccomment'>//!     writer.write(7, block_type).unwrap();</span>
 <span class='doccomment'>//!     writer.write(24, block_size).unwrap();</span>
 <span class='doccomment'>//!</span>
+<span class='doccomment'>//!     // STREAMINFO block</span>
 <span class='doccomment'>//!     let minimum_block_size: u16 = 4096;</span>
 <span class='doccomment'>//!     let maximum_block_size: u16 = 4096;</span>
 <span class='doccomment'>//!     let minimum_frame_size: u32 = 1542;</span>
@@ -627,11 +691,14 @@
 <span class='doccomment'>//!     writer.write(36, total_samples).unwrap();</span>
 <span class='doccomment'>//! }</span>
 <span class='doccomment'>//!</span>
-<span class='doccomment'>//! // the wrapped writer can be used once bitstream writing is finished</span>
-<span class='doccomment'>//! // at exactly the position one would expect</span>
+<span class='doccomment'>//! // STREAMINFO&#39;s MD5 sum</span>
+<span class='doccomment'>//!</span>
+<span class='doccomment'>//! // Note that the wrapped writer can be used once bitstream writing</span>
+<span class='doccomment'>//! // is finished at exactly the position one would expect.</span>
+<span class='doccomment'>//!</span>
 <span class='doccomment'>//! flac.write_all(</span>
 <span class='doccomment'>//!     b&quot;\xFA\xF2\x69\x2F\xFD\xEC\x2D\x5B\x30\x01\x76\xB4\x62\x88\x7D\x92&quot;)</span>
-<span class='doccomment'>//!       .unwrap();</span>
+<span class='doccomment'>//!     .unwrap();</span>
 <span class='doccomment'>//!</span>
 <span class='doccomment'>//! assert_eq!(flac, vec![0x66,0x4C,0x61,0x43,0x00,0x00,0x00,0x22,</span>
 <span class='doccomment'>//!                       0x10,0x00,0x10,0x00,0x00,0x06,0x06,0x00,</span>
@@ -640,6 +707,8 @@
 <span class='doccomment'>//!                       0x2D,0x5B,0x30,0x01,0x76,0xB4,0x62,0x88,</span>
 <span class='doccomment'>//!                       0x7D,0x92]);</span>
 <span class='doccomment'>//! ```</span>
+
+<span class='attribute'>#<span class='op'>!</span>[<span class='ident'>warn</span>(<span class='ident'>missing_docs</span>)]</span>
 
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>io</span>;
 
@@ -667,6 +736,10 @@
 
     <span class='doccomment'>/// Writes a single bit to the stream.</span>
     <span class='doccomment'>/// `true` indicates 1, `false` indicates 0</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// # Errors</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// Passes along any I/O error from the underlying stream.</span>
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// # Examples</span>
     <span class='doccomment'>/// ```</span>
@@ -715,9 +788,14 @@
 
     <span class='doccomment'>/// Writes an unsigned value to the stream using the given</span>
     <span class='doccomment'>/// number of bits.</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// # Errors</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// Passes along any I/O error from the underlying stream.</span>
     <span class='doccomment'>/// Returns an error if the input type is too small</span>
-    <span class='doccomment'>/// to hold the requested number of bits or if the value is too large</span>
-    <span class='doccomment'>/// to fit those bits.</span>
+    <span class='doccomment'>/// to hold the given number of bits.</span>
+    <span class='doccomment'>/// Returns an error if the value is too large</span>
+    <span class='doccomment'>/// to fit the given number of bits.</span>
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// # Examples</span>
     <span class='doccomment'>/// ```</span>
@@ -784,6 +862,10 @@
     <span class='doccomment'>/// map to a faster `write_all` call.  Otherwise it will</span>
     <span class='doccomment'>/// write bytes individually in 8-bit increments.</span>
     <span class='doccomment'>///</span>
+    <span class='doccomment'>/// # Errors</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// Passes along any I/O error from the underlying stream.</span>
+    <span class='doccomment'>///</span>
     <span class='doccomment'>/// # Example</span>
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// ```</span>
@@ -811,6 +893,10 @@
     }
 
     <span class='doccomment'>/// Writes Huffman code for the given symbol to the stream.</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// # Errors</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// Passes along any I/O error from the underlying stream.</span>
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// # Example</span>
     <span class='doccomment'>/// ```</span>
@@ -844,6 +930,10 @@
 
     <span class='doccomment'>/// Writes `value` number of 1 bits to the stream</span>
     <span class='doccomment'>/// and then writes a 0 bit.  This field is variably-sized.</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// # Errors</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// Passes along any I/O error from the underyling stream.</span>
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// # Examples</span>
     <span class='doccomment'>/// ```</span>
@@ -892,6 +982,10 @@
 
     <span class='doccomment'>/// Writes `value` number of 0 bits to the stream</span>
     <span class='doccomment'>/// and then writes a 1 bit.  This field is variably-sized.</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// # Errors</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// Passes along any I/O error from the underyling stream.</span>
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// # Example</span>
     <span class='doccomment'>/// ```</span>
@@ -950,6 +1044,10 @@
 
     <span class='doccomment'>/// Pads the stream with 0 bits until it is aligned at a whole byte.</span>
     <span class='doccomment'>/// Does nothing if the stream is already aligned.</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// # Errors</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// Passes along any I/O error from the underyling stream.</span>
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// # Example</span>
     <span class='doccomment'>/// ```</span>
@@ -1011,8 +1109,14 @@
 <span class='kw'>impl</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> <span class='ident'>BitWriter</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>BigEndian</span><span class='op'>&gt;</span> {
     <span class='doccomment'>/// Writes a twos-complement signed value to the stream</span>
     <span class='doccomment'>/// with the given number of bits.</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// # Errors</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// Passes along any I/O error from the underlying stream.</span>
     <span class='doccomment'>/// Returns an error if the input type is too small</span>
-    <span class='doccomment'>/// to hold the requested number of bits.</span>
+    <span class='doccomment'>/// to hold the given number of bits.</span>
+    <span class='doccomment'>/// Returns an error if the value is too large</span>
+    <span class='doccomment'>/// to fit the given number of bits.</span>
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// # Example</span>
     <span class='doccomment'>/// ```</span>
@@ -1046,8 +1150,14 @@
 <span class='kw'>impl</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> <span class='ident'>BitWriter</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>LittleEndian</span><span class='op'>&gt;</span> {
     <span class='doccomment'>/// Writes a twos-complement signed value to the stream</span>
     <span class='doccomment'>/// with the given number of bits.</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// # Errors</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// Passes along any I/O error from the underlying stream.</span>
     <span class='doccomment'>/// Returns an error if the input type is too small</span>
-    <span class='doccomment'>/// to hold the requested number of bits.</span>
+    <span class='doccomment'>/// to hold the given number of bits.</span>
+    <span class='doccomment'>/// Returns an error if the value is too large</span>
+    <span class='doccomment'>/// to fit the given number of bits.</span>
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// # Example</span>
     <span class='doccomment'>/// ```</span>

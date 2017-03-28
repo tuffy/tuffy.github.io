@@ -678,6 +678,60 @@
 <span id="633">633</span>
 <span id="634">634</span>
 <span id="635">635</span>
+<span id="636">636</span>
+<span id="637">637</span>
+<span id="638">638</span>
+<span id="639">639</span>
+<span id="640">640</span>
+<span id="641">641</span>
+<span id="642">642</span>
+<span id="643">643</span>
+<span id="644">644</span>
+<span id="645">645</span>
+<span id="646">646</span>
+<span id="647">647</span>
+<span id="648">648</span>
+<span id="649">649</span>
+<span id="650">650</span>
+<span id="651">651</span>
+<span id="652">652</span>
+<span id="653">653</span>
+<span id="654">654</span>
+<span id="655">655</span>
+<span id="656">656</span>
+<span id="657">657</span>
+<span id="658">658</span>
+<span id="659">659</span>
+<span id="660">660</span>
+<span id="661">661</span>
+<span id="662">662</span>
+<span id="663">663</span>
+<span id="664">664</span>
+<span id="665">665</span>
+<span id="666">666</span>
+<span id="667">667</span>
+<span id="668">668</span>
+<span id="669">669</span>
+<span id="670">670</span>
+<span id="671">671</span>
+<span id="672">672</span>
+<span id="673">673</span>
+<span id="674">674</span>
+<span id="675">675</span>
+<span id="676">676</span>
+<span id="677">677</span>
+<span id="678">678</span>
+<span id="679">679</span>
+<span id="680">680</span>
+<span id="681">681</span>
+<span id="682">682</span>
+<span id="683">683</span>
+<span id="684">684</span>
+<span id="685">685</span>
+<span id="686">686</span>
+<span id="687">687</span>
+<span id="688">688</span>
+<span id="689">689</span>
 </pre><pre class='rust '>
 <span class='comment'>// Copyright 2017 Brian Langenberger</span>
 <span class='comment'>//</span>
@@ -690,6 +744,11 @@
 <span class='doccomment'>//! Traits and implementations for reading bits from a stream.</span>
 <span class='doccomment'>//!</span>
 <span class='doccomment'>//! ## Example</span>
+<span class='doccomment'>//!</span>
+<span class='doccomment'>//! Reading the initial STREAMINFO block from a FLAC file,</span>
+<span class='doccomment'>//! as documented in its</span>
+<span class='doccomment'>//! [specification](https://xiph.org/flac/format.html#stream).</span>
+<span class='doccomment'>//!</span>
 <span class='doccomment'>//! ```</span>
 <span class='doccomment'>//! use std::io::{Cursor, Read};</span>
 <span class='doccomment'>//! use bitstream_io::{BE, BitReader};</span>
@@ -704,10 +763,13 @@
 <span class='doccomment'>//! let mut cursor = Cursor::new(&amp;flac);</span>
 <span class='doccomment'>//! {</span>
 <span class='doccomment'>//!     let mut reader = BitReader::&lt;BE&gt;::new(&amp;mut cursor);</span>
+<span class='doccomment'>//!</span>
+<span class='doccomment'>//!     // stream marker</span>
 <span class='doccomment'>//!     let mut file_header: [u8; 4] = [0, 0, 0, 0];</span>
 <span class='doccomment'>//!     reader.read_bytes(&amp;mut file_header).unwrap();</span>
 <span class='doccomment'>//!     assert_eq!(&amp;file_header, b&quot;fLaC&quot;);</span>
 <span class='doccomment'>//!</span>
+<span class='doccomment'>//!     // metadata block header</span>
 <span class='doccomment'>//!     let last_block: bool = reader.read_bit().unwrap();</span>
 <span class='doccomment'>//!     let block_type: u8 = reader.read(7).unwrap();</span>
 <span class='doccomment'>//!     let block_size: u32 = reader.read(24).unwrap();</span>
@@ -715,6 +777,7 @@
 <span class='doccomment'>//!     assert_eq!(block_type, 0);</span>
 <span class='doccomment'>//!     assert_eq!(block_size, 34);</span>
 <span class='doccomment'>//!</span>
+<span class='doccomment'>//!     // STREAMINFO block</span>
 <span class='doccomment'>//!     let minimum_block_size: u16 = reader.read(16).unwrap();</span>
 <span class='doccomment'>//!     let maximum_block_size: u16 = reader.read(16).unwrap();</span>
 <span class='doccomment'>//!     let minimum_frame_size: u32 = reader.read(24).unwrap();</span>
@@ -733,13 +796,18 @@
 <span class='doccomment'>//!     assert_eq!(total_samples, 304844);</span>
 <span class='doccomment'>//! }</span>
 <span class='doccomment'>//!</span>
-<span class='doccomment'>//! // the wrapped reader can be used once bitstream reading is finished</span>
-<span class='doccomment'>//! // at exactly the position one would expect</span>
-<span class='doccomment'>//! let mut md5: [u8; 16] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];</span>
+<span class='doccomment'>//! // STREAMINFO&#39;s MD5 sum</span>
+<span class='doccomment'>//!</span>
+<span class='doccomment'>//! // Note that the wrapped reader can be used once bitstream reading</span>
+<span class='doccomment'>//! // is finished at exactly the position one would expect.</span>
+<span class='doccomment'>//!</span>
+<span class='doccomment'>//! let mut md5 = [0; 16];</span>
 <span class='doccomment'>//! cursor.read_exact(&amp;mut md5).unwrap();</span>
 <span class='doccomment'>//! assert_eq!(&amp;md5,</span>
 <span class='doccomment'>//!     b&quot;\xFA\xF2\x69\x2F\xFD\xEC\x2D\x5B\x30\x01\x76\xB4\x62\x88\x7D\x92&quot;);</span>
 <span class='doccomment'>//! ```</span>
+
+<span class='attribute'>#<span class='op'>!</span>[<span class='ident'>warn</span>(<span class='ident'>missing_docs</span>)]</span>
 
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>io</span>;
 
@@ -765,6 +833,10 @@
 
     <span class='doccomment'>/// Reads a single bit from the stream.</span>
     <span class='doccomment'>/// `true` indicates 1, `false` indicates 0</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// # Errors</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// Passes along any I/O error from the underlying stream.</span>
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// # Examples</span>
     <span class='doccomment'>///</span>
@@ -809,7 +881,11 @@
 
     <span class='doccomment'>/// Reads an unsigned value from the stream with</span>
     <span class='doccomment'>/// the given number of bits.</span>
-    <span class='doccomment'>/// Returns an error if the output type is too small</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// # Errors</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// Passes along any I/O error from the underlying stream.</span>
+    <span class='doccomment'>/// Also returns an error if the output type is too small</span>
     <span class='doccomment'>/// to hold the requested number of bits.</span>
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// # Examples</span>
@@ -881,6 +957,10 @@
     <span class='doccomment'>/// These bits are still read from the stream, however,</span>
     <span class='doccomment'>/// and are never skipped via a `seek` method.</span>
     <span class='doccomment'>///</span>
+    <span class='doccomment'>/// # Errors</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// Passes along any I/O error from the underlying stream.</span>
+    <span class='doccomment'>///</span>
     <span class='doccomment'>/// # Examples</span>
     <span class='doccomment'>/// ```</span>
     <span class='doccomment'>/// use std::io::{Read, Cursor};</span>
@@ -921,6 +1001,10 @@
     <span class='doccomment'>/// to a faster `read_exact` call.  Otherwise it will read</span>
     <span class='doccomment'>/// bytes individually in 8-bit increments.</span>
     <span class='doccomment'>///</span>
+    <span class='doccomment'>/// # Errors</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// Passes along any I/O error from the underlying stream.</span>
+    <span class='doccomment'>///</span>
     <span class='doccomment'>/// # Example</span>
     <span class='doccomment'>/// ```</span>
     <span class='doccomment'>/// use std::io::{Read, Cursor};</span>
@@ -948,6 +1032,10 @@
     <span class='doccomment'>/// 0 bit and returns the amount read.</span>
     <span class='doccomment'>/// Because this field is variably-sized and may be large,</span>
     <span class='doccomment'>/// its output is always a `u32` type.</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// # Errors</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// Passes along any I/O error from the underlying stream.</span>
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// # Examples</span>
     <span class='doccomment'>/// ```</span>
@@ -993,6 +1081,10 @@
     <span class='doccomment'>/// 1 bit and returns the amount read.</span>
     <span class='doccomment'>/// Because this field is variably-sized and may be large,</span>
     <span class='doccomment'>/// its output is always a `u32` type.</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// # Errors</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// Passes along any I/O error from the underlying stream.</span>
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// # Examples</span>
     <span class='doccomment'>/// ```</span>
@@ -1076,6 +1168,10 @@
     <span class='doccomment'>/// Given a compiled Huffman tree, reads bits from the stream</span>
     <span class='doccomment'>/// until the next symbol is encountered.</span>
     <span class='doccomment'>///</span>
+    <span class='doccomment'>/// # Errors</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// Passes along any I/O error from the underlying stream.</span>
+    <span class='doccomment'>///</span>
     <span class='doccomment'>/// # Example</span>
     <span class='doccomment'>/// ```</span>
     <span class='doccomment'>/// use std::io::{Read, Cursor};</span>
@@ -1097,7 +1193,7 @@
         <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>T</span>,<span class='ident'>io</span>::<span class='ident'>Error</span><span class='op'>&gt;</span> <span class='kw'>where</span> <span class='ident'>T</span>: <span class='ident'>Clone</span> {
 
         <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>result</span>: <span class='kw-2'>&amp;</span><span class='ident'>ReadHuffmanTree</span><span class='op'>&lt;</span><span class='ident'>E</span>,<span class='ident'>T</span><span class='op'>&gt;</span> <span class='op'>=</span>
-            <span class='kw-2'>&amp;</span><span class='ident'>tree</span>[<span class='self'>self</span>.<span class='ident'>bitqueue</span>.<span class='ident'>to_state</span>() <span class='kw'>as</span> <span class='ident'>usize</span>];
+            <span class='kw-2'>&amp;</span><span class='ident'>tree</span>[<span class='self'>self</span>.<span class='ident'>bitqueue</span>.<span class='ident'>to_state</span>()];
         <span class='kw'>loop</span> {
             <span class='kw'>match</span> <span class='ident'>result</span> {
                 <span class='kw-2'>&amp;</span><span class='ident'>ReadHuffmanTree</span>::<span class='ident'>Done</span>(
@@ -1152,6 +1248,12 @@
     <span class='doccomment'>/// Returns an error if the output type is too small</span>
     <span class='doccomment'>/// to hold the requested number of bits.</span>
     <span class='doccomment'>///</span>
+    <span class='doccomment'>/// # Errors</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// Passes along any I/O error from the underlying stream.</span>
+    <span class='doccomment'>/// Also returns an error if the output type is too small</span>
+    <span class='doccomment'>/// to hold the requested number of bits.</span>
+    <span class='doccomment'>///</span>
     <span class='doccomment'>/// # Examples</span>
     <span class='doccomment'>/// ```</span>
     <span class='doccomment'>/// use std::io::{Read, Cursor};</span>
@@ -1192,6 +1294,12 @@
     <span class='doccomment'>/// Reads a twos-complement signed value from the stream with</span>
     <span class='doccomment'>/// the given number of bits.</span>
     <span class='doccomment'>/// Returns an error if the output type is too small</span>
+    <span class='doccomment'>/// to hold the requested number of bits.</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// # Errors</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// Passes along any I/O error from the underlying stream.</span>
+    <span class='doccomment'>/// Also returns an error if the output type is too small</span>
     <span class='doccomment'>/// to hold the requested number of bits.</span>
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// # Examples</span>

@@ -48,15 +48,26 @@
                    <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                        [<span class='inner'>&#x2212;</span>]
                    </a>
-               </span><a class='srclink' href='../../src/bitstream_io/huffman.rs.html#20-24' title='goto source code'>[src]</a></span></h1>
+               </span><a class='srclink' href='../../src/bitstream_io/huffman.rs.html#30-37' title='goto source code'>[src]</a></span></h1>
 <pre class='rust enum'>pub enum ReadHuffmanTree&lt;E:&nbsp;<a class='trait' href='../../bitstream_io/trait.Endianness.html' title='bitstream_io::Endianness'>Endianness</a>, T:&nbsp;<a class='trait' href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html' title='core::clone::Clone'>Clone</a>&gt; {
-    Continue(<a class='struct' href='https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html' title='alloc::boxed::Box'>Box</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.slice.html'>[</a><a class='enum' href='../../bitstream_io/huffman/enum.ReadHuffmanTree.html' title='bitstream_io::huffman::ReadHuffmanTree'>ReadHuffmanTree</a>&lt;E, T&gt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.slice.html'>]</a>&gt;),
     Done(T,&nbsp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u8.html'>u8</a>,&nbsp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u32.html'>u32</a>,&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html' title='core::marker::PhantomData'>PhantomData</a>&lt;E&gt;),
+    Continue(<a class='struct' href='https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html' title='alloc::boxed::Box'>Box</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.slice.html'>[</a><a class='enum' href='../../bitstream_io/huffman/enum.ReadHuffmanTree.html' title='bitstream_io::huffman::ReadHuffmanTree'>ReadHuffmanTree</a>&lt;E, T&gt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.slice.html'>]</a>&gt;),
     InvalidState,
 }</pre><div class='docblock'><p>A compiled Huffman tree element for use with the <code>read_huffman</code> method.
 Returned by <code>compile_read_tree</code>.</p>
+
+<p>Compiled read trees are optimized for faster lookup
+and are therefore endian-specific.</p>
+
+<p>In addition, each symbol in the source tree may occur many times
+in the compiled tree.  If symbols require a nontrivial amount of space,
+consider using reference counting so that they may be cloned
+more efficiently.</p>
 </div><h2 class='variants'>Variants</h2>
-<span id='variant.Continue' class='variant'><span id='Continue.v' class='invisible'><code>Continue(<a class='struct' href='https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html' title='alloc::boxed::Box'>Box</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.slice.html'>[</a><a class='enum' href='../../bitstream_io/huffman/enum.ReadHuffmanTree.html' title='bitstream_io::huffman::ReadHuffmanTree'>ReadHuffmanTree</a>&lt;E, T&gt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.slice.html'>]</a>&gt;)</code></span></span><span id='variant.Done' class='variant'><span id='Done.v' class='invisible'><code>Done(T,&nbsp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u8.html'>u8</a>,&nbsp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u32.html'>u32</a>,&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html' title='core::marker::PhantomData'>PhantomData</a>&lt;E&gt;)</code></span></span><span id='variant.InvalidState' class='variant'><span id='InvalidState.v' class='invisible'><code>InvalidState</code></span></span></section>
+<span id='variant.Done' class='variant'><span id='Done.v' class='invisible'><code>Done(T,&nbsp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u8.html'>u8</a>,&nbsp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u32.html'>u32</a>,&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html' title='core::marker::PhantomData'>PhantomData</a>&lt;E&gt;)</code></span></span><div class='docblock'><p>The final value and new reader state</p>
+</div><span id='variant.Continue' class='variant'><span id='Continue.v' class='invisible'><code>Continue(<a class='struct' href='https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html' title='alloc::boxed::Box'>Box</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.slice.html'>[</a><a class='enum' href='../../bitstream_io/huffman/enum.ReadHuffmanTree.html' title='bitstream_io::huffman::ReadHuffmanTree'>ReadHuffmanTree</a>&lt;E, T&gt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.slice.html'>]</a>&gt;)</code></span></span><div class='docblock'><p>Another byte is necessary to determine final value</p>
+</div><span id='variant.InvalidState' class='variant'><span id='InvalidState.v' class='invisible'><code>InvalidState</code></span></span><div class='docblock'><p>An invalid reader state has been used</p>
+</div></section>
     <section id='search' class="content hidden"></section>
 
     <section class="footer"></section>

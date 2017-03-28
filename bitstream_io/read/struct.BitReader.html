@@ -48,18 +48,21 @@
                    <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                        [<span class='inner'>&#x2212;</span>]
                    </a>
-               </span><a class='srclink' href='../../src/bitstream_io/read.rs.html#74-77' title='goto source code'>[src]</a></span></h1>
+               </span><a class='srclink' href='../../src/bitstream_io/read.rs.html#88-91' title='goto source code'>[src]</a></span></h1>
 <pre class='rust struct'>pub struct BitReader&lt;'a, E:&nbsp;<a class='trait' href='../../bitstream_io/trait.Endianness.html' title='bitstream_io::Endianness'>Endianness</a>&gt; { /* fields omitted */ }</pre><div class='docblock'><p>For reading non-aligned bits from a stream of bytes in a given endianness.</p>
 
 <p>This will read exactly as many whole bytes needed to return
 the requested number of bits.  It may cache up to a single partial byte
 but no more.</p>
-</div><h2 id='methods'>Methods</h2><h3 class='impl'><span class='in-band'><code>impl&lt;'a, E:&nbsp;<a class='trait' href='../../bitstream_io/trait.Endianness.html' title='bitstream_io::Endianness'>Endianness</a>&gt; <a class='struct' href='../../bitstream_io/read/struct.BitReader.html' title='bitstream_io::read::BitReader'>BitReader</a>&lt;'a, E&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../../src/bitstream_io/read.rs.html#79-466' title='goto source code'>[src]</a></span></h3>
+</div><h2 id='methods'>Methods</h2><h3 class='impl'><span class='in-band'><code>impl&lt;'a, E:&nbsp;<a class='trait' href='../../bitstream_io/trait.Endianness.html' title='bitstream_io::Endianness'>Endianness</a>&gt; <a class='struct' href='../../bitstream_io/read/struct.BitReader.html' title='bitstream_io::read::BitReader'>BitReader</a>&lt;'a, E&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../../src/bitstream_io/read.rs.html#93-508' title='goto source code'>[src]</a></span></h3>
 <div class='impl-items'><h4 id='method.new' class='method'><span id='new.v' class='invisible'><code>fn <a href='#method.new' class='fnname'>new</a>(reader: &amp;mut <a class='trait' href='https://doc.rust-lang.org/nightly/std/io/trait.Read.html' title='std::io::Read'>Read</a>) -&gt; <a class='struct' href='../../bitstream_io/read/struct.BitReader.html' title='bitstream_io::read::BitReader'>BitReader</a>&lt;E&gt;</code></span></h4>
 <div class='docblock'><p>Wraps a BitReader around something that implements <code>Read</code></p>
 </div><h4 id='method.read_bit' class='method'><span id='read_bit.v' class='invisible'><code>fn <a href='#method.read_bit' class='fnname'>read_bit</a>(&amp;mut self) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a>, <a class='struct' href='https://doc.rust-lang.org/nightly/std/io/error/struct.Error.html' title='std::io::error::Error'>Error</a>&gt;</code></span></h4>
 <div class='docblock'><p>Reads a single bit from the stream.
 <code>true</code> indicates 1, <code>false</code> indicates 0</p>
+
+<h1 id='errors' class='section-header'><a href='#errors'>Errors</a></h1>
+<p>Passes along any I/O error from the underlying stream.</p>
 
 <h1 id='examples' class='section-header'><a href='#examples'>Examples</a></h1>
 <pre class='rust rust-example-rendered'>
@@ -93,8 +96,11 @@ but no more.</p>
 <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>reader</span>.<span class='ident'>read_bit</span>().<span class='ident'>unwrap</span>(), <span class='bool-val'>true</span>);</pre>
 </div><h4 id='method.read' class='method'><span id='read.v' class='invisible'><code>fn <a href='#method.read' class='fnname'>read</a>&lt;U&gt;(&amp;mut self, bits: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u32.html'>u32</a>) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;U, <a class='struct' href='https://doc.rust-lang.org/nightly/std/io/error/struct.Error.html' title='std::io::error::Error'>Error</a>&gt; <span class='where fmt-newline'>where U: <a class='trait' href='../../bitstream_io/trait.Numeric.html' title='bitstream_io::Numeric'>Numeric</a></span></code></span></h4>
 <div class='docblock'><p>Reads an unsigned value from the stream with
-the given number of bits.
-Returns an error if the output type is too small
+the given number of bits.</p>
+
+<h1 id='errors-1' class='section-header'><a href='#errors-1'>Errors</a></h1>
+<p>Passes along any I/O error from the underlying stream.
+Also returns an error if the output type is too small
 to hold the requested number of bits.</p>
 
 <h1 id='examples-1' class='section-header'><a href='#examples-1'>Examples</a></h1>
@@ -138,6 +144,9 @@ which may be skipped.
 These bits are still read from the stream, however,
 and are never skipped via a <code>seek</code> method.</p>
 
+<h1 id='errors-2' class='section-header'><a href='#errors-2'>Errors</a></h1>
+<p>Passes along any I/O error from the underlying stream.</p>
+
 <h1 id='examples-2' class='section-header'><a href='#examples-2'>Examples</a></h1>
 <pre class='rust rust-example-rendered'>
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>io</span>::{<span class='ident'>Read</span>, <span class='ident'>Cursor</span>};
@@ -162,6 +171,9 @@ If the stream is already byte-aligned, it will typically map
 to a faster <code>read_exact</code> call.  Otherwise it will read
 bytes individually in 8-bit increments.</p>
 
+<h1 id='errors-3' class='section-header'><a href='#errors-3'>Errors</a></h1>
+<p>Passes along any I/O error from the underlying stream.</p>
+
 <h1 id='example' class='section-header'><a href='#example'>Example</a></h1>
 <pre class='rust rust-example-rendered'>
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>io</span>::{<span class='ident'>Read</span>, <span class='ident'>Cursor</span>};
@@ -178,6 +190,9 @@ bytes individually in 8-bit increments.</p>
 0 bit and returns the amount read.
 Because this field is variably-sized and may be large,
 its output is always a <code>u32</code> type.</p>
+
+<h1 id='errors-4' class='section-header'><a href='#errors-4'>Errors</a></h1>
+<p>Passes along any I/O error from the underlying stream.</p>
 
 <h1 id='examples-3' class='section-header'><a href='#examples-3'>Examples</a></h1>
 <pre class='rust rust-example-rendered'>
@@ -204,6 +219,9 @@ its output is always a <code>u32</code> type.</p>
 1 bit and returns the amount read.
 Because this field is variably-sized and may be large,
 its output is always a <code>u32</code> type.</p>
+
+<h1 id='errors-5' class='section-header'><a href='#errors-5'>Errors</a></h1>
+<p>Passes along any I/O error from the underlying stream.</p>
 
 <h1 id='examples-4' class='section-header'><a href='#examples-4'>Examples</a></h1>
 <pre class='rust rust-example-rendered'>
@@ -258,6 +276,9 @@ Does nothing if the stream is already aligned.</p>
 <div class='docblock'><p>Given a compiled Huffman tree, reads bits from the stream
 until the next symbol is encountered.</p>
 
+<h1 id='errors-6' class='section-header'><a href='#errors-6'>Errors</a></h1>
+<p>Passes along any I/O error from the underlying stream.</p>
+
 <h1 id='example-3' class='section-header'><a href='#example-3'>Example</a></h1>
 <pre class='rust rust-example-rendered'>
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>io</span>::{<span class='ident'>Read</span>, <span class='ident'>Cursor</span>};
@@ -300,11 +321,16 @@ as a <code>(bits, value)</code> tuple.</p>
 <span class='kw'>let</span> (<span class='ident'>bits</span>, <span class='ident'>value</span>) <span class='op'>=</span> <span class='ident'>reader</span>.<span class='ident'>into_unread</span>();
 <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>bits</span>, <span class='number'>0</span>);
 <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>value</span>, <span class='number'>0</span>);</pre>
-</div></div><h3 class='impl'><span class='in-band'><code>impl&lt;'a&gt; <a class='struct' href='../../bitstream_io/read/struct.BitReader.html' title='bitstream_io::read::BitReader'>BitReader</a>&lt;'a, <a class='struct' href='../../bitstream_io/struct.BigEndian.html' title='bitstream_io::BigEndian'>BigEndian</a>&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../../src/bitstream_io/read.rs.html#468-508' title='goto source code'>[src]</a></span></h3>
+</div></div><h3 class='impl'><span class='in-band'><code>impl&lt;'a&gt; <a class='struct' href='../../bitstream_io/read/struct.BitReader.html' title='bitstream_io::read::BitReader'>BitReader</a>&lt;'a, <a class='struct' href='../../bitstream_io/struct.BigEndian.html' title='bitstream_io::BigEndian'>BigEndian</a>&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../../src/bitstream_io/read.rs.html#510-556' title='goto source code'>[src]</a></span></h3>
 <div class='impl-items'><h4 id='method.read_signed' class='method'><span id='read_signed.v' class='invisible'><code>fn <a href='#method.read_signed' class='fnname'>read_signed</a>&lt;S&gt;(&amp;mut self, bits: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u32.html'>u32</a>) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;S, <a class='struct' href='https://doc.rust-lang.org/nightly/std/io/error/struct.Error.html' title='std::io::error::Error'>Error</a>&gt; <span class='where fmt-newline'>where S: <a class='trait' href='../../bitstream_io/trait.SignedNumeric.html' title='bitstream_io::SignedNumeric'>SignedNumeric</a></span></code></span></h4>
 <div class='docblock'><p>Reads a twos-complement signed value from the stream with
 the given number of bits.
 Returns an error if the output type is too small
+to hold the requested number of bits.</p>
+
+<h1 id='errors-7' class='section-header'><a href='#errors-7'>Errors</a></h1>
+<p>Passes along any I/O error from the underlying stream.
+Also returns an error if the output type is too small
 to hold the requested number of bits.</p>
 
 <h1 id='examples-6' class='section-header'><a href='#examples-6'>Examples</a></h1>
@@ -327,11 +353,16 @@ to hold the requested number of bits.</p>
 <span class='macro'>assert</span><span class='macro'>!</span>(<span class='ident'>r</span>.<span class='ident'>read_signed</span>::<span class='op'>&lt;</span><span class='ident'>i16</span><span class='op'>&gt;</span>(<span class='number'>17</span>).<span class='ident'>is_err</span>()); <span class='comment'>// can&#39;t read 17 bits to i16</span>
 <span class='macro'>assert</span><span class='macro'>!</span>(<span class='ident'>r</span>.<span class='ident'>read_signed</span>::<span class='op'>&lt;</span><span class='ident'>i32</span><span class='op'>&gt;</span>(<span class='number'>33</span>).<span class='ident'>is_err</span>()); <span class='comment'>// can&#39;t read 33 bits to i32</span>
 <span class='macro'>assert</span><span class='macro'>!</span>(<span class='ident'>r</span>.<span class='ident'>read_signed</span>::<span class='op'>&lt;</span><span class='ident'>i64</span><span class='op'>&gt;</span>(<span class='number'>65</span>).<span class='ident'>is_err</span>()); <span class='comment'>// can&#39;t read 65 bits to i64</span></pre>
-</div></div><h3 class='impl'><span class='in-band'><code>impl&lt;'a&gt; <a class='struct' href='../../bitstream_io/read/struct.BitReader.html' title='bitstream_io::read::BitReader'>BitReader</a>&lt;'a, <a class='struct' href='../../bitstream_io/struct.LittleEndian.html' title='bitstream_io::LittleEndian'>LittleEndian</a>&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../../src/bitstream_io/read.rs.html#510-550' title='goto source code'>[src]</a></span></h3>
+</div></div><h3 class='impl'><span class='in-band'><code>impl&lt;'a&gt; <a class='struct' href='../../bitstream_io/read/struct.BitReader.html' title='bitstream_io::read::BitReader'>BitReader</a>&lt;'a, <a class='struct' href='../../bitstream_io/struct.LittleEndian.html' title='bitstream_io::LittleEndian'>LittleEndian</a>&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../../src/bitstream_io/read.rs.html#558-604' title='goto source code'>[src]</a></span></h3>
 <div class='impl-items'><h4 id='method.read_signed-1' class='method'><span id='read_signed.v-1' class='invisible'><code>fn <a href='#method.read_signed-1' class='fnname'>read_signed</a>&lt;S&gt;(&amp;mut self, bits: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u32.html'>u32</a>) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;S, <a class='struct' href='https://doc.rust-lang.org/nightly/std/io/error/struct.Error.html' title='std::io::error::Error'>Error</a>&gt; <span class='where fmt-newline'>where S: <a class='trait' href='../../bitstream_io/trait.SignedNumeric.html' title='bitstream_io::SignedNumeric'>SignedNumeric</a></span></code></span></h4>
 <div class='docblock'><p>Reads a twos-complement signed value from the stream with
 the given number of bits.
 Returns an error if the output type is too small
+to hold the requested number of bits.</p>
+
+<h1 id='errors-8' class='section-header'><a href='#errors-8'>Errors</a></h1>
+<p>Passes along any I/O error from the underlying stream.
+Also returns an error if the output type is too small
 to hold the requested number of bits.</p>
 
 <h1 id='examples-7' class='section-header'><a href='#examples-7'>Examples</a></h1>
