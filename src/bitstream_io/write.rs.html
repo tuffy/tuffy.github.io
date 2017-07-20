@@ -17,7 +17,7 @@
     
     
 </head>
-<body class="rustdoc">
+<body class="rustdoc source">
     <!--[if lte IE 8]>
     <div class="warning">
         This old browser is unsupported and will most likely display funky
@@ -43,7 +43,7 @@
         </form>
     </nav>
 
-    <section id='main' class="content source"><pre class="line-numbers"><span id="1">  1</span>
+    <section id='main' class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -636,598 +636,598 @@
 <span id="591">591</span>
 <span id="592">592</span>
 <span id="593">593</span>
-</pre><pre class='rust '>
-<span class='comment'>// Copyright 2017 Brian Langenberger</span>
-<span class='comment'>//</span>
-<span class='comment'>// Licensed under the Apache License, Version 2.0 &lt;LICENSE-APACHE or</span>
-<span class='comment'>// http://www.apache.org/licenses/LICENSE-2.0&gt; or the MIT license</span>
-<span class='comment'>// &lt;LICENSE-MIT or http://opensource.org/licenses/MIT&gt;, at your</span>
-<span class='comment'>// option. This file may not be copied, modified, or distributed</span>
-<span class='comment'>// except according to those terms.</span>
+</pre><pre class="rust ">
+<span class="comment">// Copyright 2017 Brian Langenberger</span>
+<span class="comment">//</span>
+<span class="comment">// Licensed under the Apache License, Version 2.0 &lt;LICENSE-APACHE or</span>
+<span class="comment">// http://www.apache.org/licenses/LICENSE-2.0&gt; or the MIT license</span>
+<span class="comment">// &lt;LICENSE-MIT or http://opensource.org/licenses/MIT&gt;, at your</span>
+<span class="comment">// option. This file may not be copied, modified, or distributed</span>
+<span class="comment">// except according to those terms.</span>
 
-<span class='doccomment'>//! Traits and implementations for writing bits to a stream.</span>
-<span class='doccomment'>//!</span>
-<span class='doccomment'>//! ## Example</span>
-<span class='doccomment'>//!</span>
-<span class='doccomment'>//! Writing the initial STREAMINFO block to a FLAC file,</span>
-<span class='doccomment'>//! as documented in its</span>
-<span class='doccomment'>//! [specification](https://xiph.org/flac/format.html#stream).</span>
-<span class='doccomment'>//!</span>
-<span class='doccomment'>//! ```</span>
-<span class='doccomment'>//! use std::io::Write;</span>
-<span class='doccomment'>//! use bitstream_io::{BE, BitWriter};</span>
-<span class='doccomment'>//!</span>
-<span class='doccomment'>//! let mut flac: Vec&lt;u8&gt; = Vec::new();</span>
-<span class='doccomment'>//! {</span>
-<span class='doccomment'>//!     let mut writer = BitWriter::&lt;BE&gt;::new(&amp;mut flac);</span>
-<span class='doccomment'>//!</span>
-<span class='doccomment'>//!     // stream marker</span>
-<span class='doccomment'>//!     writer.write_bytes(b&quot;fLaC&quot;).unwrap();</span>
-<span class='doccomment'>//!</span>
-<span class='doccomment'>//!     // metadata block header</span>
-<span class='doccomment'>//!     let last_block: bool = false;</span>
-<span class='doccomment'>//!     let block_type: u8 = 0;</span>
-<span class='doccomment'>//!     let block_size: u32 = 34;</span>
-<span class='doccomment'>//!     writer.write_bit(last_block).unwrap();</span>
-<span class='doccomment'>//!     writer.write(7, block_type).unwrap();</span>
-<span class='doccomment'>//!     writer.write(24, block_size).unwrap();</span>
-<span class='doccomment'>//!</span>
-<span class='doccomment'>//!     // STREAMINFO block</span>
-<span class='doccomment'>//!     let minimum_block_size: u16 = 4096;</span>
-<span class='doccomment'>//!     let maximum_block_size: u16 = 4096;</span>
-<span class='doccomment'>//!     let minimum_frame_size: u32 = 1542;</span>
-<span class='doccomment'>//!     let maximum_frame_size: u32 = 8546;</span>
-<span class='doccomment'>//!     let sample_rate: u32 = 44100;</span>
-<span class='doccomment'>//!     let channels: u8 = 2;</span>
-<span class='doccomment'>//!     let bits_per_sample: u8 = 16;</span>
-<span class='doccomment'>//!     let total_samples: u64 = 304844;</span>
-<span class='doccomment'>//!     writer.write(16, minimum_block_size).unwrap();</span>
-<span class='doccomment'>//!     writer.write(16, maximum_block_size).unwrap();</span>
-<span class='doccomment'>//!     writer.write(24, minimum_frame_size).unwrap();</span>
-<span class='doccomment'>//!     writer.write(24, maximum_frame_size).unwrap();</span>
-<span class='doccomment'>//!     writer.write(20, sample_rate).unwrap();</span>
-<span class='doccomment'>//!     writer.write(3, channels - 1).unwrap();</span>
-<span class='doccomment'>//!     writer.write(5, bits_per_sample - 1).unwrap();</span>
-<span class='doccomment'>//!     writer.write(36, total_samples).unwrap();</span>
-<span class='doccomment'>//! }</span>
-<span class='doccomment'>//!</span>
-<span class='doccomment'>//! // STREAMINFO&#39;s MD5 sum</span>
-<span class='doccomment'>//!</span>
-<span class='doccomment'>//! // Note that the wrapped writer can be used once bitstream writing</span>
-<span class='doccomment'>//! // is finished at exactly the position one would expect.</span>
-<span class='doccomment'>//!</span>
-<span class='doccomment'>//! flac.write_all(</span>
-<span class='doccomment'>//!     b&quot;\xFA\xF2\x69\x2F\xFD\xEC\x2D\x5B\x30\x01\x76\xB4\x62\x88\x7D\x92&quot;)</span>
-<span class='doccomment'>//!     .unwrap();</span>
-<span class='doccomment'>//!</span>
-<span class='doccomment'>//! assert_eq!(flac, vec![0x66,0x4C,0x61,0x43,0x00,0x00,0x00,0x22,</span>
-<span class='doccomment'>//!                       0x10,0x00,0x10,0x00,0x00,0x06,0x06,0x00,</span>
-<span class='doccomment'>//!                       0x21,0x62,0x0A,0xC4,0x42,0xF0,0x00,0x04,</span>
-<span class='doccomment'>//!                       0xA6,0xCC,0xFA,0xF2,0x69,0x2F,0xFD,0xEC,</span>
-<span class='doccomment'>//!                       0x2D,0x5B,0x30,0x01,0x76,0xB4,0x62,0x88,</span>
-<span class='doccomment'>//!                       0x7D,0x92]);</span>
-<span class='doccomment'>//! ```</span>
+<span class="doccomment">//! Traits and implementations for writing bits to a stream.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! ## Example</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! Writing the initial STREAMINFO block to a FLAC file,</span>
+<span class="doccomment">//! as documented in its</span>
+<span class="doccomment">//! [specification](https://xiph.org/flac/format.html#stream).</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! ```</span>
+<span class="doccomment">//! use std::io::Write;</span>
+<span class="doccomment">//! use bitstream_io::{BE, BitWriter};</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! let mut flac: Vec&lt;u8&gt; = Vec::new();</span>
+<span class="doccomment">//! {</span>
+<span class="doccomment">//!     let mut writer = BitWriter::&lt;BE&gt;::new(&amp;mut flac);</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//!     // stream marker</span>
+<span class="doccomment">//!     writer.write_bytes(b&quot;fLaC&quot;).unwrap();</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//!     // metadata block header</span>
+<span class="doccomment">//!     let last_block: bool = false;</span>
+<span class="doccomment">//!     let block_type: u8 = 0;</span>
+<span class="doccomment">//!     let block_size: u32 = 34;</span>
+<span class="doccomment">//!     writer.write_bit(last_block).unwrap();</span>
+<span class="doccomment">//!     writer.write(7, block_type).unwrap();</span>
+<span class="doccomment">//!     writer.write(24, block_size).unwrap();</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//!     // STREAMINFO block</span>
+<span class="doccomment">//!     let minimum_block_size: u16 = 4096;</span>
+<span class="doccomment">//!     let maximum_block_size: u16 = 4096;</span>
+<span class="doccomment">//!     let minimum_frame_size: u32 = 1542;</span>
+<span class="doccomment">//!     let maximum_frame_size: u32 = 8546;</span>
+<span class="doccomment">//!     let sample_rate: u32 = 44100;</span>
+<span class="doccomment">//!     let channels: u8 = 2;</span>
+<span class="doccomment">//!     let bits_per_sample: u8 = 16;</span>
+<span class="doccomment">//!     let total_samples: u64 = 304844;</span>
+<span class="doccomment">//!     writer.write(16, minimum_block_size).unwrap();</span>
+<span class="doccomment">//!     writer.write(16, maximum_block_size).unwrap();</span>
+<span class="doccomment">//!     writer.write(24, minimum_frame_size).unwrap();</span>
+<span class="doccomment">//!     writer.write(24, maximum_frame_size).unwrap();</span>
+<span class="doccomment">//!     writer.write(20, sample_rate).unwrap();</span>
+<span class="doccomment">//!     writer.write(3, channels - 1).unwrap();</span>
+<span class="doccomment">//!     writer.write(5, bits_per_sample - 1).unwrap();</span>
+<span class="doccomment">//!     writer.write(36, total_samples).unwrap();</span>
+<span class="doccomment">//! }</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! // STREAMINFO&#39;s MD5 sum</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! // Note that the wrapped writer can be used once bitstream writing</span>
+<span class="doccomment">//! // is finished at exactly the position one would expect.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! flac.write_all(</span>
+<span class="doccomment">//!     b&quot;\xFA\xF2\x69\x2F\xFD\xEC\x2D\x5B\x30\x01\x76\xB4\x62\x88\x7D\x92&quot;)</span>
+<span class="doccomment">//!     .unwrap();</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! assert_eq!(flac, vec![0x66,0x4C,0x61,0x43,0x00,0x00,0x00,0x22,</span>
+<span class="doccomment">//!                       0x10,0x00,0x10,0x00,0x00,0x06,0x06,0x00,</span>
+<span class="doccomment">//!                       0x21,0x62,0x0A,0xC4,0x42,0xF0,0x00,0x04,</span>
+<span class="doccomment">//!                       0xA6,0xCC,0xFA,0xF2,0x69,0x2F,0xFD,0xEC,</span>
+<span class="doccomment">//!                       0x2D,0x5B,0x30,0x01,0x76,0xB4,0x62,0x88,</span>
+<span class="doccomment">//!                       0x7D,0x92]);</span>
+<span class="doccomment">//! ```</span>
 
-<span class='attribute'>#<span class='op'>!</span>[<span class='ident'>warn</span>(<span class='ident'>missing_docs</span>)]</span>
+<span class="attribute">#<span class="op">!</span>[<span class="ident">warn</span>(<span class="ident">missing_docs</span>)]</span>
 
-<span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>io</span>;
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">io</span>;
 
-<span class='kw'>use</span> <span class='kw'>super</span>::{<span class='ident'>Numeric</span>, <span class='ident'>SignedNumeric</span>, <span class='ident'>BitQueue</span>,
-            <span class='ident'>Endianness</span>, <span class='ident'>BigEndian</span>, <span class='ident'>LittleEndian</span>};
-<span class='kw'>use</span> <span class='ident'>huffman</span>::<span class='ident'>WriteHuffmanTree</span>;
+<span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">Numeric</span>, <span class="ident">SignedNumeric</span>, <span class="ident">BitQueue</span>,
+            <span class="ident">Endianness</span>, <span class="ident">BigEndian</span>, <span class="ident">LittleEndian</span>};
+<span class="kw">use</span> <span class="ident">huffman</span>::<span class="ident">WriteHuffmanTree</span>;
 
-<span class='doccomment'>/// For writing bit values to an underlying stream in a given endianness.</span>
-<span class='doccomment'>///</span>
-<span class='doccomment'>/// Because this only writes whole bytes to the underlying stream,</span>
-<span class='doccomment'>/// it is important that output is byte-aligned before the bitstream</span>
-<span class='doccomment'>/// writer&#39;s lifetime ends.</span>
-<span class='doccomment'>/// **Partial bytes will be lost** if the writer is disposed of</span>
-<span class='doccomment'>/// before they can be written.</span>
-<span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>BitWriter</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>E</span>: <span class='ident'>Endianness</span><span class='op'>&gt;</span> {
-    <span class='ident'>writer</span>: <span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='kw-2'>mut</span> <span class='ident'>io</span>::<span class='ident'>Write</span>,
-    <span class='ident'>bitqueue</span>: <span class='ident'>BitQueue</span><span class='op'>&lt;</span><span class='ident'>E</span>,<span class='ident'>u8</span><span class='op'>&gt;</span>
+<span class="doccomment">/// For writing bit values to an underlying stream in a given endianness.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Because this only writes whole bytes to the underlying stream,</span>
+<span class="doccomment">/// it is important that output is byte-aligned before the bitstream</span>
+<span class="doccomment">/// writer&#39;s lifetime ends.</span>
+<span class="doccomment">/// **Partial bytes will be lost** if the writer is disposed of</span>
+<span class="doccomment">/// before they can be written.</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">BitWriter</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">E</span>: <span class="ident">Endianness</span><span class="op">&gt;</span> {
+    <span class="ident">writer</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">io</span>::<span class="ident">Write</span>,
+    <span class="ident">bitqueue</span>: <span class="ident">BitQueue</span><span class="op">&lt;</span><span class="ident">E</span>,<span class="ident">u8</span><span class="op">&gt;</span>
 }
 
-<span class='kw'>impl</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>E</span>: <span class='ident'>Endianness</span><span class='op'>&gt;</span> <span class='ident'>BitWriter</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>E</span><span class='op'>&gt;</span> {
-    <span class='doccomment'>/// Wraps a BitWriter around something that implements `Write`</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>writer</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>io</span>::<span class='ident'>Write</span>) <span class='op'>-&gt;</span> <span class='ident'>BitWriter</span><span class='op'>&lt;</span><span class='ident'>E</span><span class='op'>&gt;</span> {
-        <span class='ident'>BitWriter</span>{<span class='ident'>writer</span>: <span class='ident'>writer</span>, <span class='ident'>bitqueue</span>: <span class='ident'>BitQueue</span>::<span class='ident'>new</span>()}
+<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">E</span>: <span class="ident">Endianness</span><span class="op">&gt;</span> <span class="ident">BitWriter</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">E</span><span class="op">&gt;</span> {
+    <span class="doccomment">/// Wraps a BitWriter around something that implements `Write`</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">writer</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">io</span>::<span class="ident">Write</span>) <span class="op">-&gt;</span> <span class="ident">BitWriter</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span> {
+        <span class="ident">BitWriter</span>{<span class="ident">writer</span>: <span class="ident">writer</span>, <span class="ident">bitqueue</span>: <span class="ident">BitQueue</span>::<span class="ident">new</span>()}
     }
 
-    <span class='doccomment'>/// Writes a single bit to the stream.</span>
-    <span class='doccomment'>/// `true` indicates 1, `false` indicates 0</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// # Errors</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// Passes along any I/O error from the underlying stream.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// # Examples</span>
-    <span class='doccomment'>/// ```</span>
-    <span class='doccomment'>/// use std::io::Write;</span>
-    <span class='doccomment'>/// use bitstream_io::{BigEndian, BitWriter};</span>
-    <span class='doccomment'>/// let mut data = Vec::new();</span>
-    <span class='doccomment'>/// {</span>
-    <span class='doccomment'>///     let mut writer = BitWriter::&lt;BigEndian&gt;::new(&amp;mut data);</span>
-    <span class='doccomment'>///     writer.write_bit(true).unwrap();</span>
-    <span class='doccomment'>///     writer.write_bit(false).unwrap();</span>
-    <span class='doccomment'>///     writer.write_bit(true).unwrap();</span>
-    <span class='doccomment'>///     writer.write_bit(true).unwrap();</span>
-    <span class='doccomment'>///     writer.write_bit(false).unwrap();</span>
-    <span class='doccomment'>///     writer.write_bit(true).unwrap();</span>
-    <span class='doccomment'>///     writer.write_bit(true).unwrap();</span>
-    <span class='doccomment'>///     writer.write_bit(true).unwrap();</span>
-    <span class='doccomment'>/// }</span>
-    <span class='doccomment'>/// assert_eq!(data, [0b10110111]);</span>
-    <span class='doccomment'>/// ```</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// ```</span>
-    <span class='doccomment'>/// use std::io::Write;</span>
-    <span class='doccomment'>/// use bitstream_io::{LittleEndian, BitWriter};</span>
-    <span class='doccomment'>/// let mut data = Vec::new();</span>
-    <span class='doccomment'>/// {</span>
-    <span class='doccomment'>///     let mut writer = BitWriter::&lt;LittleEndian&gt;::new(&amp;mut data);</span>
-    <span class='doccomment'>///     writer.write_bit(true).unwrap();</span>
-    <span class='doccomment'>///     writer.write_bit(true).unwrap();</span>
-    <span class='doccomment'>///     writer.write_bit(true).unwrap();</span>
-    <span class='doccomment'>///     writer.write_bit(false).unwrap();</span>
-    <span class='doccomment'>///     writer.write_bit(true).unwrap();</span>
-    <span class='doccomment'>///     writer.write_bit(true).unwrap();</span>
-    <span class='doccomment'>///     writer.write_bit(false).unwrap();</span>
-    <span class='doccomment'>///     writer.write_bit(true).unwrap();</span>
-    <span class='doccomment'>/// }</span>
-    <span class='doccomment'>/// assert_eq!(data, [0b10110111]);</span>
-    <span class='doccomment'>/// ```</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>write_bit</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>bit</span>: <span class='ident'>bool</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(), <span class='ident'>io</span>::<span class='ident'>Error</span><span class='op'>&gt;</span> {
-        <span class='self'>self</span>.<span class='ident'>bitqueue</span>.<span class='ident'>push</span>(<span class='number'>1</span>, <span class='kw'>if</span> <span class='ident'>bit</span> {<span class='number'>1</span>} <span class='kw'>else</span> {<span class='number'>0</span>});
-        <span class='kw'>if</span> <span class='self'>self</span>.<span class='ident'>bitqueue</span>.<span class='ident'>len</span>() <span class='op'>==</span> <span class='number'>8</span> {
-            <span class='ident'>write_byte</span>(<span class='self'>self</span>.<span class='ident'>writer</span>, <span class='self'>self</span>.<span class='ident'>bitqueue</span>.<span class='ident'>pop</span>(<span class='number'>8</span>))
-        } <span class='kw'>else</span> {
-            <span class='prelude-val'>Ok</span>(())
+    <span class="doccomment">/// Writes a single bit to the stream.</span>
+    <span class="doccomment">/// `true` indicates 1, `false` indicates 0</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Errors</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Passes along any I/O error from the underlying stream.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Examples</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// use std::io::Write;</span>
+    <span class="doccomment">/// use bitstream_io::{BigEndian, BitWriter};</span>
+    <span class="doccomment">/// let mut data = Vec::new();</span>
+    <span class="doccomment">/// {</span>
+    <span class="doccomment">///     let mut writer = BitWriter::&lt;BigEndian&gt;::new(&amp;mut data);</span>
+    <span class="doccomment">///     writer.write_bit(true).unwrap();</span>
+    <span class="doccomment">///     writer.write_bit(false).unwrap();</span>
+    <span class="doccomment">///     writer.write_bit(true).unwrap();</span>
+    <span class="doccomment">///     writer.write_bit(true).unwrap();</span>
+    <span class="doccomment">///     writer.write_bit(false).unwrap();</span>
+    <span class="doccomment">///     writer.write_bit(true).unwrap();</span>
+    <span class="doccomment">///     writer.write_bit(true).unwrap();</span>
+    <span class="doccomment">///     writer.write_bit(true).unwrap();</span>
+    <span class="doccomment">/// }</span>
+    <span class="doccomment">/// assert_eq!(data, [0b10110111]);</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// use std::io::Write;</span>
+    <span class="doccomment">/// use bitstream_io::{LittleEndian, BitWriter};</span>
+    <span class="doccomment">/// let mut data = Vec::new();</span>
+    <span class="doccomment">/// {</span>
+    <span class="doccomment">///     let mut writer = BitWriter::&lt;LittleEndian&gt;::new(&amp;mut data);</span>
+    <span class="doccomment">///     writer.write_bit(true).unwrap();</span>
+    <span class="doccomment">///     writer.write_bit(true).unwrap();</span>
+    <span class="doccomment">///     writer.write_bit(true).unwrap();</span>
+    <span class="doccomment">///     writer.write_bit(false).unwrap();</span>
+    <span class="doccomment">///     writer.write_bit(true).unwrap();</span>
+    <span class="doccomment">///     writer.write_bit(true).unwrap();</span>
+    <span class="doccomment">///     writer.write_bit(false).unwrap();</span>
+    <span class="doccomment">///     writer.write_bit(true).unwrap();</span>
+    <span class="doccomment">/// }</span>
+    <span class="doccomment">/// assert_eq!(data, [0b10110111]);</span>
+    <span class="doccomment">/// ```</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write_bit</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">bit</span>: <span class="ident">bool</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">io</span>::<span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="self">self</span>.<span class="ident">bitqueue</span>.<span class="ident">push</span>(<span class="number">1</span>, <span class="kw">if</span> <span class="ident">bit</span> {<span class="number">1</span>} <span class="kw">else</span> {<span class="number">0</span>});
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">bitqueue</span>.<span class="ident">len</span>() <span class="op">==</span> <span class="number">8</span> {
+            <span class="ident">write_byte</span>(<span class="self">self</span>.<span class="ident">writer</span>, <span class="self">self</span>.<span class="ident">bitqueue</span>.<span class="ident">pop</span>(<span class="number">8</span>))
+        } <span class="kw">else</span> {
+            <span class="prelude-val">Ok</span>(())
         }
     }
 
-    <span class='doccomment'>/// Writes an unsigned value to the stream using the given</span>
-    <span class='doccomment'>/// number of bits.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// # Errors</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// Passes along any I/O error from the underlying stream.</span>
-    <span class='doccomment'>/// Returns an error if the input type is too small</span>
-    <span class='doccomment'>/// to hold the given number of bits.</span>
-    <span class='doccomment'>/// Returns an error if the value is too large</span>
-    <span class='doccomment'>/// to fit the given number of bits.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// # Examples</span>
-    <span class='doccomment'>/// ```</span>
-    <span class='doccomment'>/// use std::io::Write;</span>
-    <span class='doccomment'>/// use bitstream_io::{BigEndian, BitWriter};</span>
-    <span class='doccomment'>/// let mut data = Vec::new();</span>
-    <span class='doccomment'>/// {</span>
-    <span class='doccomment'>///     let mut writer = BitWriter::&lt;BigEndian&gt;::new(&amp;mut data);</span>
-    <span class='doccomment'>///     writer.write(1, 0b1).unwrap();</span>
-    <span class='doccomment'>///     writer.write(2, 0b01).unwrap();</span>
-    <span class='doccomment'>///     writer.write(5, 0b10111).unwrap();</span>
-    <span class='doccomment'>/// }</span>
-    <span class='doccomment'>/// assert_eq!(data, [0b10110111]);</span>
-    <span class='doccomment'>/// ```</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// ```</span>
-    <span class='doccomment'>/// use std::io::Write;</span>
-    <span class='doccomment'>/// use bitstream_io::{LittleEndian, BitWriter};</span>
-    <span class='doccomment'>/// let mut data = Vec::new();</span>
-    <span class='doccomment'>/// {</span>
-    <span class='doccomment'>///     let mut writer = BitWriter::&lt;LittleEndian&gt;::new(&amp;mut data);</span>
-    <span class='doccomment'>///     writer.write(1, 0b1).unwrap();</span>
-    <span class='doccomment'>///     writer.write(2, 0b11).unwrap();</span>
-    <span class='doccomment'>///     writer.write(5, 0b10110).unwrap();</span>
-    <span class='doccomment'>/// }</span>
-    <span class='doccomment'>/// assert_eq!(data, [0b10110111]);</span>
-    <span class='doccomment'>/// ```</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// ```</span>
-    <span class='doccomment'>/// use std::io::Write;</span>
-    <span class='doccomment'>/// use bitstream_io::{BigEndian, BitWriter};</span>
-    <span class='doccomment'>/// let mut data = Vec::new();</span>
-    <span class='doccomment'>/// let mut w = BitWriter::&lt;BigEndian&gt;::new(&amp;mut data);</span>
-    <span class='doccomment'>/// assert!(w.write(9, 0u8).is_err());    // can&#39;t write  u8 in 9 bits</span>
-    <span class='doccomment'>/// assert!(w.write(17, 0u16).is_err());  // can&#39;t write u16 in 17 bits</span>
-    <span class='doccomment'>/// assert!(w.write(33, 0u32).is_err());  // can&#39;t write u32 in 33 bits</span>
-    <span class='doccomment'>/// assert!(w.write(65, 0u64).is_err());  // can&#39;t write u64 in 65 bits</span>
-    <span class='doccomment'>/// assert!(w.write(1, 2).is_err());      // can&#39;t write   2 in 1 bit</span>
-    <span class='doccomment'>/// assert!(w.write(2, 4).is_err());      // can&#39;t write   4 in 2 bits</span>
-    <span class='doccomment'>/// assert!(w.write(3, 8).is_err());      // can&#39;t write   8 in 3 bits</span>
-    <span class='doccomment'>/// assert!(w.write(4, 16).is_err());     // can&#39;t write  16 in 3 bits</span>
-    <span class='doccomment'>/// ```</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>write</span><span class='op'>&lt;</span><span class='ident'>U</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>bits</span>: <span class='ident'>u32</span>, <span class='ident'>value</span>: <span class='ident'>U</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(), <span class='ident'>io</span>::<span class='ident'>Error</span><span class='op'>&gt;</span>
-        <span class='kw'>where</span> <span class='ident'>U</span>: <span class='ident'>Numeric</span> {
+    <span class="doccomment">/// Writes an unsigned value to the stream using the given</span>
+    <span class="doccomment">/// number of bits.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Errors</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Passes along any I/O error from the underlying stream.</span>
+    <span class="doccomment">/// Returns an error if the input type is too small</span>
+    <span class="doccomment">/// to hold the given number of bits.</span>
+    <span class="doccomment">/// Returns an error if the value is too large</span>
+    <span class="doccomment">/// to fit the given number of bits.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Examples</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// use std::io::Write;</span>
+    <span class="doccomment">/// use bitstream_io::{BigEndian, BitWriter};</span>
+    <span class="doccomment">/// let mut data = Vec::new();</span>
+    <span class="doccomment">/// {</span>
+    <span class="doccomment">///     let mut writer = BitWriter::&lt;BigEndian&gt;::new(&amp;mut data);</span>
+    <span class="doccomment">///     writer.write(1, 0b1).unwrap();</span>
+    <span class="doccomment">///     writer.write(2, 0b01).unwrap();</span>
+    <span class="doccomment">///     writer.write(5, 0b10111).unwrap();</span>
+    <span class="doccomment">/// }</span>
+    <span class="doccomment">/// assert_eq!(data, [0b10110111]);</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// use std::io::Write;</span>
+    <span class="doccomment">/// use bitstream_io::{LittleEndian, BitWriter};</span>
+    <span class="doccomment">/// let mut data = Vec::new();</span>
+    <span class="doccomment">/// {</span>
+    <span class="doccomment">///     let mut writer = BitWriter::&lt;LittleEndian&gt;::new(&amp;mut data);</span>
+    <span class="doccomment">///     writer.write(1, 0b1).unwrap();</span>
+    <span class="doccomment">///     writer.write(2, 0b11).unwrap();</span>
+    <span class="doccomment">///     writer.write(5, 0b10110).unwrap();</span>
+    <span class="doccomment">/// }</span>
+    <span class="doccomment">/// assert_eq!(data, [0b10110111]);</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// use std::io::Write;</span>
+    <span class="doccomment">/// use bitstream_io::{BigEndian, BitWriter};</span>
+    <span class="doccomment">/// let mut data = Vec::new();</span>
+    <span class="doccomment">/// let mut w = BitWriter::&lt;BigEndian&gt;::new(&amp;mut data);</span>
+    <span class="doccomment">/// assert!(w.write(9, 0u8).is_err());    // can&#39;t write  u8 in 9 bits</span>
+    <span class="doccomment">/// assert!(w.write(17, 0u16).is_err());  // can&#39;t write u16 in 17 bits</span>
+    <span class="doccomment">/// assert!(w.write(33, 0u32).is_err());  // can&#39;t write u32 in 33 bits</span>
+    <span class="doccomment">/// assert!(w.write(65, 0u64).is_err());  // can&#39;t write u64 in 65 bits</span>
+    <span class="doccomment">/// assert!(w.write(1, 2).is_err());      // can&#39;t write   2 in 1 bit</span>
+    <span class="doccomment">/// assert!(w.write(2, 4).is_err());      // can&#39;t write   4 in 2 bits</span>
+    <span class="doccomment">/// assert!(w.write(3, 8).is_err());      // can&#39;t write   8 in 3 bits</span>
+    <span class="doccomment">/// assert!(w.write(4, 16).is_err());     // can&#39;t write  16 in 4 bits</span>
+    <span class="doccomment">/// ```</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write</span><span class="op">&lt;</span><span class="ident">U</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">bits</span>: <span class="ident">u32</span>, <span class="ident">value</span>: <span class="ident">U</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">io</span>::<span class="ident">Error</span><span class="op">&gt;</span>
+        <span class="kw">where</span> <span class="ident">U</span>: <span class="ident">Numeric</span> {
 
-        <span class='kw'>if</span> <span class='ident'>bits</span> <span class='op'>&gt;</span> <span class='ident'>U</span>::<span class='ident'>bits_size</span>() {
-            <span class='prelude-val'>Err</span>(<span class='ident'>io</span>::<span class='ident'>Error</span>::<span class='ident'>new</span>(<span class='ident'>io</span>::<span class='ident'>ErrorKind</span>::<span class='ident'>InvalidInput</span>,
-                               <span class='string'>&quot;excessive bits for type written&quot;</span>))
-        } <span class='kw'>else</span> <span class='kw'>if</span> (<span class='ident'>bits</span> <span class='op'>&lt;</span> <span class='ident'>U</span>::<span class='ident'>bits_size</span>()) <span class='op'>&amp;&amp;</span> (<span class='ident'>value</span> <span class='op'>&gt;=</span> (<span class='ident'>U</span>::<span class='ident'>one</span>() <span class='op'>&lt;&lt;</span> <span class='ident'>bits</span>)) {
-            <span class='prelude-val'>Err</span>(<span class='ident'>io</span>::<span class='ident'>Error</span>::<span class='ident'>new</span>(<span class='ident'>io</span>::<span class='ident'>ErrorKind</span>::<span class='ident'>InvalidInput</span>,
-                               <span class='string'>&quot;excessive value for bits written&quot;</span>))
-        } <span class='kw'>else</span> {
-            <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>acc</span> <span class='op'>=</span> <span class='ident'>BitQueue</span>::<span class='ident'>from_value</span>(<span class='ident'>value</span>, <span class='ident'>bits</span>);
-            <span class='ident'>write_unaligned</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>.<span class='ident'>writer</span>, <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>acc</span>, <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>.<span class='ident'>bitqueue</span>)
-            .<span class='ident'>and_then</span>(<span class='op'>|</span>()<span class='op'>|</span>
-                <span class='ident'>write_aligned</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>.<span class='ident'>writer</span>, <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>acc</span>))
-            .<span class='ident'>and_then</span>(<span class='op'>|</span>()<span class='op'>|</span>
-                <span class='prelude-val'>Ok</span>(<span class='self'>self</span>.<span class='ident'>bitqueue</span>.<span class='ident'>push</span>(<span class='ident'>acc</span>.<span class='ident'>len</span>(), <span class='ident'>acc</span>.<span class='ident'>value</span>().<span class='ident'>to_u8</span>())))
+        <span class="kw">if</span> <span class="ident">bits</span> <span class="op">&gt;</span> <span class="ident">U</span>::<span class="ident">bits_size</span>() {
+            <span class="prelude-val">Err</span>(<span class="ident">io</span>::<span class="ident">Error</span>::<span class="ident">new</span>(<span class="ident">io</span>::<span class="ident">ErrorKind</span>::<span class="ident">InvalidInput</span>,
+                               <span class="string">&quot;excessive bits for type written&quot;</span>))
+        } <span class="kw">else</span> <span class="kw">if</span> (<span class="ident">bits</span> <span class="op">&lt;</span> <span class="ident">U</span>::<span class="ident">bits_size</span>()) <span class="op">&amp;&amp;</span> (<span class="ident">value</span> <span class="op">&gt;=</span> (<span class="ident">U</span>::<span class="ident">one</span>() <span class="op">&lt;&lt;</span> <span class="ident">bits</span>)) {
+            <span class="prelude-val">Err</span>(<span class="ident">io</span>::<span class="ident">Error</span>::<span class="ident">new</span>(<span class="ident">io</span>::<span class="ident">ErrorKind</span>::<span class="ident">InvalidInput</span>,
+                               <span class="string">&quot;excessive value for bits written&quot;</span>))
+        } <span class="kw">else</span> {
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">acc</span> <span class="op">=</span> <span class="ident">BitQueue</span>::<span class="ident">from_value</span>(<span class="ident">value</span>, <span class="ident">bits</span>);
+            <span class="ident">write_unaligned</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">writer</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">acc</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">bitqueue</span>)
+            .<span class="ident">and_then</span>(<span class="op">|</span>()<span class="op">|</span>
+                <span class="ident">write_aligned</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">writer</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">acc</span>))
+            .<span class="ident">and_then</span>(<span class="op">|</span>()<span class="op">|</span>
+                <span class="prelude-val">Ok</span>(<span class="self">self</span>.<span class="ident">bitqueue</span>.<span class="ident">push</span>(<span class="ident">acc</span>.<span class="ident">len</span>(), <span class="ident">acc</span>.<span class="ident">value</span>().<span class="ident">to_u8</span>())))
         }
     }
 
-    <span class='doccomment'>/// Writes the entirety of a byte buffer to the stream.</span>
-    <span class='doccomment'>/// If the stream is already byte-aligned, it will often</span>
-    <span class='doccomment'>/// map to a faster `write_all` call.  Otherwise it will</span>
-    <span class='doccomment'>/// write bytes individually in 8-bit increments.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// # Errors</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// Passes along any I/O error from the underlying stream.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// # Example</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// ```</span>
-    <span class='doccomment'>/// use std::io::Write;</span>
-    <span class='doccomment'>/// use bitstream_io::{BigEndian, BitWriter};</span>
-    <span class='doccomment'>/// let mut data = Vec::new();</span>
-    <span class='doccomment'>/// {</span>
-    <span class='doccomment'>///     let mut writer = BitWriter::&lt;BigEndian&gt;::new(&amp;mut data);</span>
-    <span class='doccomment'>///     writer.write(8, 0x66).unwrap();</span>
-    <span class='doccomment'>///     writer.write(8, 0x6F).unwrap();</span>
-    <span class='doccomment'>///     writer.write(8, 0x6F).unwrap();</span>
-    <span class='doccomment'>///     writer.write_bytes(b&quot;bar&quot;).unwrap();</span>
-    <span class='doccomment'>/// }</span>
-    <span class='doccomment'>/// assert_eq!(data, b&quot;foobar&quot;);</span>
-    <span class='doccomment'>/// ```</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>write_bytes</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>buf</span>: <span class='kw-2'>&amp;</span>[<span class='ident'>u8</span>]) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(), <span class='ident'>io</span>::<span class='ident'>Error</span><span class='op'>&gt;</span> {
-        <span class='kw'>if</span> <span class='self'>self</span>.<span class='ident'>byte_aligned</span>() {
-            <span class='self'>self</span>.<span class='ident'>writer</span>.<span class='ident'>write_all</span>(<span class='ident'>buf</span>)
-        } <span class='kw'>else</span> {
-            <span class='kw'>for</span> <span class='ident'>b</span> <span class='kw'>in</span> <span class='ident'>buf</span> {
-                <span class='self'>self</span>.<span class='ident'>write</span>(<span class='number'>8</span>, <span class='kw-2'>*</span><span class='ident'>b</span>)<span class='question-mark'>?</span>;
+    <span class="doccomment">/// Writes the entirety of a byte buffer to the stream.</span>
+    <span class="doccomment">/// If the stream is already byte-aligned, it will often</span>
+    <span class="doccomment">/// map to a faster `write_all` call.  Otherwise it will</span>
+    <span class="doccomment">/// write bytes individually in 8-bit increments.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Errors</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Passes along any I/O error from the underlying stream.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Example</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// use std::io::Write;</span>
+    <span class="doccomment">/// use bitstream_io::{BigEndian, BitWriter};</span>
+    <span class="doccomment">/// let mut data = Vec::new();</span>
+    <span class="doccomment">/// {</span>
+    <span class="doccomment">///     let mut writer = BitWriter::&lt;BigEndian&gt;::new(&amp;mut data);</span>
+    <span class="doccomment">///     writer.write(8, 0x66).unwrap();</span>
+    <span class="doccomment">///     writer.write(8, 0x6F).unwrap();</span>
+    <span class="doccomment">///     writer.write(8, 0x6F).unwrap();</span>
+    <span class="doccomment">///     writer.write_bytes(b&quot;bar&quot;).unwrap();</span>
+    <span class="doccomment">/// }</span>
+    <span class="doccomment">/// assert_eq!(data, b&quot;foobar&quot;);</span>
+    <span class="doccomment">/// ```</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write_bytes</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">io</span>::<span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">byte_aligned</span>() {
+            <span class="self">self</span>.<span class="ident">writer</span>.<span class="ident">write_all</span>(<span class="ident">buf</span>)
+        } <span class="kw">else</span> {
+            <span class="kw">for</span> <span class="ident">b</span> <span class="kw">in</span> <span class="ident">buf</span> {
+                <span class="self">self</span>.<span class="ident">write</span>(<span class="number">8</span>, <span class="kw-2">*</span><span class="ident">b</span>)<span class="question-mark">?</span>;
             }
-            <span class='prelude-val'>Ok</span>(())
+            <span class="prelude-val">Ok</span>(())
         }
     }
 
-    <span class='doccomment'>/// Writes Huffman code for the given symbol to the stream.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// # Errors</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// Passes along any I/O error from the underlying stream.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// # Example</span>
-    <span class='doccomment'>/// ```</span>
-    <span class='doccomment'>/// use std::io::Write;</span>
-    <span class='doccomment'>/// use bitstream_io::{BigEndian, BitWriter};</span>
-    <span class='doccomment'>/// use bitstream_io::huffman::compile_write_tree;</span>
-    <span class='doccomment'>/// let tree = compile_write_tree(</span>
-    <span class='doccomment'>///     vec![(&#39;a&#39;, vec![0]),</span>
-    <span class='doccomment'>///          (&#39;b&#39;, vec![1, 0]),</span>
-    <span class='doccomment'>///          (&#39;c&#39;, vec![1, 1, 0]),</span>
-    <span class='doccomment'>///          (&#39;d&#39;, vec![1, 1, 1])]).unwrap();</span>
-    <span class='doccomment'>/// let mut data = Vec::new();</span>
-    <span class='doccomment'>/// {</span>
-    <span class='doccomment'>///     let mut writer = BitWriter::&lt;BigEndian&gt;::new(&amp;mut data);</span>
-    <span class='doccomment'>///     writer.write_huffman(&amp;tree, &#39;b&#39;).unwrap();</span>
-    <span class='doccomment'>///     writer.write_huffman(&amp;tree, &#39;c&#39;).unwrap();</span>
-    <span class='doccomment'>///     writer.write_huffman(&amp;tree, &#39;d&#39;).unwrap();</span>
-    <span class='doccomment'>/// }</span>
-    <span class='doccomment'>/// assert_eq!(data, [0b10110111]);</span>
-    <span class='doccomment'>/// ```</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>write_huffman</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>,
-                            <span class='ident'>tree</span>: <span class='kw-2'>&amp;</span><span class='ident'>WriteHuffmanTree</span><span class='op'>&lt;</span><span class='ident'>E</span>,<span class='ident'>T</span><span class='op'>&gt;</span>,
-                            <span class='ident'>symbol</span>: <span class='ident'>T</span>) <span class='op'>-&gt;</span>
-        <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(), <span class='ident'>io</span>::<span class='ident'>Error</span><span class='op'>&gt;</span> <span class='kw'>where</span> <span class='ident'>T</span>: <span class='ident'>Ord</span> <span class='op'>+</span> <span class='ident'>Copy</span> {
+    <span class="doccomment">/// Writes Huffman code for the given symbol to the stream.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Errors</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Passes along any I/O error from the underlying stream.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Example</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// use std::io::Write;</span>
+    <span class="doccomment">/// use bitstream_io::{BigEndian, BitWriter};</span>
+    <span class="doccomment">/// use bitstream_io::huffman::compile_write_tree;</span>
+    <span class="doccomment">/// let tree = compile_write_tree(</span>
+    <span class="doccomment">///     vec![(&#39;a&#39;, vec![0]),</span>
+    <span class="doccomment">///          (&#39;b&#39;, vec![1, 0]),</span>
+    <span class="doccomment">///          (&#39;c&#39;, vec![1, 1, 0]),</span>
+    <span class="doccomment">///          (&#39;d&#39;, vec![1, 1, 1])]).unwrap();</span>
+    <span class="doccomment">/// let mut data = Vec::new();</span>
+    <span class="doccomment">/// {</span>
+    <span class="doccomment">///     let mut writer = BitWriter::&lt;BigEndian&gt;::new(&amp;mut data);</span>
+    <span class="doccomment">///     writer.write_huffman(&amp;tree, &#39;b&#39;).unwrap();</span>
+    <span class="doccomment">///     writer.write_huffman(&amp;tree, &#39;c&#39;).unwrap();</span>
+    <span class="doccomment">///     writer.write_huffman(&amp;tree, &#39;d&#39;).unwrap();</span>
+    <span class="doccomment">/// }</span>
+    <span class="doccomment">/// assert_eq!(data, [0b10110111]);</span>
+    <span class="doccomment">/// ```</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write_huffman</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
+                            <span class="ident">tree</span>: <span class="kw-2">&amp;</span><span class="ident">WriteHuffmanTree</span><span class="op">&lt;</span><span class="ident">E</span>,<span class="ident">T</span><span class="op">&gt;</span>,
+                            <span class="ident">symbol</span>: <span class="ident">T</span>) <span class="op">-&gt;</span>
+        <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">io</span>::<span class="ident">Error</span><span class="op">&gt;</span> <span class="kw">where</span> <span class="ident">T</span>: <span class="ident">Ord</span> <span class="op">+</span> <span class="ident">Copy</span> {
 
-        <span class='kw'>for</span> <span class='kw-2'>&amp;</span>(<span class='ident'>bits</span>, <span class='ident'>value</span>) <span class='kw'>in</span> <span class='ident'>tree</span>.<span class='ident'>get</span>(<span class='ident'>symbol</span>) {
-            <span class='self'>self</span>.<span class='ident'>write</span>(<span class='ident'>bits</span>, <span class='ident'>value</span>)<span class='question-mark'>?</span>;
+        <span class="kw">for</span> <span class="kw-2">&amp;</span>(<span class="ident">bits</span>, <span class="ident">value</span>) <span class="kw">in</span> <span class="ident">tree</span>.<span class="ident">get</span>(<span class="ident">symbol</span>) {
+            <span class="self">self</span>.<span class="ident">write</span>(<span class="ident">bits</span>, <span class="ident">value</span>)<span class="question-mark">?</span>;
         }
-        <span class='prelude-val'>Ok</span>(())
+        <span class="prelude-val">Ok</span>(())
     }
 
-    <span class='doccomment'>/// Writes `value` number of 1 bits to the stream</span>
-    <span class='doccomment'>/// and then writes a 0 bit.  This field is variably-sized.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// # Errors</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// Passes along any I/O error from the underyling stream.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// # Examples</span>
-    <span class='doccomment'>/// ```</span>
-    <span class='doccomment'>/// use std::io::Write;</span>
-    <span class='doccomment'>/// use bitstream_io::{BigEndian, BitWriter};</span>
-    <span class='doccomment'>/// let mut data = Vec::new();</span>
-    <span class='doccomment'>/// {</span>
-    <span class='doccomment'>///     let mut writer = BitWriter::&lt;BigEndian&gt;::new(&amp;mut data);</span>
-    <span class='doccomment'>///     writer.write_unary0(0).unwrap();</span>
-    <span class='doccomment'>///     writer.write_unary0(3).unwrap();</span>
-    <span class='doccomment'>///     writer.write_unary0(10).unwrap();</span>
-    <span class='doccomment'>/// }</span>
-    <span class='doccomment'>/// assert_eq!(data, [0b01110111, 0b11111110]);</span>
-    <span class='doccomment'>/// ```</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// ```</span>
-    <span class='doccomment'>/// use std::io::Write;</span>
-    <span class='doccomment'>/// use bitstream_io::{LittleEndian, BitWriter};</span>
-    <span class='doccomment'>/// let mut data = Vec::new();</span>
-    <span class='doccomment'>/// {</span>
-    <span class='doccomment'>///     let mut writer = BitWriter::&lt;LittleEndian&gt;::new(&amp;mut data);</span>
-    <span class='doccomment'>///     writer.write_unary0(0).unwrap();</span>
-    <span class='doccomment'>///     writer.write_unary0(3).unwrap();</span>
-    <span class='doccomment'>///     writer.write_unary0(10).unwrap();</span>
-    <span class='doccomment'>/// }</span>
-    <span class='doccomment'>/// assert_eq!(data, [0b11101110, 0b01111111]);</span>
-    <span class='doccomment'>/// ```</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>write_unary0</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>value</span>: <span class='ident'>u32</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(), <span class='ident'>io</span>::<span class='ident'>Error</span><span class='op'>&gt;</span> {
-        <span class='kw'>match</span> <span class='ident'>value</span> {
-            <span class='number'>0</span> <span class='op'>=&gt;</span> {<span class='self'>self</span>.<span class='ident'>write_bit</span>(<span class='bool-val'>false</span>)}
-            <span class='ident'>bits</span> @ <span class='number'>1</span>...<span class='number'>31</span> <span class='op'>=&gt;</span> {<span class='self'>self</span>.<span class='ident'>write</span>(<span class='ident'>value</span>, (<span class='number'>1u32</span> <span class='op'>&lt;&lt;</span> <span class='ident'>bits</span>) <span class='op'>-</span> <span class='number'>1</span>)
-                                  .<span class='ident'>and_then</span>(<span class='op'>|</span>()<span class='op'>|</span> <span class='self'>self</span>.<span class='ident'>write_bit</span>(<span class='bool-val'>false</span>))}
-            <span class='number'>32</span> <span class='op'>=&gt;</span> {<span class='self'>self</span>.<span class='ident'>write</span>(<span class='ident'>value</span>, <span class='number'>0xFFFFFFFFu32</span>)
-                       .<span class='ident'>and_then</span>(<span class='op'>|</span>()<span class='op'>|</span> <span class='self'>self</span>.<span class='ident'>write_bit</span>(<span class='bool-val'>false</span>))}
-            <span class='ident'>bits</span> @ <span class='number'>32</span>...<span class='number'>63</span>  <span class='op'>=&gt;</span> {<span class='self'>self</span>.<span class='ident'>write</span>(<span class='ident'>value</span>, (<span class='number'>1u64</span> <span class='op'>&lt;&lt;</span> <span class='ident'>bits</span>) <span class='op'>-</span> <span class='number'>1</span>)
-                                    .<span class='ident'>and_then</span>(<span class='op'>|</span>()<span class='op'>|</span> <span class='self'>self</span>.<span class='ident'>write_bit</span>(<span class='bool-val'>false</span>))}
-            <span class='number'>64</span> <span class='op'>=&gt;</span> {<span class='self'>self</span>.<span class='ident'>write</span>(<span class='ident'>value</span>, <span class='number'>0xFFFFFFFFFFFFFFFFu64</span>)
-                       .<span class='ident'>and_then</span>(<span class='op'>|</span>()<span class='op'>|</span> <span class='self'>self</span>.<span class='ident'>write_bit</span>(<span class='bool-val'>false</span>))}
-            <span class='kw-2'>mut</span> <span class='ident'>bits</span> <span class='op'>=&gt;</span> {<span class='kw'>while</span> <span class='ident'>bits</span> <span class='op'>&gt;</span> <span class='number'>64</span> {
-                             <span class='self'>self</span>.<span class='ident'>write</span>(<span class='number'>64</span>, <span class='number'>0xFFFFFFFFFFFFFFFFu64</span>)<span class='question-mark'>?</span>;
-                             <span class='ident'>bits</span> <span class='op'>-=</span> <span class='number'>64</span>;
+    <span class="doccomment">/// Writes `value` number of 1 bits to the stream</span>
+    <span class="doccomment">/// and then writes a 0 bit.  This field is variably-sized.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Errors</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Passes along any I/O error from the underyling stream.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Examples</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// use std::io::Write;</span>
+    <span class="doccomment">/// use bitstream_io::{BigEndian, BitWriter};</span>
+    <span class="doccomment">/// let mut data = Vec::new();</span>
+    <span class="doccomment">/// {</span>
+    <span class="doccomment">///     let mut writer = BitWriter::&lt;BigEndian&gt;::new(&amp;mut data);</span>
+    <span class="doccomment">///     writer.write_unary0(0).unwrap();</span>
+    <span class="doccomment">///     writer.write_unary0(3).unwrap();</span>
+    <span class="doccomment">///     writer.write_unary0(10).unwrap();</span>
+    <span class="doccomment">/// }</span>
+    <span class="doccomment">/// assert_eq!(data, [0b01110111, 0b11111110]);</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// use std::io::Write;</span>
+    <span class="doccomment">/// use bitstream_io::{LittleEndian, BitWriter};</span>
+    <span class="doccomment">/// let mut data = Vec::new();</span>
+    <span class="doccomment">/// {</span>
+    <span class="doccomment">///     let mut writer = BitWriter::&lt;LittleEndian&gt;::new(&amp;mut data);</span>
+    <span class="doccomment">///     writer.write_unary0(0).unwrap();</span>
+    <span class="doccomment">///     writer.write_unary0(3).unwrap();</span>
+    <span class="doccomment">///     writer.write_unary0(10).unwrap();</span>
+    <span class="doccomment">/// }</span>
+    <span class="doccomment">/// assert_eq!(data, [0b11101110, 0b01111111]);</span>
+    <span class="doccomment">/// ```</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write_unary0</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">value</span>: <span class="ident">u32</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">io</span>::<span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="kw">match</span> <span class="ident">value</span> {
+            <span class="number">0</span> <span class="op">=&gt;</span> {<span class="self">self</span>.<span class="ident">write_bit</span>(<span class="bool-val">false</span>)}
+            <span class="ident">bits</span> @ <span class="number">1</span>...<span class="number">31</span> <span class="op">=&gt;</span> {<span class="self">self</span>.<span class="ident">write</span>(<span class="ident">value</span>, (<span class="number">1u32</span> <span class="op">&lt;&lt;</span> <span class="ident">bits</span>) <span class="op">-</span> <span class="number">1</span>)
+                                  .<span class="ident">and_then</span>(<span class="op">|</span>()<span class="op">|</span> <span class="self">self</span>.<span class="ident">write_bit</span>(<span class="bool-val">false</span>))}
+            <span class="number">32</span> <span class="op">=&gt;</span> {<span class="self">self</span>.<span class="ident">write</span>(<span class="ident">value</span>, <span class="number">0xFFFFFFFFu32</span>)
+                       .<span class="ident">and_then</span>(<span class="op">|</span>()<span class="op">|</span> <span class="self">self</span>.<span class="ident">write_bit</span>(<span class="bool-val">false</span>))}
+            <span class="ident">bits</span> @ <span class="number">32</span>...<span class="number">63</span>  <span class="op">=&gt;</span> {<span class="self">self</span>.<span class="ident">write</span>(<span class="ident">value</span>, (<span class="number">1u64</span> <span class="op">&lt;&lt;</span> <span class="ident">bits</span>) <span class="op">-</span> <span class="number">1</span>)
+                                    .<span class="ident">and_then</span>(<span class="op">|</span>()<span class="op">|</span> <span class="self">self</span>.<span class="ident">write_bit</span>(<span class="bool-val">false</span>))}
+            <span class="number">64</span> <span class="op">=&gt;</span> {<span class="self">self</span>.<span class="ident">write</span>(<span class="ident">value</span>, <span class="number">0xFFFFFFFFFFFFFFFFu64</span>)
+                       .<span class="ident">and_then</span>(<span class="op">|</span>()<span class="op">|</span> <span class="self">self</span>.<span class="ident">write_bit</span>(<span class="bool-val">false</span>))}
+            <span class="kw-2">mut</span> <span class="ident">bits</span> <span class="op">=&gt;</span> {<span class="kw">while</span> <span class="ident">bits</span> <span class="op">&gt;</span> <span class="number">64</span> {
+                             <span class="self">self</span>.<span class="ident">write</span>(<span class="number">64</span>, <span class="number">0xFFFFFFFFFFFFFFFFu64</span>)<span class="question-mark">?</span>;
+                             <span class="ident">bits</span> <span class="op">-=</span> <span class="number">64</span>;
                          }
-                         <span class='self'>self</span>.<span class='ident'>write_unary0</span>(<span class='ident'>bits</span>)}
+                         <span class="self">self</span>.<span class="ident">write_unary0</span>(<span class="ident">bits</span>)}
         }
     }
 
-    <span class='doccomment'>/// Writes `value` number of 0 bits to the stream</span>
-    <span class='doccomment'>/// and then writes a 1 bit.  This field is variably-sized.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// # Errors</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// Passes along any I/O error from the underyling stream.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// # Example</span>
-    <span class='doccomment'>/// ```</span>
-    <span class='doccomment'>/// use std::io::Write;</span>
-    <span class='doccomment'>/// use bitstream_io::{BigEndian, BitWriter};</span>
-    <span class='doccomment'>/// let mut data = Vec::new();</span>
-    <span class='doccomment'>/// {</span>
-    <span class='doccomment'>///     let mut writer = BitWriter::&lt;BigEndian&gt;::new(&amp;mut data);</span>
-    <span class='doccomment'>///     writer.write_unary1(0).unwrap();</span>
-    <span class='doccomment'>///     writer.write_unary1(3).unwrap();</span>
-    <span class='doccomment'>///     writer.write_unary1(10).unwrap();</span>
-    <span class='doccomment'>/// }</span>
-    <span class='doccomment'>/// assert_eq!(data, [0b10001000, 0b00000001]);</span>
-    <span class='doccomment'>/// ```</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// ```</span>
-    <span class='doccomment'>/// use std::io::Write;</span>
-    <span class='doccomment'>/// use bitstream_io::{LittleEndian, BitWriter};</span>
-    <span class='doccomment'>/// let mut data = Vec::new();</span>
-    <span class='doccomment'>/// {</span>
-    <span class='doccomment'>///     let mut writer = BitWriter::&lt;LittleEndian&gt;::new(&amp;mut data);</span>
-    <span class='doccomment'>///     writer.write_unary1(0).unwrap();</span>
-    <span class='doccomment'>///     writer.write_unary1(3).unwrap();</span>
-    <span class='doccomment'>///     writer.write_unary1(10).unwrap();</span>
-    <span class='doccomment'>/// }</span>
-    <span class='doccomment'>/// assert_eq!(data, [0b00010001, 0b10000000]);</span>
-    <span class='doccomment'>/// ```</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>write_unary1</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>value</span>: <span class='ident'>u32</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(), <span class='ident'>io</span>::<span class='ident'>Error</span><span class='op'>&gt;</span> {
-        <span class='kw'>match</span> <span class='ident'>value</span> {
-            <span class='number'>0</span>        <span class='op'>=&gt;</span> {<span class='self'>self</span>.<span class='ident'>write_bit</span>(<span class='bool-val'>true</span>)}
-            <span class='number'>1</span>...<span class='number'>32</span>   <span class='op'>=&gt;</span> {<span class='self'>self</span>.<span class='ident'>write</span>(<span class='ident'>value</span>, <span class='number'>0u32</span>)
-                             .<span class='ident'>and_then</span>(<span class='op'>|</span>()<span class='op'>|</span> <span class='self'>self</span>.<span class='ident'>write_bit</span>(<span class='bool-val'>true</span>))}
-            <span class='number'>33</span>...<span class='number'>64</span>  <span class='op'>=&gt;</span> {<span class='self'>self</span>.<span class='ident'>write</span>(<span class='ident'>value</span>, <span class='number'>0u64</span>)
-                             .<span class='ident'>and_then</span>(<span class='op'>|</span>()<span class='op'>|</span> <span class='self'>self</span>.<span class='ident'>write_bit</span>(<span class='bool-val'>true</span>))}
-            <span class='kw-2'>mut</span> <span class='ident'>bits</span> <span class='op'>=&gt;</span> {<span class='kw'>while</span> <span class='ident'>bits</span> <span class='op'>&gt;</span> <span class='number'>64</span> {<span class='self'>self</span>.<span class='ident'>write</span>(<span class='number'>64</span>, <span class='number'>0u64</span>)<span class='question-mark'>?</span>; <span class='ident'>bits</span> <span class='op'>-=</span> <span class='number'>64</span>;}
-                         <span class='self'>self</span>.<span class='ident'>write_unary1</span>(<span class='ident'>bits</span>)}
+    <span class="doccomment">/// Writes `value` number of 0 bits to the stream</span>
+    <span class="doccomment">/// and then writes a 1 bit.  This field is variably-sized.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Errors</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Passes along any I/O error from the underyling stream.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Example</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// use std::io::Write;</span>
+    <span class="doccomment">/// use bitstream_io::{BigEndian, BitWriter};</span>
+    <span class="doccomment">/// let mut data = Vec::new();</span>
+    <span class="doccomment">/// {</span>
+    <span class="doccomment">///     let mut writer = BitWriter::&lt;BigEndian&gt;::new(&amp;mut data);</span>
+    <span class="doccomment">///     writer.write_unary1(0).unwrap();</span>
+    <span class="doccomment">///     writer.write_unary1(3).unwrap();</span>
+    <span class="doccomment">///     writer.write_unary1(10).unwrap();</span>
+    <span class="doccomment">/// }</span>
+    <span class="doccomment">/// assert_eq!(data, [0b10001000, 0b00000001]);</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// use std::io::Write;</span>
+    <span class="doccomment">/// use bitstream_io::{LittleEndian, BitWriter};</span>
+    <span class="doccomment">/// let mut data = Vec::new();</span>
+    <span class="doccomment">/// {</span>
+    <span class="doccomment">///     let mut writer = BitWriter::&lt;LittleEndian&gt;::new(&amp;mut data);</span>
+    <span class="doccomment">///     writer.write_unary1(0).unwrap();</span>
+    <span class="doccomment">///     writer.write_unary1(3).unwrap();</span>
+    <span class="doccomment">///     writer.write_unary1(10).unwrap();</span>
+    <span class="doccomment">/// }</span>
+    <span class="doccomment">/// assert_eq!(data, [0b00010001, 0b10000000]);</span>
+    <span class="doccomment">/// ```</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write_unary1</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">value</span>: <span class="ident">u32</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">io</span>::<span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="kw">match</span> <span class="ident">value</span> {
+            <span class="number">0</span>        <span class="op">=&gt;</span> {<span class="self">self</span>.<span class="ident">write_bit</span>(<span class="bool-val">true</span>)}
+            <span class="number">1</span>...<span class="number">32</span>   <span class="op">=&gt;</span> {<span class="self">self</span>.<span class="ident">write</span>(<span class="ident">value</span>, <span class="number">0u32</span>)
+                             .<span class="ident">and_then</span>(<span class="op">|</span>()<span class="op">|</span> <span class="self">self</span>.<span class="ident">write_bit</span>(<span class="bool-val">true</span>))}
+            <span class="number">33</span>...<span class="number">64</span>  <span class="op">=&gt;</span> {<span class="self">self</span>.<span class="ident">write</span>(<span class="ident">value</span>, <span class="number">0u64</span>)
+                             .<span class="ident">and_then</span>(<span class="op">|</span>()<span class="op">|</span> <span class="self">self</span>.<span class="ident">write_bit</span>(<span class="bool-val">true</span>))}
+            <span class="kw-2">mut</span> <span class="ident">bits</span> <span class="op">=&gt;</span> {<span class="kw">while</span> <span class="ident">bits</span> <span class="op">&gt;</span> <span class="number">64</span> {<span class="self">self</span>.<span class="ident">write</span>(<span class="number">64</span>, <span class="number">0u64</span>)<span class="question-mark">?</span>; <span class="ident">bits</span> <span class="op">-=</span> <span class="number">64</span>;}
+                         <span class="self">self</span>.<span class="ident">write_unary1</span>(<span class="ident">bits</span>)}
         }
     }
 
-    <span class='doccomment'>/// Returns true if the stream is aligned at a whole byte.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// # Example</span>
-    <span class='doccomment'>/// ```</span>
-    <span class='doccomment'>/// use std::io::Write;</span>
-    <span class='doccomment'>/// use bitstream_io::{BigEndian, BitWriter};</span>
-    <span class='doccomment'>/// let mut data = Vec::new();</span>
-    <span class='doccomment'>/// let mut writer = BitWriter::&lt;BigEndian&gt;::new(&amp;mut data);</span>
-    <span class='doccomment'>/// assert_eq!(writer.byte_aligned(), true);</span>
-    <span class='doccomment'>/// writer.write(1, 0).unwrap();</span>
-    <span class='doccomment'>/// assert_eq!(writer.byte_aligned(), false);</span>
-    <span class='doccomment'>/// writer.write(7, 0).unwrap();</span>
-    <span class='doccomment'>/// assert_eq!(writer.byte_aligned(), true);</span>
-    <span class='doccomment'>/// ```</span>
-    <span class='attribute'>#[<span class='ident'>inline</span>(<span class='ident'>always</span>)]</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>byte_aligned</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>bool</span> {<span class='self'>self</span>.<span class='ident'>bitqueue</span>.<span class='ident'>is_empty</span>()}
+    <span class="doccomment">/// Returns true if the stream is aligned at a whole byte.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Example</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// use std::io::Write;</span>
+    <span class="doccomment">/// use bitstream_io::{BigEndian, BitWriter};</span>
+    <span class="doccomment">/// let mut data = Vec::new();</span>
+    <span class="doccomment">/// let mut writer = BitWriter::&lt;BigEndian&gt;::new(&amp;mut data);</span>
+    <span class="doccomment">/// assert_eq!(writer.byte_aligned(), true);</span>
+    <span class="doccomment">/// writer.write(1, 0).unwrap();</span>
+    <span class="doccomment">/// assert_eq!(writer.byte_aligned(), false);</span>
+    <span class="doccomment">/// writer.write(7, 0).unwrap();</span>
+    <span class="doccomment">/// assert_eq!(writer.byte_aligned(), true);</span>
+    <span class="doccomment">/// ```</span>
+    <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">byte_aligned</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">bool</span> {<span class="self">self</span>.<span class="ident">bitqueue</span>.<span class="ident">is_empty</span>()}
 
-    <span class='doccomment'>/// Pads the stream with 0 bits until it is aligned at a whole byte.</span>
-    <span class='doccomment'>/// Does nothing if the stream is already aligned.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// # Errors</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// Passes along any I/O error from the underyling stream.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// # Example</span>
-    <span class='doccomment'>/// ```</span>
-    <span class='doccomment'>/// use std::io::Write;</span>
-    <span class='doccomment'>/// use bitstream_io::{BigEndian, BitWriter};</span>
-    <span class='doccomment'>/// let mut data = Vec::new();</span>
-    <span class='doccomment'>/// {</span>
-    <span class='doccomment'>///     let mut writer = BitWriter::&lt;BigEndian&gt;::new(&amp;mut data);</span>
-    <span class='doccomment'>///     writer.write(1, 0).unwrap();</span>
-    <span class='doccomment'>///     writer.byte_align().unwrap();</span>
-    <span class='doccomment'>///     writer.write(8, 0xFF).unwrap();</span>
-    <span class='doccomment'>/// }</span>
-    <span class='doccomment'>/// assert_eq!(data, [0x00, 0xFF]);</span>
-    <span class='doccomment'>/// ```</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>byte_align</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(), <span class='ident'>io</span>::<span class='ident'>Error</span><span class='op'>&gt;</span> {
-        <span class='kw'>while</span> <span class='op'>!</span><span class='self'>self</span>.<span class='ident'>byte_aligned</span>() {
-            <span class='self'>self</span>.<span class='ident'>write_bit</span>(<span class='bool-val'>false</span>)<span class='question-mark'>?</span>;
+    <span class="doccomment">/// Pads the stream with 0 bits until it is aligned at a whole byte.</span>
+    <span class="doccomment">/// Does nothing if the stream is already aligned.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Errors</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Passes along any I/O error from the underyling stream.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Example</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// use std::io::Write;</span>
+    <span class="doccomment">/// use bitstream_io::{BigEndian, BitWriter};</span>
+    <span class="doccomment">/// let mut data = Vec::new();</span>
+    <span class="doccomment">/// {</span>
+    <span class="doccomment">///     let mut writer = BitWriter::&lt;BigEndian&gt;::new(&amp;mut data);</span>
+    <span class="doccomment">///     writer.write(1, 0).unwrap();</span>
+    <span class="doccomment">///     writer.byte_align().unwrap();</span>
+    <span class="doccomment">///     writer.write(8, 0xFF).unwrap();</span>
+    <span class="doccomment">/// }</span>
+    <span class="doccomment">/// assert_eq!(data, [0x00, 0xFF]);</span>
+    <span class="doccomment">/// ```</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">byte_align</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">io</span>::<span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="kw">while</span> <span class="op">!</span><span class="self">self</span>.<span class="ident">byte_aligned</span>() {
+            <span class="self">self</span>.<span class="ident">write_bit</span>(<span class="bool-val">false</span>)<span class="question-mark">?</span>;
         }
-        <span class='prelude-val'>Ok</span>(())
+        <span class="prelude-val">Ok</span>(())
     }
 
-    <span class='doccomment'>/// Consumes writer and returns any un-written partial byte</span>
-    <span class='doccomment'>/// as a `(bits, value)` tuple.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// # Examples</span>
-    <span class='doccomment'>/// ```</span>
-    <span class='doccomment'>/// use std::io::Write;</span>
-    <span class='doccomment'>/// use bitstream_io::{BigEndian, BitWriter};</span>
-    <span class='doccomment'>/// let mut data = Vec::new();</span>
-    <span class='doccomment'>/// let (bits, value) = {</span>
-    <span class='doccomment'>///     let mut writer = BitWriter::&lt;BigEndian&gt;::new(&amp;mut data);</span>
-    <span class='doccomment'>///     writer.write(15, 0b1010_0101_0101_101).unwrap();</span>
-    <span class='doccomment'>///     writer.into_unwritten()</span>
-    <span class='doccomment'>/// };</span>
-    <span class='doccomment'>/// assert_eq!(data, [0b1010_0101]);</span>
-    <span class='doccomment'>/// assert_eq!(bits, 7);</span>
-    <span class='doccomment'>/// assert_eq!(value, 0b0101_101);</span>
-    <span class='doccomment'>/// ```</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// ```</span>
-    <span class='doccomment'>/// use std::io::Write;</span>
-    <span class='doccomment'>/// use bitstream_io::{BigEndian, BitWriter};</span>
-    <span class='doccomment'>/// let mut data = Vec::new();</span>
-    <span class='doccomment'>/// let (bits, value) = {</span>
-    <span class='doccomment'>///     let mut writer = BitWriter::&lt;BigEndian&gt;::new(&amp;mut data);</span>
-    <span class='doccomment'>///     writer.write(8, 0b1010_0101).unwrap();</span>
-    <span class='doccomment'>///     writer.into_unwritten()</span>
-    <span class='doccomment'>/// };</span>
-    <span class='doccomment'>/// assert_eq!(data, [0b1010_0101]);</span>
-    <span class='doccomment'>/// assert_eq!(bits, 0);</span>
-    <span class='doccomment'>/// assert_eq!(value, 0);</span>
-    <span class='doccomment'>/// ```</span>
-    <span class='attribute'>#[<span class='ident'>inline</span>(<span class='ident'>always</span>)]</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>into_unwritten</span>(<span class='self'>self</span>) <span class='op'>-&gt;</span> (<span class='ident'>u32</span>, <span class='ident'>u8</span>) {
-        (<span class='self'>self</span>.<span class='ident'>bitqueue</span>.<span class='ident'>len</span>(), <span class='self'>self</span>.<span class='ident'>bitqueue</span>.<span class='ident'>value</span>())
+    <span class="doccomment">/// Consumes writer and returns any un-written partial byte</span>
+    <span class="doccomment">/// as a `(bits, value)` tuple.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Examples</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// use std::io::Write;</span>
+    <span class="doccomment">/// use bitstream_io::{BigEndian, BitWriter};</span>
+    <span class="doccomment">/// let mut data = Vec::new();</span>
+    <span class="doccomment">/// let (bits, value) = {</span>
+    <span class="doccomment">///     let mut writer = BitWriter::&lt;BigEndian&gt;::new(&amp;mut data);</span>
+    <span class="doccomment">///     writer.write(15, 0b1010_0101_0101_101).unwrap();</span>
+    <span class="doccomment">///     writer.into_unwritten()</span>
+    <span class="doccomment">/// };</span>
+    <span class="doccomment">/// assert_eq!(data, [0b1010_0101]);</span>
+    <span class="doccomment">/// assert_eq!(bits, 7);</span>
+    <span class="doccomment">/// assert_eq!(value, 0b0101_101);</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// use std::io::Write;</span>
+    <span class="doccomment">/// use bitstream_io::{BigEndian, BitWriter};</span>
+    <span class="doccomment">/// let mut data = Vec::new();</span>
+    <span class="doccomment">/// let (bits, value) = {</span>
+    <span class="doccomment">///     let mut writer = BitWriter::&lt;BigEndian&gt;::new(&amp;mut data);</span>
+    <span class="doccomment">///     writer.write(8, 0b1010_0101).unwrap();</span>
+    <span class="doccomment">///     writer.into_unwritten()</span>
+    <span class="doccomment">/// };</span>
+    <span class="doccomment">/// assert_eq!(data, [0b1010_0101]);</span>
+    <span class="doccomment">/// assert_eq!(bits, 0);</span>
+    <span class="doccomment">/// assert_eq!(value, 0);</span>
+    <span class="doccomment">/// ```</span>
+    <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_unwritten</span>(<span class="self">self</span>) <span class="op">-&gt;</span> (<span class="ident">u32</span>, <span class="ident">u8</span>) {
+        (<span class="self">self</span>.<span class="ident">bitqueue</span>.<span class="ident">len</span>(), <span class="self">self</span>.<span class="ident">bitqueue</span>.<span class="ident">value</span>())
     }
 }
 
-<span class='kw'>impl</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> <span class='ident'>BitWriter</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>BigEndian</span><span class='op'>&gt;</span> {
-    <span class='doccomment'>/// Writes a twos-complement signed value to the stream</span>
-    <span class='doccomment'>/// with the given number of bits.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// # Errors</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// Passes along any I/O error from the underlying stream.</span>
-    <span class='doccomment'>/// Returns an error if the input type is too small</span>
-    <span class='doccomment'>/// to hold the given number of bits.</span>
-    <span class='doccomment'>/// Returns an error if the value is too large</span>
-    <span class='doccomment'>/// to fit the given number of bits.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// # Example</span>
-    <span class='doccomment'>/// ```</span>
-    <span class='doccomment'>/// use std::io::Write;</span>
-    <span class='doccomment'>/// use bitstream_io::{BigEndian, BitWriter};</span>
-    <span class='doccomment'>/// let mut data = Vec::new();</span>
-    <span class='doccomment'>/// {</span>
-    <span class='doccomment'>///     let mut writer = BitWriter::&lt;BigEndian&gt;::new(&amp;mut data);</span>
-    <span class='doccomment'>///     writer.write_signed(4, -5).unwrap();</span>
-    <span class='doccomment'>///     writer.write_signed(4, 7).unwrap();</span>
-    <span class='doccomment'>/// }</span>
-    <span class='doccomment'>/// assert_eq!(data, [0b10110111]);</span>
-    <span class='doccomment'>/// ```</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>write_signed</span><span class='op'>&lt;</span><span class='ident'>S</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>bits</span>: <span class='ident'>u32</span>, <span class='ident'>value</span>: <span class='ident'>S</span>) <span class='op'>-&gt;</span>
-        <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(), <span class='ident'>io</span>::<span class='ident'>Error</span><span class='op'>&gt;</span> <span class='kw'>where</span> <span class='ident'>S</span>: <span class='ident'>SignedNumeric</span> {
+<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">BitWriter</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">BigEndian</span><span class="op">&gt;</span> {
+    <span class="doccomment">/// Writes a twos-complement signed value to the stream</span>
+    <span class="doccomment">/// with the given number of bits.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Errors</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Passes along any I/O error from the underlying stream.</span>
+    <span class="doccomment">/// Returns an error if the input type is too small</span>
+    <span class="doccomment">/// to hold the given number of bits.</span>
+    <span class="doccomment">/// Returns an error if the value is too large</span>
+    <span class="doccomment">/// to fit the given number of bits.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Example</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// use std::io::Write;</span>
+    <span class="doccomment">/// use bitstream_io::{BigEndian, BitWriter};</span>
+    <span class="doccomment">/// let mut data = Vec::new();</span>
+    <span class="doccomment">/// {</span>
+    <span class="doccomment">///     let mut writer = BitWriter::&lt;BigEndian&gt;::new(&amp;mut data);</span>
+    <span class="doccomment">///     writer.write_signed(4, -5).unwrap();</span>
+    <span class="doccomment">///     writer.write_signed(4, 7).unwrap();</span>
+    <span class="doccomment">/// }</span>
+    <span class="doccomment">/// assert_eq!(data, [0b10110111]);</span>
+    <span class="doccomment">/// ```</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write_signed</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">bits</span>: <span class="ident">u32</span>, <span class="ident">value</span>: <span class="ident">S</span>) <span class="op">-&gt;</span>
+        <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">io</span>::<span class="ident">Error</span><span class="op">&gt;</span> <span class="kw">where</span> <span class="ident">S</span>: <span class="ident">SignedNumeric</span> {
 
-        <span class='kw'>if</span> <span class='ident'>bits</span> <span class='op'>&gt;</span> <span class='ident'>S</span>::<span class='ident'>bits_size</span>() {
-            <span class='prelude-val'>Err</span>(<span class='ident'>io</span>::<span class='ident'>Error</span>::<span class='ident'>new</span>(<span class='ident'>io</span>::<span class='ident'>ErrorKind</span>::<span class='ident'>InvalidInput</span>,
-                               <span class='string'>&quot;excessive bits for type written&quot;</span>))
-        } <span class='kw'>else</span> <span class='kw'>if</span> <span class='ident'>value</span>.<span class='ident'>is_negative</span>() {
-            <span class='self'>self</span>.<span class='ident'>write_bit</span>(<span class='bool-val'>true</span>)
-            .<span class='ident'>and_then</span>(<span class='op'>|</span>()<span class='op'>|</span> <span class='self'>self</span>.<span class='ident'>write</span>(<span class='ident'>bits</span> <span class='op'>-</span> <span class='number'>1</span>, <span class='ident'>value</span>.<span class='ident'>as_unsigned</span>(<span class='ident'>bits</span>)))
-        } <span class='kw'>else</span> {
-            <span class='self'>self</span>.<span class='ident'>write_bit</span>(<span class='bool-val'>false</span>)
-            .<span class='ident'>and_then</span>(<span class='op'>|</span>()<span class='op'>|</span> <span class='self'>self</span>.<span class='ident'>write</span>(<span class='ident'>bits</span> <span class='op'>-</span> <span class='number'>1</span>, <span class='ident'>value</span>))
-        }
-    }
-
-}
-
-<span class='kw'>impl</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> <span class='ident'>BitWriter</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>LittleEndian</span><span class='op'>&gt;</span> {
-    <span class='doccomment'>/// Writes a twos-complement signed value to the stream</span>
-    <span class='doccomment'>/// with the given number of bits.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// # Errors</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// Passes along any I/O error from the underlying stream.</span>
-    <span class='doccomment'>/// Returns an error if the input type is too small</span>
-    <span class='doccomment'>/// to hold the given number of bits.</span>
-    <span class='doccomment'>/// Returns an error if the value is too large</span>
-    <span class='doccomment'>/// to fit the given number of bits.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// # Example</span>
-    <span class='doccomment'>/// ```</span>
-    <span class='doccomment'>/// use std::io::Write;</span>
-    <span class='doccomment'>/// use bitstream_io::{LittleEndian, BitWriter};</span>
-    <span class='doccomment'>/// let mut data = Vec::new();</span>
-    <span class='doccomment'>/// {</span>
-    <span class='doccomment'>///     let mut writer = BitWriter::&lt;LittleEndian&gt;::new(&amp;mut data);</span>
-    <span class='doccomment'>///     writer.write_signed(4, 7).unwrap();</span>
-    <span class='doccomment'>///     writer.write_signed(4, -5).unwrap();</span>
-    <span class='doccomment'>/// }</span>
-    <span class='doccomment'>/// assert_eq!(data, [0b10110111]);</span>
-    <span class='doccomment'>/// ```</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>write_signed</span><span class='op'>&lt;</span><span class='ident'>S</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>bits</span>: <span class='ident'>u32</span>, <span class='ident'>value</span>: <span class='ident'>S</span>) <span class='op'>-&gt;</span>
-        <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(), <span class='ident'>io</span>::<span class='ident'>Error</span><span class='op'>&gt;</span> <span class='kw'>where</span> <span class='ident'>S</span>: <span class='ident'>SignedNumeric</span> {
-
-        <span class='kw'>if</span> <span class='ident'>bits</span> <span class='op'>&gt;</span> <span class='ident'>S</span>::<span class='ident'>bits_size</span>() {
-            <span class='prelude-val'>Err</span>(<span class='ident'>io</span>::<span class='ident'>Error</span>::<span class='ident'>new</span>(<span class='ident'>io</span>::<span class='ident'>ErrorKind</span>::<span class='ident'>InvalidInput</span>,
-                               <span class='string'>&quot;excessive bits for type written&quot;</span>))
-        } <span class='kw'>else</span> <span class='kw'>if</span> <span class='ident'>value</span>.<span class='ident'>is_negative</span>() {
-            <span class='self'>self</span>.<span class='ident'>write</span>(<span class='ident'>bits</span> <span class='op'>-</span> <span class='number'>1</span>, <span class='ident'>value</span>.<span class='ident'>as_unsigned</span>(<span class='ident'>bits</span>))
-            .<span class='ident'>and_then</span>(<span class='op'>|</span>()<span class='op'>|</span> <span class='self'>self</span>.<span class='ident'>write_bit</span>(<span class='bool-val'>true</span>))
-        } <span class='kw'>else</span> {
-            <span class='self'>self</span>.<span class='ident'>write</span>(<span class='ident'>bits</span> <span class='op'>-</span> <span class='number'>1</span>, <span class='ident'>value</span>)
-            .<span class='ident'>and_then</span>(<span class='op'>|</span>()<span class='op'>|</span> <span class='self'>self</span>.<span class='ident'>write_bit</span>(<span class='bool-val'>false</span>))
+        <span class="kw">if</span> <span class="ident">bits</span> <span class="op">&gt;</span> <span class="ident">S</span>::<span class="ident">bits_size</span>() {
+            <span class="prelude-val">Err</span>(<span class="ident">io</span>::<span class="ident">Error</span>::<span class="ident">new</span>(<span class="ident">io</span>::<span class="ident">ErrorKind</span>::<span class="ident">InvalidInput</span>,
+                               <span class="string">&quot;excessive bits for type written&quot;</span>))
+        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">value</span>.<span class="ident">is_negative</span>() {
+            <span class="self">self</span>.<span class="ident">write_bit</span>(<span class="bool-val">true</span>)
+            .<span class="ident">and_then</span>(<span class="op">|</span>()<span class="op">|</span> <span class="self">self</span>.<span class="ident">write</span>(<span class="ident">bits</span> <span class="op">-</span> <span class="number">1</span>, <span class="ident">value</span>.<span class="ident">as_unsigned</span>(<span class="ident">bits</span>)))
+        } <span class="kw">else</span> {
+            <span class="self">self</span>.<span class="ident">write_bit</span>(<span class="bool-val">false</span>)
+            .<span class="ident">and_then</span>(<span class="op">|</span>()<span class="op">|</span> <span class="self">self</span>.<span class="ident">write</span>(<span class="ident">bits</span> <span class="op">-</span> <span class="number">1</span>, <span class="ident">value</span>))
         }
     }
 
 }
 
-<span class='attribute'>#[<span class='ident'>inline</span>]</span>
-<span class='kw'>fn</span> <span class='ident'>write_byte</span>(<span class='ident'>writer</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>io</span>::<span class='ident'>Write</span>, <span class='ident'>byte</span>: <span class='ident'>u8</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(),<span class='ident'>io</span>::<span class='ident'>Error</span><span class='op'>&gt;</span> {
-    <span class='kw'>let</span> <span class='ident'>buf</span> <span class='op'>=</span> [<span class='ident'>byte</span>];
-    <span class='ident'>writer</span>.<span class='ident'>write_all</span>(<span class='kw-2'>&amp;</span><span class='ident'>buf</span>)
+<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">BitWriter</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">LittleEndian</span><span class="op">&gt;</span> {
+    <span class="doccomment">/// Writes a twos-complement signed value to the stream</span>
+    <span class="doccomment">/// with the given number of bits.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Errors</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Passes along any I/O error from the underlying stream.</span>
+    <span class="doccomment">/// Returns an error if the input type is too small</span>
+    <span class="doccomment">/// to hold the given number of bits.</span>
+    <span class="doccomment">/// Returns an error if the value is too large</span>
+    <span class="doccomment">/// to fit the given number of bits.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Example</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// use std::io::Write;</span>
+    <span class="doccomment">/// use bitstream_io::{LittleEndian, BitWriter};</span>
+    <span class="doccomment">/// let mut data = Vec::new();</span>
+    <span class="doccomment">/// {</span>
+    <span class="doccomment">///     let mut writer = BitWriter::&lt;LittleEndian&gt;::new(&amp;mut data);</span>
+    <span class="doccomment">///     writer.write_signed(4, 7).unwrap();</span>
+    <span class="doccomment">///     writer.write_signed(4, -5).unwrap();</span>
+    <span class="doccomment">/// }</span>
+    <span class="doccomment">/// assert_eq!(data, [0b10110111]);</span>
+    <span class="doccomment">/// ```</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write_signed</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">bits</span>: <span class="ident">u32</span>, <span class="ident">value</span>: <span class="ident">S</span>) <span class="op">-&gt;</span>
+        <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">io</span>::<span class="ident">Error</span><span class="op">&gt;</span> <span class="kw">where</span> <span class="ident">S</span>: <span class="ident">SignedNumeric</span> {
+
+        <span class="kw">if</span> <span class="ident">bits</span> <span class="op">&gt;</span> <span class="ident">S</span>::<span class="ident">bits_size</span>() {
+            <span class="prelude-val">Err</span>(<span class="ident">io</span>::<span class="ident">Error</span>::<span class="ident">new</span>(<span class="ident">io</span>::<span class="ident">ErrorKind</span>::<span class="ident">InvalidInput</span>,
+                               <span class="string">&quot;excessive bits for type written&quot;</span>))
+        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">value</span>.<span class="ident">is_negative</span>() {
+            <span class="self">self</span>.<span class="ident">write</span>(<span class="ident">bits</span> <span class="op">-</span> <span class="number">1</span>, <span class="ident">value</span>.<span class="ident">as_unsigned</span>(<span class="ident">bits</span>))
+            .<span class="ident">and_then</span>(<span class="op">|</span>()<span class="op">|</span> <span class="self">self</span>.<span class="ident">write_bit</span>(<span class="bool-val">true</span>))
+        } <span class="kw">else</span> {
+            <span class="self">self</span>.<span class="ident">write</span>(<span class="ident">bits</span> <span class="op">-</span> <span class="number">1</span>, <span class="ident">value</span>)
+            .<span class="ident">and_then</span>(<span class="op">|</span>()<span class="op">|</span> <span class="self">self</span>.<span class="ident">write_bit</span>(<span class="bool-val">false</span>))
+        }
+    }
+
 }
 
-<span class='kw'>fn</span> <span class='ident'>write_unaligned</span><span class='op'>&lt;</span><span class='ident'>E</span>,<span class='ident'>N</span><span class='op'>&gt;</span>(<span class='ident'>writer</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>io</span>::<span class='ident'>Write</span>,
-                        <span class='ident'>acc</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>BitQueue</span><span class='op'>&lt;</span><span class='ident'>E</span>,<span class='ident'>N</span><span class='op'>&gt;</span>,
-                        <span class='ident'>rem</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>BitQueue</span><span class='op'>&lt;</span><span class='ident'>E</span>,<span class='ident'>u8</span><span class='op'>&gt;</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(), <span class='ident'>io</span>::<span class='ident'>Error</span><span class='op'>&gt;</span>
-    <span class='kw'>where</span> <span class='ident'>E</span>:<span class='ident'>Endianness</span>, <span class='ident'>N</span>: <span class='ident'>Numeric</span> {
+<span class="attribute">#[<span class="ident">inline</span>]</span>
+<span class="kw">fn</span> <span class="ident">write_byte</span>(<span class="ident">writer</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">io</span>::<span class="ident">Write</span>, <span class="ident">byte</span>: <span class="ident">u8</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(),<span class="ident">io</span>::<span class="ident">Error</span><span class="op">&gt;</span> {
+    <span class="kw">let</span> <span class="ident">buf</span> <span class="op">=</span> [<span class="ident">byte</span>];
+    <span class="ident">writer</span>.<span class="ident">write_all</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>)
+}
 
-    <span class='kw'>if</span> <span class='ident'>rem</span>.<span class='ident'>is_empty</span>() {
-        <span class='prelude-val'>Ok</span>(())
-    } <span class='kw'>else</span> {
-        <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>cmp</span>::<span class='ident'>min</span>;
-        <span class='kw'>let</span> <span class='ident'>bits_to_transfer</span> <span class='op'>=</span> <span class='ident'>min</span>(<span class='number'>8</span> <span class='op'>-</span> <span class='ident'>rem</span>.<span class='ident'>len</span>(), <span class='ident'>acc</span>.<span class='ident'>len</span>());
-        <span class='ident'>rem</span>.<span class='ident'>push</span>(<span class='ident'>bits_to_transfer</span>, <span class='ident'>acc</span>.<span class='ident'>pop</span>(<span class='ident'>bits_to_transfer</span>).<span class='ident'>to_u8</span>());
-        <span class='kw'>if</span> <span class='ident'>rem</span>.<span class='ident'>len</span>() <span class='op'>==</span> <span class='number'>8</span> {
-            <span class='ident'>write_byte</span>(<span class='ident'>writer</span>, <span class='ident'>rem</span>.<span class='ident'>pop</span>(<span class='number'>8</span>))
-        } <span class='kw'>else</span> {
-            <span class='prelude-val'>Ok</span>(())
+<span class="kw">fn</span> <span class="ident">write_unaligned</span><span class="op">&lt;</span><span class="ident">E</span>,<span class="ident">N</span><span class="op">&gt;</span>(<span class="ident">writer</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">io</span>::<span class="ident">Write</span>,
+                        <span class="ident">acc</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">BitQueue</span><span class="op">&lt;</span><span class="ident">E</span>,<span class="ident">N</span><span class="op">&gt;</span>,
+                        <span class="ident">rem</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">BitQueue</span><span class="op">&lt;</span><span class="ident">E</span>,<span class="ident">u8</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">io</span>::<span class="ident">Error</span><span class="op">&gt;</span>
+    <span class="kw">where</span> <span class="ident">E</span>:<span class="ident">Endianness</span>, <span class="ident">N</span>: <span class="ident">Numeric</span> {
+
+    <span class="kw">if</span> <span class="ident">rem</span>.<span class="ident">is_empty</span>() {
+        <span class="prelude-val">Ok</span>(())
+    } <span class="kw">else</span> {
+        <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">cmp</span>::<span class="ident">min</span>;
+        <span class="kw">let</span> <span class="ident">bits_to_transfer</span> <span class="op">=</span> <span class="ident">min</span>(<span class="number">8</span> <span class="op">-</span> <span class="ident">rem</span>.<span class="ident">len</span>(), <span class="ident">acc</span>.<span class="ident">len</span>());
+        <span class="ident">rem</span>.<span class="ident">push</span>(<span class="ident">bits_to_transfer</span>, <span class="ident">acc</span>.<span class="ident">pop</span>(<span class="ident">bits_to_transfer</span>).<span class="ident">to_u8</span>());
+        <span class="kw">if</span> <span class="ident">rem</span>.<span class="ident">len</span>() <span class="op">==</span> <span class="number">8</span> {
+            <span class="ident">write_byte</span>(<span class="ident">writer</span>, <span class="ident">rem</span>.<span class="ident">pop</span>(<span class="number">8</span>))
+        } <span class="kw">else</span> {
+            <span class="prelude-val">Ok</span>(())
         }
     }
 }
 
-<span class='kw'>fn</span> <span class='ident'>write_aligned</span><span class='op'>&lt;</span><span class='ident'>E</span>,<span class='ident'>N</span><span class='op'>&gt;</span>(<span class='ident'>writer</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>io</span>::<span class='ident'>Write</span>,
-                      <span class='ident'>acc</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>BitQueue</span><span class='op'>&lt;</span><span class='ident'>E</span>,<span class='ident'>N</span><span class='op'>&gt;</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(), <span class='ident'>io</span>::<span class='ident'>Error</span><span class='op'>&gt;</span>
-    <span class='kw'>where</span> <span class='ident'>E</span>: <span class='ident'>Endianness</span>, <span class='ident'>N</span>: <span class='ident'>Numeric</span> {
+<span class="kw">fn</span> <span class="ident">write_aligned</span><span class="op">&lt;</span><span class="ident">E</span>,<span class="ident">N</span><span class="op">&gt;</span>(<span class="ident">writer</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">io</span>::<span class="ident">Write</span>,
+                      <span class="ident">acc</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">BitQueue</span><span class="op">&lt;</span><span class="ident">E</span>,<span class="ident">N</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">io</span>::<span class="ident">Error</span><span class="op">&gt;</span>
+    <span class="kw">where</span> <span class="ident">E</span>: <span class="ident">Endianness</span>, <span class="ident">N</span>: <span class="ident">Numeric</span> {
 
-    <span class='kw'>let</span> <span class='ident'>to_write</span> <span class='op'>=</span> (<span class='ident'>acc</span>.<span class='ident'>len</span>() <span class='op'>/</span> <span class='number'>8</span>) <span class='kw'>as</span> <span class='ident'>usize</span>;
-    <span class='kw'>if</span> <span class='ident'>to_write</span> <span class='op'>&gt;</span> <span class='number'>0</span> {
-        <span class='comment'>// 64-bit types are the maximum supported</span>
-        <span class='macro'>debug_assert</span><span class='macro'>!</span>(<span class='ident'>to_write</span> <span class='op'>&lt;=</span> <span class='number'>8</span>);
-        <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>buf</span> <span class='op'>=</span> [<span class='number'>0</span>; <span class='number'>8</span>];
-        <span class='kw'>for</span> <span class='ident'>b</span> <span class='kw'>in</span> <span class='ident'>buf</span>[<span class='number'>0</span>..<span class='ident'>to_write</span>].<span class='ident'>iter_mut</span>() {
-            <span class='kw-2'>*</span><span class='ident'>b</span> <span class='op'>=</span> <span class='ident'>acc</span>.<span class='ident'>pop</span>(<span class='number'>8</span>).<span class='ident'>to_u8</span>();
+    <span class="kw">let</span> <span class="ident">to_write</span> <span class="op">=</span> (<span class="ident">acc</span>.<span class="ident">len</span>() <span class="op">/</span> <span class="number">8</span>) <span class="kw">as</span> <span class="ident">usize</span>;
+    <span class="kw">if</span> <span class="ident">to_write</span> <span class="op">&gt;</span> <span class="number">0</span> {
+        <span class="comment">// 64-bit types are the maximum supported</span>
+        <span class="macro">debug_assert</span><span class="macro">!</span>(<span class="ident">to_write</span> <span class="op">&lt;=</span> <span class="number">8</span>);
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> [<span class="number">0</span>; <span class="number">8</span>];
+        <span class="kw">for</span> <span class="ident">b</span> <span class="kw">in</span> <span class="ident">buf</span>[<span class="number">0</span>..<span class="ident">to_write</span>].<span class="ident">iter_mut</span>() {
+            <span class="kw-2">*</span><span class="ident">b</span> <span class="op">=</span> <span class="ident">acc</span>.<span class="ident">pop</span>(<span class="number">8</span>).<span class="ident">to_u8</span>();
         }
-        <span class='ident'>writer</span>.<span class='ident'>write_all</span>(<span class='kw-2'>&amp;</span><span class='ident'>buf</span>[<span class='number'>0</span>..<span class='ident'>to_write</span>])
-    } <span class='kw'>else</span> {
-        <span class='prelude-val'>Ok</span>(())
+        <span class="ident">writer</span>.<span class="ident">write_all</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>[<span class="number">0</span>..<span class="ident">to_write</span>])
+    } <span class="kw">else</span> {
+        <span class="prelude-val">Ok</span>(())
     }
 }
 </pre>

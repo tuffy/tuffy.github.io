@@ -17,7 +17,7 @@
     
     
 </head>
-<body class="rustdoc">
+<body class="rustdoc source">
     <!--[if lte IE 8]>
     <div class="warning">
         This old browser is unsupported and will most likely display funky
@@ -43,7 +43,7 @@
         </form>
     </nav>
 
-    <section id='main' class="content source"><pre class="line-numbers"><span id="1">  1</span>
+    <section id='main' class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -376,215 +376,215 @@
 <span id="331">331</span>
 <span id="332">332</span>
 <span id="333">333</span>
-</pre><pre class='rust '>
-<span class='comment'>// Copyright 2017 Brian Langenberger</span>
-<span class='comment'>//</span>
-<span class='comment'>// Licensed under the Apache License, Version 2.0 &lt;LICENSE-APACHE or</span>
-<span class='comment'>// http://www.apache.org/licenses/LICENSE-2.0&gt; or the MIT license</span>
-<span class='comment'>// &lt;LICENSE-MIT or http://opensource.org/licenses/MIT&gt;, at your</span>
-<span class='comment'>// option. This file may not be copied, modified, or distributed</span>
-<span class='comment'>// except according to those terms.</span>
+</pre><pre class="rust ">
+<span class="comment">// Copyright 2017 Brian Langenberger</span>
+<span class="comment">//</span>
+<span class="comment">// Licensed under the Apache License, Version 2.0 &lt;LICENSE-APACHE or</span>
+<span class="comment">// http://www.apache.org/licenses/LICENSE-2.0&gt; or the MIT license</span>
+<span class="comment">// &lt;LICENSE-MIT or http://opensource.org/licenses/MIT&gt;, at your</span>
+<span class="comment">// option. This file may not be copied, modified, or distributed</span>
+<span class="comment">// except according to those terms.</span>
 
-<span class='doccomment'>//! Traits and implementations for reading or writing Huffman codes</span>
-<span class='doccomment'>//! from or to a stream.</span>
+<span class="doccomment">//! Traits and implementations for reading or writing Huffman codes</span>
+<span class="doccomment">//! from or to a stream.</span>
 
-<span class='attribute'>#<span class='op'>!</span>[<span class='ident'>warn</span>(<span class='ident'>missing_docs</span>)]</span>
+<span class="attribute">#<span class="op">!</span>[<span class="ident">warn</span>(<span class="ident">missing_docs</span>)]</span>
 
-<span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>fmt</span>;
-<span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>marker</span>::<span class='ident'>PhantomData</span>;
-<span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>collections</span>::<span class='ident'>BTreeMap</span>;
-<span class='kw'>use</span> <span class='kw'>super</span>::<span class='ident'>Endianness</span>;
-<span class='kw'>use</span> <span class='kw'>super</span>::<span class='ident'>BitQueue</span>;
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">fmt</span>;
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">marker</span>::<span class="ident">PhantomData</span>;
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::<span class="ident">BTreeMap</span>;
+<span class="kw">use</span> <span class="kw">super</span>::<span class="ident">Endianness</span>;
+<span class="kw">use</span> <span class="kw">super</span>::<span class="ident">BitQueue</span>;
 
-<span class='doccomment'>/// A compiled Huffman tree element for use with the `read_huffman` method.</span>
-<span class='doccomment'>/// Returned by `compile_read_tree`.</span>
-<span class='doccomment'>///</span>
-<span class='doccomment'>/// Compiled read trees are optimized for faster lookup</span>
-<span class='doccomment'>/// and are therefore endian-specific.</span>
-<span class='doccomment'>///</span>
-<span class='doccomment'>/// In addition, each symbol in the source tree may occur many times</span>
-<span class='doccomment'>/// in the compiled tree.  If symbols require a nontrivial amount of space,</span>
-<span class='doccomment'>/// consider using reference counting so that they may be cloned</span>
-<span class='doccomment'>/// more efficiently.</span>
-<span class='kw'>pub</span> <span class='kw'>enum</span> <span class='ident'>ReadHuffmanTree</span><span class='op'>&lt;</span><span class='ident'>E</span>: <span class='ident'>Endianness</span>, <span class='ident'>T</span>: <span class='ident'>Clone</span><span class='op'>&gt;</span> {
-    <span class='doccomment'>/// The final value and new reader state</span>
-    <span class='ident'>Done</span>(<span class='ident'>T</span>,<span class='ident'>u8</span>,<span class='ident'>u32</span>,<span class='ident'>PhantomData</span><span class='op'>&lt;</span><span class='ident'>E</span><span class='op'>&gt;</span>),
-    <span class='doccomment'>/// Another byte is necessary to determine final value</span>
-    <span class='ident'>Continue</span>(<span class='ident'>Box</span><span class='op'>&lt;</span>[<span class='ident'>ReadHuffmanTree</span><span class='op'>&lt;</span><span class='ident'>E</span>,<span class='ident'>T</span><span class='op'>&gt;</span>]<span class='op'>&gt;</span>),
-    <span class='doccomment'>/// An invalid reader state has been used</span>
-    <span class='ident'>InvalidState</span>
+<span class="doccomment">/// A compiled Huffman tree element for use with the `read_huffman` method.</span>
+<span class="doccomment">/// Returned by `compile_read_tree`.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Compiled read trees are optimized for faster lookup</span>
+<span class="doccomment">/// and are therefore endian-specific.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// In addition, each symbol in the source tree may occur many times</span>
+<span class="doccomment">/// in the compiled tree.  If symbols require a nontrivial amount of space,</span>
+<span class="doccomment">/// consider using reference counting so that they may be cloned</span>
+<span class="doccomment">/// more efficiently.</span>
+<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">ReadHuffmanTree</span><span class="op">&lt;</span><span class="ident">E</span>: <span class="ident">Endianness</span>, <span class="ident">T</span>: <span class="ident">Clone</span><span class="op">&gt;</span> {
+    <span class="doccomment">/// The final value and new reader state</span>
+    <span class="ident">Done</span>(<span class="ident">T</span>,<span class="ident">u8</span>,<span class="ident">u32</span>,<span class="ident">PhantomData</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span>),
+    <span class="doccomment">/// Another byte is necessary to determine final value</span>
+    <span class="ident">Continue</span>(<span class="ident">Box</span><span class="op">&lt;</span>[<span class="ident">ReadHuffmanTree</span><span class="op">&lt;</span><span class="ident">E</span>,<span class="ident">T</span><span class="op">&gt;</span>]<span class="op">&gt;</span>),
+    <span class="doccomment">/// An invalid reader state has been used</span>
+    <span class="ident">InvalidState</span>
 }
 
-<span class='doccomment'>/// Given a vector of symbol/code pairs, compiles a Huffman tree</span>
-<span class='doccomment'>/// for reading.</span>
-<span class='doccomment'>///</span>
-<span class='doccomment'>/// Code must be 0 or 1 bits and are always read from the stream</span>
-<span class='doccomment'>/// from least-significant in the list to most signficant</span>
-<span class='doccomment'>/// (which makes them easier to read for humans).</span>
-<span class='doccomment'>///</span>
-<span class='doccomment'>/// All possible codes must be assigned some symbol,</span>
-<span class='doccomment'>/// and it is acceptable for the same symbol to occur multiple times.</span>
-<span class='doccomment'>///</span>
-<span class='doccomment'>/// ## Examples</span>
-<span class='doccomment'>/// ```</span>
-<span class='doccomment'>/// use bitstream_io::huffman::compile_read_tree;</span>
-<span class='doccomment'>/// use bitstream_io::BigEndian;</span>
-<span class='doccomment'>/// assert!(compile_read_tree::&lt;BigEndian,i32&gt;(</span>
-<span class='doccomment'>///     vec![(1, vec![0]),</span>
-<span class='doccomment'>///          (2, vec![1, 0]),</span>
-<span class='doccomment'>///          (3, vec![1, 1])]).is_ok());</span>
-<span class='doccomment'>/// ```</span>
-<span class='doccomment'>///</span>
-<span class='doccomment'>/// ```</span>
-<span class='doccomment'>/// use std::io::{Read, Cursor};</span>
-<span class='doccomment'>/// use bitstream_io::{BigEndian, BitReader};</span>
-<span class='doccomment'>/// use bitstream_io::huffman::compile_read_tree;</span>
-<span class='doccomment'>/// let tree = compile_read_tree(</span>
-<span class='doccomment'>///     vec![(&#39;a&#39;, vec![0]),</span>
-<span class='doccomment'>///          (&#39;b&#39;, vec![1, 0]),</span>
-<span class='doccomment'>///          (&#39;c&#39;, vec![1, 1, 0]),</span>
-<span class='doccomment'>///          (&#39;d&#39;, vec![1, 1, 1])]).unwrap();</span>
-<span class='doccomment'>/// let data = [0b10110111];</span>
-<span class='doccomment'>/// let mut cursor = Cursor::new(&amp;data);</span>
-<span class='doccomment'>/// let mut reader = BitReader::&lt;BigEndian&gt;::new(&amp;mut cursor);</span>
-<span class='doccomment'>/// assert_eq!(reader.read_huffman(&amp;tree).unwrap(), &#39;b&#39;);</span>
-<span class='doccomment'>/// assert_eq!(reader.read_huffman(&amp;tree).unwrap(), &#39;c&#39;);</span>
-<span class='doccomment'>/// assert_eq!(reader.read_huffman(&amp;tree).unwrap(), &#39;d&#39;);</span>
-<span class='doccomment'>/// ```</span>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>compile_read_tree</span><span class='op'>&lt;</span><span class='ident'>E</span>,<span class='ident'>T</span><span class='op'>&gt;</span>(<span class='ident'>values</span>: <span class='ident'>Vec</span><span class='op'>&lt;</span>(<span class='ident'>T</span>,<span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>u8</span><span class='op'>&gt;</span>)<span class='op'>&gt;</span>) <span class='op'>-&gt;</span>
-    <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>Box</span><span class='op'>&lt;</span>[<span class='ident'>ReadHuffmanTree</span><span class='op'>&lt;</span><span class='ident'>E</span>,<span class='ident'>T</span><span class='op'>&gt;</span>]<span class='op'>&gt;</span>,<span class='ident'>HuffmanTreeError</span><span class='op'>&gt;</span>
-    <span class='kw'>where</span> <span class='ident'>E</span>: <span class='ident'>Endianness</span>, <span class='ident'>T</span>: <span class='ident'>Clone</span> {
+<span class="doccomment">/// Given a vector of symbol/code pairs, compiles a Huffman tree</span>
+<span class="doccomment">/// for reading.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Code must be 0 or 1 bits and are always read from the stream</span>
+<span class="doccomment">/// from least-significant in the list to most signficant</span>
+<span class="doccomment">/// (which makes them easier to read for humans).</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// All possible codes must be assigned some symbol,</span>
+<span class="doccomment">/// and it is acceptable for the same symbol to occur multiple times.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ## Examples</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">/// use bitstream_io::huffman::compile_read_tree;</span>
+<span class="doccomment">/// use bitstream_io::BigEndian;</span>
+<span class="doccomment">/// assert!(compile_read_tree::&lt;BigEndian,i32&gt;(</span>
+<span class="doccomment">///     vec![(1, vec![0]),</span>
+<span class="doccomment">///          (2, vec![1, 0]),</span>
+<span class="doccomment">///          (3, vec![1, 1])]).is_ok());</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">/// use std::io::{Read, Cursor};</span>
+<span class="doccomment">/// use bitstream_io::{BigEndian, BitReader};</span>
+<span class="doccomment">/// use bitstream_io::huffman::compile_read_tree;</span>
+<span class="doccomment">/// let tree = compile_read_tree(</span>
+<span class="doccomment">///     vec![(&#39;a&#39;, vec![0]),</span>
+<span class="doccomment">///          (&#39;b&#39;, vec![1, 0]),</span>
+<span class="doccomment">///          (&#39;c&#39;, vec![1, 1, 0]),</span>
+<span class="doccomment">///          (&#39;d&#39;, vec![1, 1, 1])]).unwrap();</span>
+<span class="doccomment">/// let data = [0b10110111];</span>
+<span class="doccomment">/// let mut cursor = Cursor::new(&amp;data);</span>
+<span class="doccomment">/// let mut reader = BitReader::&lt;BigEndian&gt;::new(&amp;mut cursor);</span>
+<span class="doccomment">/// assert_eq!(reader.read_huffman(&amp;tree).unwrap(), &#39;b&#39;);</span>
+<span class="doccomment">/// assert_eq!(reader.read_huffman(&amp;tree).unwrap(), &#39;c&#39;);</span>
+<span class="doccomment">/// assert_eq!(reader.read_huffman(&amp;tree).unwrap(), &#39;d&#39;);</span>
+<span class="doccomment">/// ```</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">compile_read_tree</span><span class="op">&lt;</span><span class="ident">E</span>,<span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">values</span>: <span class="ident">Vec</span><span class="op">&lt;</span>(<span class="ident">T</span>,<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>)<span class="op">&gt;</span>) <span class="op">-&gt;</span>
+    <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span>[<span class="ident">ReadHuffmanTree</span><span class="op">&lt;</span><span class="ident">E</span>,<span class="ident">T</span><span class="op">&gt;</span>]<span class="op">&gt;</span>,<span class="ident">HuffmanTreeError</span><span class="op">&gt;</span>
+    <span class="kw">where</span> <span class="ident">E</span>: <span class="ident">Endianness</span>, <span class="ident">T</span>: <span class="ident">Clone</span> {
 
-    <span class='kw'>let</span> <span class='ident'>tree</span> <span class='op'>=</span> <span class='ident'>FinalHuffmanTree</span>::<span class='ident'>new</span>(<span class='ident'>values</span>)<span class='question-mark'>?</span>;
+    <span class="kw">let</span> <span class="ident">tree</span> <span class="op">=</span> <span class="ident">FinalHuffmanTree</span>::<span class="ident">new</span>(<span class="ident">values</span>)<span class="question-mark">?</span>;
 
-    <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>result</span> <span class='op'>=</span> <span class='ident'>Vec</span>::<span class='ident'>with_capacity</span>(<span class='number'>256</span>);
-    <span class='ident'>result</span>.<span class='ident'>extend</span>((<span class='number'>0</span>..<span class='number'>256</span>).<span class='ident'>map</span>(<span class='op'>|</span>_<span class='op'>|</span> <span class='ident'>ReadHuffmanTree</span>::<span class='ident'>InvalidState</span>));
-    <span class='kw'>let</span> <span class='ident'>queue</span> <span class='op'>=</span> <span class='ident'>BitQueue</span>::<span class='ident'>from_value</span>(<span class='number'>0</span>, <span class='number'>0</span>);
-    <span class='kw'>let</span> <span class='ident'>i</span> <span class='op'>=</span> <span class='ident'>queue</span>.<span class='ident'>to_state</span>();
-    <span class='ident'>result</span>[<span class='ident'>i</span>] <span class='op'>=</span> <span class='ident'>compile_queue</span>(<span class='ident'>queue</span>, <span class='kw-2'>&amp;</span><span class='ident'>tree</span>);
-    <span class='kw'>for</span> <span class='ident'>bits</span> <span class='kw'>in</span> <span class='number'>1</span>..<span class='number'>8</span> {
-        <span class='kw'>for</span> <span class='ident'>value</span> <span class='kw'>in</span> <span class='number'>0</span>..(<span class='number'>1</span> <span class='op'>&lt;&lt;</span> <span class='ident'>bits</span>) {
-            <span class='kw'>let</span> <span class='ident'>queue</span> <span class='op'>=</span> <span class='ident'>BitQueue</span>::<span class='ident'>from_value</span>(<span class='ident'>value</span>, <span class='ident'>bits</span>);
-            <span class='kw'>let</span> <span class='ident'>i</span> <span class='op'>=</span> <span class='ident'>queue</span>.<span class='ident'>to_state</span>();
-            <span class='ident'>result</span>[<span class='ident'>i</span>] <span class='op'>=</span> <span class='ident'>compile_queue</span>(<span class='ident'>queue</span>, <span class='kw-2'>&amp;</span><span class='ident'>tree</span>);
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="ident">with_capacity</span>(<span class="number">256</span>);
+    <span class="ident">result</span>.<span class="ident">extend</span>((<span class="number">0</span>..<span class="number">256</span>).<span class="ident">map</span>(<span class="op">|</span>_<span class="op">|</span> <span class="ident">ReadHuffmanTree</span>::<span class="ident">InvalidState</span>));
+    <span class="kw">let</span> <span class="ident">queue</span> <span class="op">=</span> <span class="ident">BitQueue</span>::<span class="ident">from_value</span>(<span class="number">0</span>, <span class="number">0</span>);
+    <span class="kw">let</span> <span class="ident">i</span> <span class="op">=</span> <span class="ident">queue</span>.<span class="ident">to_state</span>();
+    <span class="ident">result</span>[<span class="ident">i</span>] <span class="op">=</span> <span class="ident">compile_queue</span>(<span class="ident">queue</span>, <span class="kw-2">&amp;</span><span class="ident">tree</span>);
+    <span class="kw">for</span> <span class="ident">bits</span> <span class="kw">in</span> <span class="number">1</span>..<span class="number">8</span> {
+        <span class="kw">for</span> <span class="ident">value</span> <span class="kw">in</span> <span class="number">0</span>..(<span class="number">1</span> <span class="op">&lt;&lt;</span> <span class="ident">bits</span>) {
+            <span class="kw">let</span> <span class="ident">queue</span> <span class="op">=</span> <span class="ident">BitQueue</span>::<span class="ident">from_value</span>(<span class="ident">value</span>, <span class="ident">bits</span>);
+            <span class="kw">let</span> <span class="ident">i</span> <span class="op">=</span> <span class="ident">queue</span>.<span class="ident">to_state</span>();
+            <span class="ident">result</span>[<span class="ident">i</span>] <span class="op">=</span> <span class="ident">compile_queue</span>(<span class="ident">queue</span>, <span class="kw-2">&amp;</span><span class="ident">tree</span>);
         }
     }
-    <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>result</span>.<span class='ident'>len</span>(), <span class='number'>256</span>);
-    <span class='prelude-val'>Ok</span>(<span class='ident'>result</span>.<span class='ident'>into_boxed_slice</span>())
+    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">result</span>.<span class="ident">len</span>(), <span class="number">256</span>);
+    <span class="prelude-val">Ok</span>(<span class="ident">result</span>.<span class="ident">into_boxed_slice</span>())
 }
 
-<span class='kw'>fn</span> <span class='ident'>compile_queue</span><span class='op'>&lt;</span><span class='ident'>E</span>,<span class='ident'>T</span><span class='op'>&gt;</span>(<span class='kw-2'>mut</span> <span class='ident'>queue</span>: <span class='ident'>BitQueue</span><span class='op'>&lt;</span><span class='ident'>E</span>,<span class='ident'>u8</span><span class='op'>&gt;</span>, <span class='ident'>tree</span>: <span class='kw-2'>&amp;</span><span class='ident'>FinalHuffmanTree</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;</span>) <span class='op'>-&gt;</span>
-    <span class='ident'>ReadHuffmanTree</span><span class='op'>&lt;</span><span class='ident'>E</span>,<span class='ident'>T</span><span class='op'>&gt;</span> <span class='kw'>where</span> <span class='ident'>E</span>: <span class='ident'>Endianness</span>, <span class='ident'>T</span>: <span class='ident'>Clone</span> {
-    <span class='kw'>match</span> <span class='ident'>tree</span> {
-        <span class='kw-2'>&amp;</span><span class='ident'>FinalHuffmanTree</span>::<span class='ident'>Leaf</span>(<span class='kw-2'>ref</span> <span class='ident'>value</span>) <span class='op'>=&gt;</span> {
-            <span class='kw'>let</span> <span class='ident'>len</span> <span class='op'>=</span> <span class='ident'>queue</span>.<span class='ident'>len</span>();
-            <span class='ident'>ReadHuffmanTree</span>::<span class='ident'>Done</span>(
-                <span class='ident'>value</span>.<span class='ident'>clone</span>(), <span class='ident'>queue</span>.<span class='ident'>value</span>(), <span class='ident'>len</span>, <span class='ident'>PhantomData</span>)
+<span class="kw">fn</span> <span class="ident">compile_queue</span><span class="op">&lt;</span><span class="ident">E</span>,<span class="ident">T</span><span class="op">&gt;</span>(<span class="kw-2">mut</span> <span class="ident">queue</span>: <span class="ident">BitQueue</span><span class="op">&lt;</span><span class="ident">E</span>,<span class="ident">u8</span><span class="op">&gt;</span>, <span class="ident">tree</span>: <span class="kw-2">&amp;</span><span class="ident">FinalHuffmanTree</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>) <span class="op">-&gt;</span>
+    <span class="ident">ReadHuffmanTree</span><span class="op">&lt;</span><span class="ident">E</span>,<span class="ident">T</span><span class="op">&gt;</span> <span class="kw">where</span> <span class="ident">E</span>: <span class="ident">Endianness</span>, <span class="ident">T</span>: <span class="ident">Clone</span> {
+    <span class="kw">match</span> <span class="ident">tree</span> {
+        <span class="kw-2">&amp;</span><span class="ident">FinalHuffmanTree</span>::<span class="ident">Leaf</span>(<span class="kw-2">ref</span> <span class="ident">value</span>) <span class="op">=&gt;</span> {
+            <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="ident">queue</span>.<span class="ident">len</span>();
+            <span class="ident">ReadHuffmanTree</span>::<span class="ident">Done</span>(
+                <span class="ident">value</span>.<span class="ident">clone</span>(), <span class="ident">queue</span>.<span class="ident">value</span>(), <span class="ident">len</span>, <span class="ident">PhantomData</span>)
         }
-        <span class='kw-2'>&amp;</span><span class='ident'>FinalHuffmanTree</span>::<span class='ident'>Tree</span>(<span class='kw-2'>ref</span> <span class='ident'>bit0</span>, <span class='kw-2'>ref</span> <span class='ident'>bit1</span>) <span class='op'>=&gt;</span> {
-            <span class='kw'>if</span> <span class='ident'>queue</span>.<span class='ident'>is_empty</span>() {
-                <span class='ident'>ReadHuffmanTree</span>::<span class='ident'>Continue</span>(
-                    (<span class='number'>0</span>..<span class='number'>256</span>).<span class='ident'>map</span>(
-                    <span class='op'>|</span><span class='ident'>byte</span><span class='op'>|</span> <span class='ident'>compile_queue</span>(
-                        <span class='ident'>BitQueue</span>::<span class='ident'>from_value</span>(<span class='ident'>byte</span> <span class='kw'>as</span> <span class='ident'>u8</span>, <span class='number'>8</span>), <span class='kw-2'>&amp;</span><span class='ident'>tree</span>))
-                    .<span class='ident'>collect</span>::<span class='op'>&lt;</span><span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>ReadHuffmanTree</span><span class='op'>&lt;</span><span class='ident'>E</span>,<span class='ident'>T</span><span class='op'>&gt;&gt;</span><span class='op'>&gt;</span>()
-                    .<span class='ident'>into_boxed_slice</span>())
-            } <span class='kw'>else</span> {
-                <span class='kw'>if</span> <span class='ident'>queue</span>.<span class='ident'>pop</span>(<span class='number'>1</span>) <span class='op'>==</span> <span class='number'>0</span> {
-                    <span class='ident'>compile_queue</span>(<span class='ident'>queue</span>, <span class='ident'>bit0</span>)
-                } <span class='kw'>else</span> {
-                    <span class='ident'>compile_queue</span>(<span class='ident'>queue</span>, <span class='ident'>bit1</span>)
+        <span class="kw-2">&amp;</span><span class="ident">FinalHuffmanTree</span>::<span class="ident">Tree</span>(<span class="kw-2">ref</span> <span class="ident">bit0</span>, <span class="kw-2">ref</span> <span class="ident">bit1</span>) <span class="op">=&gt;</span> {
+            <span class="kw">if</span> <span class="ident">queue</span>.<span class="ident">is_empty</span>() {
+                <span class="ident">ReadHuffmanTree</span>::<span class="ident">Continue</span>(
+                    (<span class="number">0</span>..<span class="number">256</span>).<span class="ident">map</span>(
+                    <span class="op">|</span><span class="ident">byte</span><span class="op">|</span> <span class="ident">compile_queue</span>(
+                        <span class="ident">BitQueue</span>::<span class="ident">from_value</span>(<span class="ident">byte</span> <span class="kw">as</span> <span class="ident">u8</span>, <span class="number">8</span>), <span class="kw-2">&amp;</span><span class="ident">tree</span>))
+                    .<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">ReadHuffmanTree</span><span class="op">&lt;</span><span class="ident">E</span>,<span class="ident">T</span><span class="op">&gt;&gt;</span><span class="op">&gt;</span>()
+                    .<span class="ident">into_boxed_slice</span>())
+            } <span class="kw">else</span> {
+                <span class="kw">if</span> <span class="ident">queue</span>.<span class="ident">pop</span>(<span class="number">1</span>) <span class="op">==</span> <span class="number">0</span> {
+                    <span class="ident">compile_queue</span>(<span class="ident">queue</span>, <span class="ident">bit0</span>)
+                } <span class="kw">else</span> {
+                    <span class="ident">compile_queue</span>(<span class="ident">queue</span>, <span class="ident">bit1</span>)
                 }
             }
         }
     }
 }
 
-<span class='comment'>// A complete Huffman tree with no empty nodes</span>
-<span class='kw'>enum</span> <span class='ident'>FinalHuffmanTree</span><span class='op'>&lt;</span><span class='ident'>T</span>: <span class='ident'>Clone</span><span class='op'>&gt;</span> {
-    <span class='ident'>Leaf</span>(<span class='ident'>T</span>),
-    <span class='ident'>Tree</span>(<span class='ident'>Box</span><span class='op'>&lt;</span><span class='ident'>FinalHuffmanTree</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;&gt;</span>, <span class='ident'>Box</span><span class='op'>&lt;</span><span class='ident'>FinalHuffmanTree</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;&gt;</span>)
+<span class="comment">// A complete Huffman tree with no empty nodes</span>
+<span class="kw">enum</span> <span class="ident">FinalHuffmanTree</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Clone</span><span class="op">&gt;</span> {
+    <span class="ident">Leaf</span>(<span class="ident">T</span>),
+    <span class="ident">Tree</span>(<span class="ident">Box</span><span class="op">&lt;</span><span class="ident">FinalHuffmanTree</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;&gt;</span>, <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">FinalHuffmanTree</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;&gt;</span>)
 }
 
-<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>T</span>: <span class='ident'>Clone</span><span class='op'>&gt;</span> <span class='ident'>FinalHuffmanTree</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;</span> {
-    <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>values</span>: <span class='ident'>Vec</span><span class='op'>&lt;</span>(<span class='ident'>T</span>, <span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>u8</span><span class='op'>&gt;</span>)<span class='op'>&gt;</span>) <span class='op'>-&gt;</span>
-        <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>FinalHuffmanTree</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;</span>,<span class='ident'>HuffmanTreeError</span><span class='op'>&gt;</span> {
-        <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>tree</span> <span class='op'>=</span> <span class='ident'>WipHuffmanTree</span>::<span class='ident'>new_empty</span>();
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Clone</span><span class="op">&gt;</span> <span class="ident">FinalHuffmanTree</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">values</span>: <span class="ident">Vec</span><span class="op">&lt;</span>(<span class="ident">T</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>)<span class="op">&gt;</span>) <span class="op">-&gt;</span>
+        <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">FinalHuffmanTree</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,<span class="ident">HuffmanTreeError</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">tree</span> <span class="op">=</span> <span class="ident">WipHuffmanTree</span>::<span class="ident">new_empty</span>();
 
-        <span class='kw'>for</span> (<span class='ident'>symbol</span>, <span class='ident'>code</span>) <span class='kw'>in</span> <span class='ident'>values</span>.<span class='ident'>into_iter</span>() {
-            <span class='ident'>tree</span>.<span class='ident'>add</span>(<span class='ident'>code</span>.<span class='ident'>as_slice</span>(), <span class='ident'>symbol</span>)<span class='question-mark'>?</span>;
+        <span class="kw">for</span> (<span class="ident">symbol</span>, <span class="ident">code</span>) <span class="kw">in</span> <span class="ident">values</span>.<span class="ident">into_iter</span>() {
+            <span class="ident">tree</span>.<span class="ident">add</span>(<span class="ident">code</span>.<span class="ident">as_slice</span>(), <span class="ident">symbol</span>)<span class="question-mark">?</span>;
         }
 
-        <span class='ident'>tree</span>.<span class='ident'>into_read_tree</span>()
+        <span class="ident">tree</span>.<span class="ident">into_read_tree</span>()
     }
 }
 
-<span class='comment'>// Work-in-progress trees may have empty nodes during construction</span>
-<span class='comment'>// but those are not allowed in a finalized tree.</span>
-<span class='comment'>// If the user wants some codes to be None or an error symbol of some sort,</span>
-<span class='comment'>// those will need to be specified explicitly.</span>
-<span class='kw'>enum</span> <span class='ident'>WipHuffmanTree</span><span class='op'>&lt;</span><span class='ident'>T</span>: <span class='ident'>Clone</span><span class='op'>&gt;</span> {
-    <span class='ident'>Empty</span>,
-    <span class='ident'>Leaf</span>(<span class='ident'>T</span>),
-    <span class='ident'>Tree</span>(<span class='ident'>Box</span><span class='op'>&lt;</span><span class='ident'>WipHuffmanTree</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;&gt;</span>, <span class='ident'>Box</span><span class='op'>&lt;</span><span class='ident'>WipHuffmanTree</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;&gt;</span>)
+<span class="comment">// Work-in-progress trees may have empty nodes during construction</span>
+<span class="comment">// but those are not allowed in a finalized tree.</span>
+<span class="comment">// If the user wants some codes to be None or an error symbol of some sort,</span>
+<span class="comment">// those will need to be specified explicitly.</span>
+<span class="kw">enum</span> <span class="ident">WipHuffmanTree</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Clone</span><span class="op">&gt;</span> {
+    <span class="ident">Empty</span>,
+    <span class="ident">Leaf</span>(<span class="ident">T</span>),
+    <span class="ident">Tree</span>(<span class="ident">Box</span><span class="op">&lt;</span><span class="ident">WipHuffmanTree</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;&gt;</span>, <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">WipHuffmanTree</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;&gt;</span>)
 }
 
-<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>T</span>: <span class='ident'>Clone</span><span class='op'>&gt;</span> <span class='ident'>WipHuffmanTree</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;</span> {
-    <span class='kw'>fn</span> <span class='ident'>new_empty</span>() <span class='op'>-&gt;</span> <span class='ident'>WipHuffmanTree</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;</span> {
-        <span class='ident'>WipHuffmanTree</span>::<span class='ident'>Empty</span>
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Clone</span><span class="op">&gt;</span> <span class="ident">WipHuffmanTree</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">new_empty</span>() <span class="op">-&gt;</span> <span class="ident">WipHuffmanTree</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+        <span class="ident">WipHuffmanTree</span>::<span class="ident">Empty</span>
     }
 
-    <span class='kw'>fn</span> <span class='ident'>new_leaf</span>(<span class='ident'>value</span>: <span class='ident'>T</span>) <span class='op'>-&gt;</span> <span class='ident'>WipHuffmanTree</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;</span> {
-        <span class='ident'>WipHuffmanTree</span>::<span class='ident'>Leaf</span>(<span class='ident'>value</span>)
+    <span class="kw">fn</span> <span class="ident">new_leaf</span>(<span class="ident">value</span>: <span class="ident">T</span>) <span class="op">-&gt;</span> <span class="ident">WipHuffmanTree</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+        <span class="ident">WipHuffmanTree</span>::<span class="ident">Leaf</span>(<span class="ident">value</span>)
     }
 
-    <span class='kw'>fn</span> <span class='ident'>new_tree</span>() <span class='op'>-&gt;</span> <span class='ident'>WipHuffmanTree</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;</span> {
-        <span class='ident'>WipHuffmanTree</span>::<span class='ident'>Tree</span>(<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='self'>Self</span>::<span class='ident'>new_empty</span>()),
-                             <span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='self'>Self</span>::<span class='ident'>new_empty</span>()))
+    <span class="kw">fn</span> <span class="ident">new_tree</span>() <span class="op">-&gt;</span> <span class="ident">WipHuffmanTree</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+        <span class="ident">WipHuffmanTree</span>::<span class="ident">Tree</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="self">Self</span>::<span class="ident">new_empty</span>()),
+                             <span class="ident">Box</span>::<span class="ident">new</span>(<span class="self">Self</span>::<span class="ident">new_empty</span>()))
     }
 
-    <span class='kw'>fn</span> <span class='ident'>into_read_tree</span>(<span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>FinalHuffmanTree</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;</span>,<span class='ident'>HuffmanTreeError</span><span class='op'>&gt;</span> {
-        <span class='kw'>match</span> <span class='self'>self</span> {
-            <span class='ident'>WipHuffmanTree</span>::<span class='ident'>Empty</span> <span class='op'>=&gt;</span> {
-                <span class='prelude-val'>Err</span>(<span class='ident'>HuffmanTreeError</span>::<span class='ident'>MissingLeaf</span>)
+    <span class="kw">fn</span> <span class="ident">into_read_tree</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">FinalHuffmanTree</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,<span class="ident">HuffmanTreeError</span><span class="op">&gt;</span> {
+        <span class="kw">match</span> <span class="self">self</span> {
+            <span class="ident">WipHuffmanTree</span>::<span class="ident">Empty</span> <span class="op">=&gt;</span> {
+                <span class="prelude-val">Err</span>(<span class="ident">HuffmanTreeError</span>::<span class="ident">MissingLeaf</span>)
             }
-            <span class='ident'>WipHuffmanTree</span>::<span class='ident'>Leaf</span>(<span class='ident'>v</span>) <span class='op'>=&gt;</span> {
-                <span class='prelude-val'>Ok</span>(<span class='ident'>FinalHuffmanTree</span>::<span class='ident'>Leaf</span>(<span class='ident'>v</span>))
+            <span class="ident">WipHuffmanTree</span>::<span class="ident">Leaf</span>(<span class="ident">v</span>) <span class="op">=&gt;</span> {
+                <span class="prelude-val">Ok</span>(<span class="ident">FinalHuffmanTree</span>::<span class="ident">Leaf</span>(<span class="ident">v</span>))
             }
-            <span class='ident'>WipHuffmanTree</span>::<span class='ident'>Tree</span>(<span class='ident'>zero</span>, <span class='ident'>one</span>) <span class='op'>=&gt;</span> {
-                <span class='kw'>let</span> <span class='ident'>zero</span> <span class='op'>=</span> <span class='ident'>zero</span>.<span class='ident'>into_read_tree</span>()<span class='question-mark'>?</span>;
-                <span class='kw'>let</span> <span class='ident'>one</span> <span class='op'>=</span> <span class='ident'>one</span>.<span class='ident'>into_read_tree</span>()<span class='question-mark'>?</span>;
-                <span class='prelude-val'>Ok</span>(<span class='ident'>FinalHuffmanTree</span>::<span class='ident'>Tree</span>(<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>zero</span>), <span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>one</span>)))
+            <span class="ident">WipHuffmanTree</span>::<span class="ident">Tree</span>(<span class="ident">zero</span>, <span class="ident">one</span>) <span class="op">=&gt;</span> {
+                <span class="kw">let</span> <span class="ident">zero</span> <span class="op">=</span> <span class="ident">zero</span>.<span class="ident">into_read_tree</span>()<span class="question-mark">?</span>;
+                <span class="kw">let</span> <span class="ident">one</span> <span class="op">=</span> <span class="ident">one</span>.<span class="ident">into_read_tree</span>()<span class="question-mark">?</span>;
+                <span class="prelude-val">Ok</span>(<span class="ident">FinalHuffmanTree</span>::<span class="ident">Tree</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">zero</span>), <span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">one</span>)))
             }
         }
     }
 
-    <span class='kw'>fn</span> <span class='ident'>add</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>code</span>: <span class='kw-2'>&amp;</span>[<span class='ident'>u8</span>], <span class='ident'>symbol</span>: <span class='ident'>T</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(),<span class='ident'>HuffmanTreeError</span><span class='op'>&gt;</span> {
-        <span class='kw'>match</span> <span class='self'>self</span> {
-            <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>WipHuffmanTree</span>::<span class='ident'>Empty</span> <span class='op'>=&gt;</span> {
-                <span class='kw'>if</span> <span class='ident'>code</span>.<span class='ident'>len</span>() <span class='op'>==</span> <span class='number'>0</span> {
-                    <span class='kw-2'>*</span><span class='self'>self</span> <span class='op'>=</span> <span class='ident'>WipHuffmanTree</span>::<span class='ident'>new_leaf</span>(<span class='ident'>symbol</span>);
-                    <span class='prelude-val'>Ok</span>(())
-                } <span class='kw'>else</span> {
-                    <span class='kw-2'>*</span><span class='self'>self</span> <span class='op'>=</span> <span class='ident'>WipHuffmanTree</span>::<span class='ident'>new_tree</span>();
-                    <span class='self'>self</span>.<span class='ident'>add</span>(<span class='ident'>code</span>, <span class='ident'>symbol</span>)
+    <span class="kw">fn</span> <span class="ident">add</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">code</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>], <span class="ident">symbol</span>: <span class="ident">T</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(),<span class="ident">HuffmanTreeError</span><span class="op">&gt;</span> {
+        <span class="kw">match</span> <span class="self">self</span> {
+            <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">WipHuffmanTree</span>::<span class="ident">Empty</span> <span class="op">=&gt;</span> {
+                <span class="kw">if</span> <span class="ident">code</span>.<span class="ident">len</span>() <span class="op">==</span> <span class="number">0</span> {
+                    <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span> <span class="ident">WipHuffmanTree</span>::<span class="ident">new_leaf</span>(<span class="ident">symbol</span>);
+                    <span class="prelude-val">Ok</span>(())
+                } <span class="kw">else</span> {
+                    <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span> <span class="ident">WipHuffmanTree</span>::<span class="ident">new_tree</span>();
+                    <span class="self">self</span>.<span class="ident">add</span>(<span class="ident">code</span>, <span class="ident">symbol</span>)
                 }
             }
-            <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>WipHuffmanTree</span>::<span class='ident'>Leaf</span>(_) <span class='op'>=&gt;</span> {
-                <span class='prelude-val'>Err</span>(<span class='kw'>if</span> <span class='ident'>code</span>.<span class='ident'>len</span>() <span class='op'>==</span> <span class='number'>0</span> {
-                    <span class='ident'>HuffmanTreeError</span>::<span class='ident'>DuplicateLeaf</span>
-                } <span class='kw'>else</span> {
-                    <span class='ident'>HuffmanTreeError</span>::<span class='ident'>OrphanedLeaf</span>
+            <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">WipHuffmanTree</span>::<span class="ident">Leaf</span>(_) <span class="op">=&gt;</span> {
+                <span class="prelude-val">Err</span>(<span class="kw">if</span> <span class="ident">code</span>.<span class="ident">len</span>() <span class="op">==</span> <span class="number">0</span> {
+                    <span class="ident">HuffmanTreeError</span>::<span class="ident">DuplicateLeaf</span>
+                } <span class="kw">else</span> {
+                    <span class="ident">HuffmanTreeError</span>::<span class="ident">OrphanedLeaf</span>
                 })
             }
-            <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>WipHuffmanTree</span>::<span class='ident'>Tree</span>(<span class='kw-2'>ref</span> <span class='kw-2'>mut</span> <span class='ident'>zero</span>, <span class='kw-2'>ref</span> <span class='kw-2'>mut</span> <span class='ident'>one</span>) <span class='op'>=&gt;</span> {
-                <span class='kw'>if</span> <span class='ident'>code</span>.<span class='ident'>len</span>() <span class='op'>==</span> <span class='number'>0</span> {
-                    <span class='prelude-val'>Err</span>(<span class='ident'>HuffmanTreeError</span>::<span class='ident'>DuplicateLeaf</span>)
-                } <span class='kw'>else</span> {
-                    <span class='kw'>match</span> <span class='ident'>code</span>[<span class='number'>0</span>] {
-                        <span class='number'>0</span> <span class='op'>=&gt;</span> {<span class='ident'>zero</span>.<span class='ident'>add</span>(<span class='kw-2'>&amp;</span><span class='ident'>code</span>[<span class='number'>1</span>..], <span class='ident'>symbol</span>)}
-                        <span class='number'>1</span> <span class='op'>=&gt;</span> {<span class='ident'>one</span>.<span class='ident'>add</span>(<span class='kw-2'>&amp;</span><span class='ident'>code</span>[<span class='number'>1</span>..], <span class='ident'>symbol</span>)}
-                        _ <span class='op'>=&gt;</span> {<span class='prelude-val'>Err</span>(<span class='ident'>HuffmanTreeError</span>::<span class='ident'>InvalidBit</span>)}
+            <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">WipHuffmanTree</span>::<span class="ident">Tree</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">zero</span>, <span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">one</span>) <span class="op">=&gt;</span> {
+                <span class="kw">if</span> <span class="ident">code</span>.<span class="ident">len</span>() <span class="op">==</span> <span class="number">0</span> {
+                    <span class="prelude-val">Err</span>(<span class="ident">HuffmanTreeError</span>::<span class="ident">DuplicateLeaf</span>)
+                } <span class="kw">else</span> {
+                    <span class="kw">match</span> <span class="ident">code</span>[<span class="number">0</span>] {
+                        <span class="number">0</span> <span class="op">=&gt;</span> {<span class="ident">zero</span>.<span class="ident">add</span>(<span class="kw-2">&amp;</span><span class="ident">code</span>[<span class="number">1</span>..], <span class="ident">symbol</span>)}
+                        <span class="number">1</span> <span class="op">=&gt;</span> {<span class="ident">one</span>.<span class="ident">add</span>(<span class="kw-2">&amp;</span><span class="ident">code</span>[<span class="number">1</span>..], <span class="ident">symbol</span>)}
+                        _ <span class="op">=&gt;</span> {<span class="prelude-val">Err</span>(<span class="ident">HuffmanTreeError</span>::<span class="ident">InvalidBit</span>)}
                     }
                 }
             }
@@ -592,122 +592,122 @@
     }
 }
 
-<span class='doccomment'>/// An error type during Huffman tree compilation.</span>
-<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>PartialEq</span>, <span class='ident'>Copy</span>, <span class='ident'>Clone</span>, <span class='ident'>Debug</span>)]</span>
-<span class='kw'>pub</span> <span class='kw'>enum</span> <span class='ident'>HuffmanTreeError</span> {
-    <span class='doccomment'>/// One of the bits in a Huffman code is not 0 or 1</span>
-    <span class='ident'>InvalidBit</span>,
-    <span class='doccomment'>/// A Huffman code in the specification has no defined symbol</span>
-    <span class='ident'>MissingLeaf</span>,
-    <span class='doccomment'>/// The same Huffman code specifies multiple symbols</span>
-    <span class='ident'>DuplicateLeaf</span>,
-    <span class='doccomment'>/// A Huffman code is the prefix of some longer code</span>
-    <span class='ident'>OrphanedLeaf</span>
+<span class="doccomment">/// An error type during Huffman tree compilation.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
+<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">HuffmanTreeError</span> {
+    <span class="doccomment">/// One of the bits in a Huffman code is not 0 or 1</span>
+    <span class="ident">InvalidBit</span>,
+    <span class="doccomment">/// A Huffman code in the specification has no defined symbol</span>
+    <span class="ident">MissingLeaf</span>,
+    <span class="doccomment">/// The same Huffman code specifies multiple symbols</span>
+    <span class="ident">DuplicateLeaf</span>,
+    <span class="doccomment">/// A Huffman code is the prefix of some longer code</span>
+    <span class="ident">OrphanedLeaf</span>
 }
 
-<span class='kw'>impl</span> <span class='ident'>fmt</span>::<span class='ident'>Display</span> <span class='kw'>for</span> <span class='ident'>HuffmanTreeError</span> {
-    <span class='kw'>fn</span> <span class='ident'>fmt</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>f</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>fmt</span>::<span class='ident'>Formatter</span>) <span class='op'>-&gt;</span> <span class='ident'>fmt</span>::<span class='prelude-ty'>Result</span> {
-        <span class='kw'>match</span> <span class='kw-2'>*</span><span class='self'>self</span> {
-            <span class='ident'>HuffmanTreeError</span>::<span class='ident'>InvalidBit</span> <span class='op'>=&gt;</span> {
-                <span class='macro'>write</span><span class='macro'>!</span>(<span class='ident'>f</span>, <span class='string'>&quot;invalid bit in code&quot;</span>)
+<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Display</span> <span class="kw">for</span> <span class="ident">HuffmanTreeError</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+        <span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span> {
+            <span class="ident">HuffmanTreeError</span>::<span class="ident">InvalidBit</span> <span class="op">=&gt;</span> {
+                <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;invalid bit in code&quot;</span>)
             }
-            <span class='ident'>HuffmanTreeError</span>::<span class='ident'>MissingLeaf</span> <span class='op'>=&gt;</span> {
-                <span class='macro'>write</span><span class='macro'>!</span>(<span class='ident'>f</span>, <span class='string'>&quot;missing leaf node in specification&quot;</span>)
+            <span class="ident">HuffmanTreeError</span>::<span class="ident">MissingLeaf</span> <span class="op">=&gt;</span> {
+                <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;missing leaf node in specification&quot;</span>)
             }
-            <span class='ident'>HuffmanTreeError</span>::<span class='ident'>DuplicateLeaf</span> <span class='op'>=&gt;</span> {
-                <span class='macro'>write</span><span class='macro'>!</span>(<span class='ident'>f</span>, <span class='string'>&quot;duplicate leaf node in specification&quot;</span>)
+            <span class="ident">HuffmanTreeError</span>::<span class="ident">DuplicateLeaf</span> <span class="op">=&gt;</span> {
+                <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;duplicate leaf node in specification&quot;</span>)
             }
-            <span class='ident'>HuffmanTreeError</span>::<span class='ident'>OrphanedLeaf</span> <span class='op'>=&gt;</span> {
-                <span class='macro'>write</span><span class='macro'>!</span>(<span class='ident'>f</span>, <span class='string'>&quot;orphaned leaf node in specification&quot;</span>)
+            <span class="ident">HuffmanTreeError</span>::<span class="ident">OrphanedLeaf</span> <span class="op">=&gt;</span> {
+                <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;orphaned leaf node in specification&quot;</span>)
             }
         }
     }
 }
 
-<span class='doccomment'>/// Given a vector of symbol/code pairs, compiles a Huffman tree</span>
-<span class='doccomment'>/// for writing.</span>
-<span class='doccomment'>///</span>
-<span class='doccomment'>/// Code must be 0 or 1 bits and are always written to the stream</span>
-<span class='doccomment'>/// from least-significant in the list to most signficant</span>
-<span class='doccomment'>/// (which makes them easier to read for humans).</span>
-<span class='doccomment'>///</span>
-<span class='doccomment'>/// If the same symbol occurs multiple times, the first code is used.</span>
-<span class='doccomment'>/// Unlike in read trees, not all possible codes need to be</span>
-<span class='doccomment'>/// assigned a symbol.</span>
-<span class='doccomment'>///</span>
-<span class='doccomment'>/// ## Examples</span>
-<span class='doccomment'>/// ```</span>
-<span class='doccomment'>/// use bitstream_io::huffman::compile_write_tree;</span>
-<span class='doccomment'>/// use bitstream_io::BigEndian;</span>
-<span class='doccomment'>/// assert!(compile_write_tree::&lt;BigEndian,i32&gt;(</span>
-<span class='doccomment'>///     vec![(1, vec![0]),</span>
-<span class='doccomment'>///          (2, vec![1, 0]),</span>
-<span class='doccomment'>///          (3, vec![1, 1])]).is_ok());</span>
-<span class='doccomment'>/// ```</span>
-<span class='doccomment'>///</span>
-<span class='doccomment'>/// ```</span>
-<span class='doccomment'>/// use std::io::Write;</span>
-<span class='doccomment'>/// use bitstream_io::{BigEndian, BitWriter};</span>
-<span class='doccomment'>/// use bitstream_io::huffman::compile_write_tree;</span>
-<span class='doccomment'>/// let tree = compile_write_tree(</span>
-<span class='doccomment'>///     vec![(&#39;a&#39;, vec![0]),</span>
-<span class='doccomment'>///          (&#39;b&#39;, vec![1, 0]),</span>
-<span class='doccomment'>///          (&#39;c&#39;, vec![1, 1, 0]),</span>
-<span class='doccomment'>///          (&#39;d&#39;, vec![1, 1, 1])]).unwrap();</span>
-<span class='doccomment'>/// let mut data = Vec::new();</span>
-<span class='doccomment'>/// {</span>
-<span class='doccomment'>///     let mut writer = BitWriter::&lt;BigEndian&gt;::new(&amp;mut data);</span>
-<span class='doccomment'>///     writer.write_huffman(&amp;tree, &#39;b&#39;).unwrap();</span>
-<span class='doccomment'>///     writer.write_huffman(&amp;tree, &#39;c&#39;).unwrap();</span>
-<span class='doccomment'>///     writer.write_huffman(&amp;tree, &#39;d&#39;).unwrap();</span>
-<span class='doccomment'>/// }</span>
-<span class='doccomment'>/// assert_eq!(data, [0b10110111]);</span>
-<span class='doccomment'>/// ```</span>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>compile_write_tree</span><span class='op'>&lt;</span><span class='ident'>E</span>,<span class='ident'>T</span><span class='op'>&gt;</span>(<span class='ident'>values</span>: <span class='ident'>Vec</span><span class='op'>&lt;</span>(<span class='ident'>T</span>,<span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>u8</span><span class='op'>&gt;</span>)<span class='op'>&gt;</span>) <span class='op'>-&gt;</span>
-    <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>WriteHuffmanTree</span><span class='op'>&lt;</span><span class='ident'>E</span>,<span class='ident'>T</span><span class='op'>&gt;</span>,<span class='ident'>HuffmanTreeError</span><span class='op'>&gt;</span>
-    <span class='kw'>where</span> <span class='ident'>E</span>: <span class='ident'>Endianness</span>, <span class='ident'>T</span>: <span class='ident'>Ord</span> <span class='op'>+</span> <span class='ident'>Clone</span> {
+<span class="doccomment">/// Given a vector of symbol/code pairs, compiles a Huffman tree</span>
+<span class="doccomment">/// for writing.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Code must be 0 or 1 bits and are always written to the stream</span>
+<span class="doccomment">/// from least-significant in the list to most signficant</span>
+<span class="doccomment">/// (which makes them easier to read for humans).</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// If the same symbol occurs multiple times, the first code is used.</span>
+<span class="doccomment">/// Unlike in read trees, not all possible codes need to be</span>
+<span class="doccomment">/// assigned a symbol.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ## Examples</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">/// use bitstream_io::huffman::compile_write_tree;</span>
+<span class="doccomment">/// use bitstream_io::BigEndian;</span>
+<span class="doccomment">/// assert!(compile_write_tree::&lt;BigEndian,i32&gt;(</span>
+<span class="doccomment">///     vec![(1, vec![0]),</span>
+<span class="doccomment">///          (2, vec![1, 0]),</span>
+<span class="doccomment">///          (3, vec![1, 1])]).is_ok());</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">/// use std::io::Write;</span>
+<span class="doccomment">/// use bitstream_io::{BigEndian, BitWriter};</span>
+<span class="doccomment">/// use bitstream_io::huffman::compile_write_tree;</span>
+<span class="doccomment">/// let tree = compile_write_tree(</span>
+<span class="doccomment">///     vec![(&#39;a&#39;, vec![0]),</span>
+<span class="doccomment">///          (&#39;b&#39;, vec![1, 0]),</span>
+<span class="doccomment">///          (&#39;c&#39;, vec![1, 1, 0]),</span>
+<span class="doccomment">///          (&#39;d&#39;, vec![1, 1, 1])]).unwrap();</span>
+<span class="doccomment">/// let mut data = Vec::new();</span>
+<span class="doccomment">/// {</span>
+<span class="doccomment">///     let mut writer = BitWriter::&lt;BigEndian&gt;::new(&amp;mut data);</span>
+<span class="doccomment">///     writer.write_huffman(&amp;tree, &#39;b&#39;).unwrap();</span>
+<span class="doccomment">///     writer.write_huffman(&amp;tree, &#39;c&#39;).unwrap();</span>
+<span class="doccomment">///     writer.write_huffman(&amp;tree, &#39;d&#39;).unwrap();</span>
+<span class="doccomment">/// }</span>
+<span class="doccomment">/// assert_eq!(data, [0b10110111]);</span>
+<span class="doccomment">/// ```</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">compile_write_tree</span><span class="op">&lt;</span><span class="ident">E</span>,<span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">values</span>: <span class="ident">Vec</span><span class="op">&lt;</span>(<span class="ident">T</span>,<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>)<span class="op">&gt;</span>) <span class="op">-&gt;</span>
+    <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">WriteHuffmanTree</span><span class="op">&lt;</span><span class="ident">E</span>,<span class="ident">T</span><span class="op">&gt;</span>,<span class="ident">HuffmanTreeError</span><span class="op">&gt;</span>
+    <span class="kw">where</span> <span class="ident">E</span>: <span class="ident">Endianness</span>, <span class="ident">T</span>: <span class="ident">Ord</span> <span class="op">+</span> <span class="ident">Clone</span> {
 
-    <span class='kw'>use</span> <span class='kw'>super</span>::<span class='ident'>BitQueue</span>;
+    <span class="kw">use</span> <span class="kw">super</span>::<span class="ident">BitQueue</span>;
 
-    <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>map</span> <span class='op'>=</span> <span class='ident'>BTreeMap</span>::<span class='ident'>new</span>();
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">map</span> <span class="op">=</span> <span class="ident">BTreeMap</span>::<span class="ident">new</span>();
 
-    <span class='kw'>for</span> (<span class='ident'>symbol</span>, <span class='ident'>code</span>) <span class='kw'>in</span> <span class='ident'>values</span>.<span class='ident'>into_iter</span>() {
-        <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>encoded</span> <span class='op'>=</span> <span class='ident'>Vec</span>::<span class='ident'>new</span>();
-        <span class='kw'>for</span> <span class='ident'>bits</span> <span class='kw'>in</span> <span class='ident'>code</span>.<span class='ident'>chunks</span>(<span class='number'>32</span>) {
-            <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>acc</span> <span class='op'>=</span> <span class='ident'>BitQueue</span>::<span class='op'>&lt;</span><span class='ident'>E</span>,<span class='ident'>u32</span><span class='op'>&gt;</span>::<span class='ident'>new</span>();
-            <span class='kw'>for</span> <span class='ident'>bit</span> <span class='kw'>in</span> <span class='ident'>bits</span> {
-                <span class='kw'>match</span> <span class='kw-2'>*</span><span class='ident'>bit</span> {
-                    <span class='number'>0</span> <span class='op'>=&gt;</span> {<span class='ident'>acc</span>.<span class='ident'>push</span>(<span class='number'>1</span>, <span class='number'>0</span>)}
-                    <span class='number'>1</span> <span class='op'>=&gt;</span> {<span class='ident'>acc</span>.<span class='ident'>push</span>(<span class='number'>1</span>, <span class='number'>1</span>)}
-                    _ <span class='op'>=&gt;</span> {<span class='kw'>return</span> <span class='prelude-val'>Err</span>(<span class='ident'>HuffmanTreeError</span>::<span class='ident'>InvalidBit</span>)}
+    <span class="kw">for</span> (<span class="ident">symbol</span>, <span class="ident">code</span>) <span class="kw">in</span> <span class="ident">values</span>.<span class="ident">into_iter</span>() {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">encoded</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="ident">new</span>();
+        <span class="kw">for</span> <span class="ident">bits</span> <span class="kw">in</span> <span class="ident">code</span>.<span class="ident">chunks</span>(<span class="number">32</span>) {
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">acc</span> <span class="op">=</span> <span class="ident">BitQueue</span>::<span class="op">&lt;</span><span class="ident">E</span>,<span class="ident">u32</span><span class="op">&gt;</span>::<span class="ident">new</span>();
+            <span class="kw">for</span> <span class="ident">bit</span> <span class="kw">in</span> <span class="ident">bits</span> {
+                <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">bit</span> {
+                    <span class="number">0</span> <span class="op">=&gt;</span> {<span class="ident">acc</span>.<span class="ident">push</span>(<span class="number">1</span>, <span class="number">0</span>)}
+                    <span class="number">1</span> <span class="op">=&gt;</span> {<span class="ident">acc</span>.<span class="ident">push</span>(<span class="number">1</span>, <span class="number">1</span>)}
+                    _ <span class="op">=&gt;</span> {<span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">HuffmanTreeError</span>::<span class="ident">InvalidBit</span>)}
                 }
             }
-            <span class='kw'>let</span> <span class='ident'>len</span> <span class='op'>=</span> <span class='ident'>acc</span>.<span class='ident'>len</span>();
-            <span class='ident'>encoded</span>.<span class='ident'>push</span>((<span class='ident'>len</span>, <span class='ident'>acc</span>.<span class='ident'>value</span>()))
+            <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="ident">acc</span>.<span class="ident">len</span>();
+            <span class="ident">encoded</span>.<span class="ident">push</span>((<span class="ident">len</span>, <span class="ident">acc</span>.<span class="ident">value</span>()))
         }
-        <span class='ident'>map</span>.<span class='ident'>entry</span>(<span class='ident'>symbol</span>).<span class='ident'>or_insert</span>(<span class='ident'>encoded</span>.<span class='ident'>into_boxed_slice</span>());
+        <span class="ident">map</span>.<span class="ident">entry</span>(<span class="ident">symbol</span>).<span class="ident">or_insert</span>(<span class="ident">encoded</span>.<span class="ident">into_boxed_slice</span>());
     }
 
-    <span class='prelude-val'>Ok</span>(<span class='ident'>WriteHuffmanTree</span>{<span class='ident'>map</span>: <span class='ident'>map</span>, <span class='ident'>phantom</span>: <span class='ident'>PhantomData</span>})
+    <span class="prelude-val">Ok</span>(<span class="ident">WriteHuffmanTree</span>{<span class="ident">map</span>: <span class="ident">map</span>, <span class="ident">phantom</span>: <span class="ident">PhantomData</span>})
 }
 
-<span class='doccomment'>/// A compiled Huffman tree for use with the `write_huffman` method.</span>
-<span class='doccomment'>/// Returned by `compiled_write_tree`.</span>
-<span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>WriteHuffmanTree</span><span class='op'>&lt;</span><span class='ident'>E</span>: <span class='ident'>Endianness</span>, <span class='ident'>T</span>: <span class='ident'>Ord</span><span class='op'>&gt;</span> {
-    <span class='ident'>map</span>: <span class='ident'>BTreeMap</span><span class='op'>&lt;</span><span class='ident'>T</span>,<span class='ident'>Box</span><span class='op'>&lt;</span>[(<span class='ident'>u32</span>, <span class='ident'>u32</span>)]<span class='op'>&gt;&gt;</span>,
-    <span class='ident'>phantom</span>: <span class='ident'>PhantomData</span><span class='op'>&lt;</span><span class='ident'>E</span><span class='op'>&gt;</span>
+<span class="doccomment">/// A compiled Huffman tree for use with the `write_huffman` method.</span>
+<span class="doccomment">/// Returned by `compiled_write_tree`.</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">WriteHuffmanTree</span><span class="op">&lt;</span><span class="ident">E</span>: <span class="ident">Endianness</span>, <span class="ident">T</span>: <span class="ident">Ord</span><span class="op">&gt;</span> {
+    <span class="ident">map</span>: <span class="ident">BTreeMap</span><span class="op">&lt;</span><span class="ident">T</span>,<span class="ident">Box</span><span class="op">&lt;</span>[(<span class="ident">u32</span>, <span class="ident">u32</span>)]<span class="op">&gt;&gt;</span>,
+    <span class="ident">phantom</span>: <span class="ident">PhantomData</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span>
 }
 
-<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>E</span>: <span class='ident'>Endianness</span>, <span class='ident'>T</span>: <span class='ident'>Ord</span> <span class='op'>+</span> <span class='ident'>Clone</span><span class='op'>&gt;</span> <span class='ident'>WriteHuffmanTree</span><span class='op'>&lt;</span><span class='ident'>E</span>,<span class='ident'>T</span><span class='op'>&gt;</span> {
-    <span class='doccomment'>/// Returns true if symbol is in tree.</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>has_symbol</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>symbol</span>: <span class='ident'>T</span>) <span class='op'>-&gt;</span> <span class='ident'>bool</span> {
-        <span class='self'>self</span>.<span class='ident'>map</span>.<span class='ident'>contains_key</span>(<span class='kw-2'>&amp;</span><span class='ident'>symbol</span>)
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">E</span>: <span class="ident">Endianness</span>, <span class="ident">T</span>: <span class="ident">Ord</span> <span class="op">+</span> <span class="ident">Clone</span><span class="op">&gt;</span> <span class="ident">WriteHuffmanTree</span><span class="op">&lt;</span><span class="ident">E</span>,<span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="doccomment">/// Returns true if symbol is in tree.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_symbol</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">symbol</span>: <span class="ident">T</span>) <span class="op">-&gt;</span> <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">map</span>.<span class="ident">contains_key</span>(<span class="kw-2">&amp;</span><span class="ident">symbol</span>)
     }
 
-    <span class='doccomment'>/// Given symbol, returns (bits, value) pairs for writing code.</span>
-    <span class='doccomment'>/// Panics if symbol is not found.</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>get</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>symbol</span>: <span class='ident'>T</span>) <span class='op'>-&gt;</span> <span class='kw-2'>&amp;</span>[(<span class='ident'>u32</span>, <span class='ident'>u32</span>)] {
-        <span class='self'>self</span>.<span class='ident'>map</span>[<span class='kw-2'>&amp;</span><span class='ident'>symbol</span>].<span class='ident'>as_ref</span>()
+    <span class="doccomment">/// Given symbol, returns (bits, value) pairs for writing code.</span>
+    <span class="doccomment">/// Panics if symbol is not found.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">symbol</span>: <span class="ident">T</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span>[(<span class="ident">u32</span>, <span class="ident">u32</span>)] {
+        <span class="self">self</span>.<span class="ident">map</span>[<span class="kw-2">&amp;</span><span class="ident">symbol</span>].<span class="ident">as_ref</span>()
     }
 }
 </pre>

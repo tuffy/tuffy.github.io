@@ -17,7 +17,7 @@
     
     
 </head>
-<body class="rustdoc">
+<body class="rustdoc trait">
     <!--[if lte IE 8]>
     <div class="warning">
         This old browser is unsupported and will most likely display funky
@@ -29,7 +29,7 @@
 
     <nav class="sidebar">
         
-        <p class='location'><a href='index.html'>bitstream_io</a></p><script>window.sidebarCurrent = {name: 'Numeric', ty: 'trait', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+        <p class='location'>Trait Numeric</p><div class="block items"><ul><li><a href="#required-methods">Required Methods</a></li><li><a href="#implementors">Implementors</a></li></ul></div><p class='location'><a href='index.html'>bitstream_io</a></p><script>window.sidebarCurrent = {name: 'Numeric', ty: 'trait', relpath: ''};</script><script defer src="sidebar-items.js"></script>
     </nav>
 
     <nav class="sub">
@@ -43,21 +43,21 @@
         </form>
     </nav>
 
-    <section id='main' class="content trait">
-<h1 class='fqn'><span class='in-band'>Trait <a href='index.html'>bitstream_io</a>::<wbr><a class='trait' href=''>Numeric</a></span><span class='out-of-band'><span id='render-detail'>
+    <section id='main' class="content">
+<h1 class='fqn'><span class='in-band'>Trait <a href='index.html'>bitstream_io</a>::<wbr><a class="trait" href=''>Numeric</a></span><span class='out-of-band'><span id='render-detail'>
                    <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                        [<span class='inner'>&#x2212;</span>]
                    </a>
                </span><a class='srclink' href='../src/bitstream_io/lib.rs.html#48-78' title='goto source code'>[src]</a></span></h1>
-<pre class='rust trait'>pub trait Numeric: <a class='trait' href='https://doc.rust-lang.org/nightly/core/marker/trait.Sized.html' title='core::marker::Sized'>Sized</a> + <a class='trait' href='https://doc.rust-lang.org/nightly/core/marker/trait.Copy.html' title='core::marker::Copy'>Copy</a> + <a class='trait' href='https://doc.rust-lang.org/nightly/core/default/trait.Default.html' title='core::default::Default'>Default</a> + <a class='trait' href='https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html' title='core::fmt::Debug'>Debug</a> + <a class='trait' href='https://doc.rust-lang.org/nightly/core/cmp/trait.PartialOrd.html' title='core::cmp::PartialOrd'>PartialOrd</a> + <a class='trait' href='https://doc.rust-lang.org/nightly/core/ops/trait.Shl.html' title='core::ops::Shl'>Shl</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u32.html'>u32</a>, Output=Self&gt; + <a class='trait' href='https://doc.rust-lang.org/nightly/core/ops/trait.ShlAssign.html' title='core::ops::ShlAssign'>ShlAssign</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u32.html'>u32</a>&gt; + <a class='trait' href='https://doc.rust-lang.org/nightly/core/ops/trait.Shr.html' title='core::ops::Shr'>Shr</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u32.html'>u32</a>, Output=Self&gt; + <a class='trait' href='https://doc.rust-lang.org/nightly/core/ops/trait.ShrAssign.html' title='core::ops::ShrAssign'>ShrAssign</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u32.html'>u32</a>&gt; + <a class='trait' href='https://doc.rust-lang.org/nightly/core/ops/trait.Rem.html' title='core::ops::Rem'>Rem</a>&lt;Self, Output=Self&gt; + <a class='trait' href='https://doc.rust-lang.org/nightly/core/ops/trait.RemAssign.html' title='core::ops::RemAssign'>RemAssign</a>&lt;Self&gt; + <a class='trait' href='https://doc.rust-lang.org/nightly/core/ops/trait.BitOrAssign.html' title='core::ops::BitOrAssign'>BitOrAssign</a>&lt;Self&gt; + <a class='trait' href='https://doc.rust-lang.org/nightly/core/ops/trait.BitXor.html' title='core::ops::BitXor'>BitXor</a>&lt;Self, Output=Self&gt; + <a class='trait' href='https://doc.rust-lang.org/nightly/core/ops/trait.Not.html' title='core::ops::Not'>Not</a>&lt;Output=Self&gt; + <a class='trait' href='https://doc.rust-lang.org/nightly/core/ops/trait.Sub.html' title='core::ops::Sub'>Sub</a>&lt;Self, Output=Self&gt; {
+<pre class='rust trait'>pub trait Numeric: <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Sized.html" title="trait core::marker::Sized">Sized</a> + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Copy.html" title="trait core::marker::Copy">Copy</a> + <a class="trait" href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html" title="trait core::default::Default">Default</a> + <a class="trait" href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html" title="trait core::fmt::Debug">Debug</a> + <a class="trait" href="https://doc.rust-lang.org/nightly/core/cmp/trait.PartialOrd.html" title="trait core::cmp::PartialOrd">PartialOrd</a> + <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/trait.Shl.html" title="trait core::ops::Shl">Shl</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>, Output = Self&gt; + <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/trait.ShlAssign.html" title="trait core::ops::ShlAssign">ShlAssign</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>&gt; + <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/trait.Shr.html" title="trait core::ops::Shr">Shr</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>, Output = Self&gt; + <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/trait.ShrAssign.html" title="trait core::ops::ShrAssign">ShrAssign</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>&gt; + <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/trait.Rem.html" title="trait core::ops::Rem">Rem</a>&lt;Self, Output = Self&gt; + <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/trait.RemAssign.html" title="trait core::ops::RemAssign">RemAssign</a>&lt;Self&gt; + <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/trait.BitOrAssign.html" title="trait core::ops::BitOrAssign">BitOrAssign</a>&lt;Self&gt; + <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/trait.BitXor.html" title="trait core::ops::BitXor">BitXor</a>&lt;Self, Output = Self&gt; + <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/trait.Not.html" title="trait core::ops::Not">Not</a>&lt;Output = Self&gt; + <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/trait.Sub.html" title="trait core::ops::Sub">Sub</a>&lt;Self, Output = Self&gt; {
     fn <a href='#tymethod.one' class='fnname'>one</a>() -&gt; Self;
-    fn <a href='#tymethod.is_zero' class='fnname'>is_zero</a>(self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a>;
-    fn <a href='#tymethod.from_u8' class='fnname'>from_u8</a>(u: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u8.html'>u8</a>) -&gt; Self;
-    fn <a href='#tymethod.to_u8' class='fnname'>to_u8</a>(self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u8.html'>u8</a>;
-    fn <a href='#tymethod.count_ones' class='fnname'>count_ones</a>(self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u32.html'>u32</a>;
-    fn <a href='#tymethod.leading_zeros' class='fnname'>leading_zeros</a>(self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u32.html'>u32</a>;
-    fn <a href='#tymethod.trailing_zeros' class='fnname'>trailing_zeros</a>(self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u32.html'>u32</a>;
-    fn <a href='#tymethod.bits_size' class='fnname'>bits_size</a>() -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u32.html'>u32</a>;
+    fn <a href='#tymethod.is_zero' class='fnname'>is_zero</a>(self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>;
+    fn <a href='#tymethod.from_u8' class='fnname'>from_u8</a>(u: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>) -&gt; Self;
+    fn <a href='#tymethod.to_u8' class='fnname'>to_u8</a>(self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>;
+    fn <a href='#tymethod.count_ones' class='fnname'>count_ones</a>(self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>;
+    fn <a href='#tymethod.leading_zeros' class='fnname'>leading_zeros</a>(self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>;
+    fn <a href='#tymethod.trailing_zeros' class='fnname'>trailing_zeros</a>(self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>;
+    fn <a href='#tymethod.bits_size' class='fnname'>bits_size</a>() -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>;
 }</pre><div class='docblock'><p>This trait extends many common integer types (both unsigned and signed)
 with a few trivial methods so that they can be used
 with the bitstream handling traits.</p>
@@ -65,24 +65,24 @@ with the bitstream handling traits.</p>
             <h2 id='required-methods'>Required Methods</h2>
             <div class='methods'>
         <h3 id='tymethod.one' class='method'><span id='one.v' class='invisible'><code>fn <a href='#tymethod.one' class='fnname'>one</a>() -&gt; Self</code></span></h3><div class='docblock'><p>The value of 1 in this type</p>
-</div><h3 id='tymethod.is_zero' class='method'><span id='is_zero.v' class='invisible'><code>fn <a href='#tymethod.is_zero' class='fnname'>is_zero</a>(self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></span></h3><div class='docblock'><p>Returns true if this value is 0, in its type</p>
-</div><h3 id='tymethod.from_u8' class='method'><span id='from_u8.v' class='invisible'><code>fn <a href='#tymethod.from_u8' class='fnname'>from_u8</a>(u: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u8.html'>u8</a>) -&gt; Self</code></span></h3><div class='docblock'><p>Returns a <code>u8</code> value in this type</p>
-</div><h3 id='tymethod.to_u8' class='method'><span id='to_u8.v' class='invisible'><code>fn <a href='#tymethod.to_u8' class='fnname'>to_u8</a>(self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u8.html'>u8</a></code></span></h3><div class='docblock'><p>Assuming 0 &lt;= value &lt; 256, returns this value as a <code>u8</code> type</p>
-</div><h3 id='tymethod.count_ones' class='method'><span id='count_ones.v' class='invisible'><code>fn <a href='#tymethod.count_ones' class='fnname'>count_ones</a>(self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u32.html'>u32</a></code></span></h3><div class='docblock'><p>Counts the number of 1 bits</p>
-</div><h3 id='tymethod.leading_zeros' class='method'><span id='leading_zeros.v' class='invisible'><code>fn <a href='#tymethod.leading_zeros' class='fnname'>leading_zeros</a>(self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u32.html'>u32</a></code></span></h3><div class='docblock'><p>Counts the number of leading zeros</p>
-</div><h3 id='tymethod.trailing_zeros' class='method'><span id='trailing_zeros.v' class='invisible'><code>fn <a href='#tymethod.trailing_zeros' class='fnname'>trailing_zeros</a>(self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u32.html'>u32</a></code></span></h3><div class='docblock'><p>Counts the number of trailing zeros</p>
-</div><h3 id='tymethod.bits_size' class='method'><span id='bits_size.v' class='invisible'><code>fn <a href='#tymethod.bits_size' class='fnname'>bits_size</a>() -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u32.html'>u32</a></code></span></h3><div class='docblock'><p>Size of type in bits</p>
+</div><h3 id='tymethod.is_zero' class='method'><span id='is_zero.v' class='invisible'><code>fn <a href='#tymethod.is_zero' class='fnname'>is_zero</a>(self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></code></span></h3><div class='docblock'><p>Returns true if this value is 0, in its type</p>
+</div><h3 id='tymethod.from_u8' class='method'><span id='from_u8.v' class='invisible'><code>fn <a href='#tymethod.from_u8' class='fnname'>from_u8</a>(u: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>) -&gt; Self</code></span></h3><div class='docblock'><p>Returns a <code>u8</code> value in this type</p>
+</div><h3 id='tymethod.to_u8' class='method'><span id='to_u8.v' class='invisible'><code>fn <a href='#tymethod.to_u8' class='fnname'>to_u8</a>(self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a></code></span></h3><div class='docblock'><p>Assuming 0 &lt;= value &lt; 256, returns this value as a <code>u8</code> type</p>
+</div><h3 id='tymethod.count_ones' class='method'><span id='count_ones.v' class='invisible'><code>fn <a href='#tymethod.count_ones' class='fnname'>count_ones</a>(self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a></code></span></h3><div class='docblock'><p>Counts the number of 1 bits</p>
+</div><h3 id='tymethod.leading_zeros' class='method'><span id='leading_zeros.v' class='invisible'><code>fn <a href='#tymethod.leading_zeros' class='fnname'>leading_zeros</a>(self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a></code></span></h3><div class='docblock'><p>Counts the number of leading zeros</p>
+</div><h3 id='tymethod.trailing_zeros' class='method'><span id='trailing_zeros.v' class='invisible'><code>fn <a href='#tymethod.trailing_zeros' class='fnname'>trailing_zeros</a>(self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a></code></span></h3><div class='docblock'><p>Counts the number of trailing zeros</p>
+</div><h3 id='tymethod.bits_size' class='method'><span id='bits_size.v' class='invisible'><code>fn <a href='#tymethod.bits_size' class='fnname'>bits_size</a>() -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a></code></span></h3><div class='docblock'><p>Size of type in bits</p>
 </div></div>
         <h2 id='implementors'>Implementors</h2>
         <ul class='item-list' id='implementors-list'>
-    <li><code>impl Numeric for <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u8.html'>u8</a></code></li>
-<li><code>impl Numeric for <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.i8.html'>i8</a></code></li>
-<li><code>impl Numeric for <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u16.html'>u16</a></code></li>
-<li><code>impl Numeric for <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.i16.html'>i16</a></code></li>
-<li><code>impl Numeric for <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u32.html'>u32</a></code></li>
-<li><code>impl Numeric for <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.i32.html'>i32</a></code></li>
-<li><code>impl Numeric for <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u64.html'>u64</a></code></li>
-<li><code>impl Numeric for <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.i64.html'>i64</a></code></li>
+    <li><code>impl Numeric for <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a></code></li>
+<li><code>impl Numeric for <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i8.html">i8</a></code></li>
+<li><code>impl Numeric for <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u16.html">u16</a></code></li>
+<li><code>impl Numeric for <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i16.html">i16</a></code></li>
+<li><code>impl Numeric for <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a></code></li>
+<li><code>impl Numeric for <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a></code></li>
+<li><code>impl Numeric for <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a></code></li>
+<li><code>impl Numeric for <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i64.html">i64</a></code></li>
 </ul><script type="text/javascript" async
                          src="../implementors/bitstream_io/trait.Numeric.js">
                  </script></section>

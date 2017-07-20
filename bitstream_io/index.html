@@ -17,7 +17,7 @@
     
     
 </head>
-<body class="rustdoc">
+<body class="rustdoc mod">
     <!--[if lte IE 8]>
     <div class="warning">
         This old browser is unsupported and will most likely display funky
@@ -29,7 +29,7 @@
 
     <nav class="sidebar">
         
-        <p class='location'></p><script>window.sidebarCurrent = {name: 'bitstream_io', ty: 'mod', relpath: '../'};</script>
+        <p class='location'>Crate bitstream_io</p><div class="block items"><ul><li><a href="#reexports">Reexports</a></li><li><a href="#modules">Modules</a></li><li><a href="#structs">Structs</a></li><li><a href="#traits">Traits</a></li><li><a href="#types">Type Definitions</a></li></ul></div><p class='location'></p><script>window.sidebarCurrent = {name: 'bitstream_io', ty: 'mod', relpath: '../'};</script>
     </nav>
 
     <nav class="sub">
@@ -43,8 +43,8 @@
         </form>
     </nav>
 
-    <section id='main' class="content mod">
-<h1 class='fqn'><span class='in-band'>Crate <a class='mod' href=''>bitstream_io</a></span><span class='out-of-band'><span id='render-detail'>
+    <section id='main' class="content">
+<h1 class='fqn'><span class='in-band'>Crate <a class="mod" href=''>bitstream_io</a></span><span class='out-of-band'><span id='render-detail'>
                    <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                        [<span class='inner'>&#x2212;</span>]
                    </a>
@@ -71,65 +71,65 @@ Writer streams also write out all whole bytes as they are accumulated.</p>
 types of any possible size.
 Many of Rust&#39;s built-in integer types are supported by default.</p>
 </div><h2 id='reexports' class='section-header'><a href="#reexports">Reexports</a></h2>
-<table><tr><td><code>pub use read::<a class='struct' href='../bitstream_io/read/struct.BitReader.html' title='bitstream_io::read::BitReader'>BitReader</a>;</code></td></tr><tr><td><code>pub use write::<a class='struct' href='../bitstream_io/write/struct.BitWriter.html' title='bitstream_io::write::BitWriter'>BitWriter</a>;</code></td></tr></table><h2 id='modules' class='section-header'><a href="#modules">Modules</a></h2>
+<table><tr><td><code>pub use read::<a class="struct" href="../bitstream_io/read/struct.BitReader.html" title="struct bitstream_io::read::BitReader">BitReader</a>;</code></td></tr><tr><td><code>pub use write::<a class="struct" href="../bitstream_io/write/struct.BitWriter.html" title="struct bitstream_io::write::BitWriter">BitWriter</a>;</code></td></tr></table><h2 id='modules' class='section-header'><a href="#modules">Modules</a></h2>
 <table>
                        <tr class=' module-item'>
-                           <td><a class='mod' href='huffman/index.html'
-                                  title='bitstream_io::huffman'>huffman</a></td>
+                           <td><a class="mod" href="huffman/index.html"
+                                  title='mod bitstream_io::huffman'>huffman</a></td>
                            <td class='docblock-short'>
                                 <p>Traits and implementations for reading or writing Huffman codes
 from or to a stream.</p>
                            </td>
                        </tr>
                        <tr class=' module-item'>
-                           <td><a class='mod' href='read/index.html'
-                                  title='bitstream_io::read'>read</a></td>
+                           <td><a class="mod" href="read/index.html"
+                                  title='mod bitstream_io::read'>read</a></td>
                            <td class='docblock-short'>
                                 <p>Traits and implementations for reading bits from a stream.</p>
                            </td>
                        </tr>
                        <tr class=' module-item'>
-                           <td><a class='mod' href='write/index.html'
-                                  title='bitstream_io::write'>write</a></td>
+                           <td><a class="mod" href="write/index.html"
+                                  title='mod bitstream_io::write'>write</a></td>
                            <td class='docblock-short'>
                                 <p>Traits and implementations for writing bits to a stream.</p>
                            </td>
                        </tr></table><h2 id='structs' class='section-header'><a href="#structs">Structs</a></h2>
 <table>
                        <tr class=' module-item'>
-                           <td><a class='struct' href='struct.BigEndian.html'
-                                  title='bitstream_io::BigEndian'>BigEndian</a></td>
+                           <td><a class="struct" href="struct.BigEndian.html"
+                                  title='struct bitstream_io::BigEndian'>BigEndian</a></td>
                            <td class='docblock-short'>
                                 <p>Big-endian, or most significant bits first</p>
                            </td>
                        </tr>
                        <tr class=' module-item'>
-                           <td><a class='struct' href='struct.BitQueue.html'
-                                  title='bitstream_io::BitQueue'>BitQueue</a></td>
+                           <td><a class="struct" href="struct.BitQueue.html"
+                                  title='struct bitstream_io::BitQueue'>BitQueue</a></td>
                            <td class='docblock-short'>
                                 <p>A queue for efficiently pushing bits onto a value
 and popping them off a value.</p>
                            </td>
                        </tr>
                        <tr class=' module-item'>
-                           <td><a class='struct' href='struct.LittleEndian.html'
-                                  title='bitstream_io::LittleEndian'>LittleEndian</a></td>
+                           <td><a class="struct" href="struct.LittleEndian.html"
+                                  title='struct bitstream_io::LittleEndian'>LittleEndian</a></td>
                            <td class='docblock-short'>
                                 <p>Little-endian, or least significant bits first</p>
                            </td>
                        </tr></table><h2 id='traits' class='section-header'><a href="#traits">Traits</a></h2>
 <table>
                        <tr class=' module-item'>
-                           <td><a class='trait' href='trait.Endianness.html'
-                                  title='bitstream_io::Endianness'>Endianness</a></td>
+                           <td><a class="trait" href="trait.Endianness.html"
+                                  title='trait bitstream_io::Endianness'>Endianness</a></td>
                            <td class='docblock-short'>
                                 <p>A stream&#39;s endianness, or byte order, for determining
 how bits should be read.</p>
                            </td>
                        </tr>
                        <tr class=' module-item'>
-                           <td><a class='trait' href='trait.Numeric.html'
-                                  title='bitstream_io::Numeric'>Numeric</a></td>
+                           <td><a class="trait" href="trait.Numeric.html"
+                                  title='trait bitstream_io::Numeric'>Numeric</a></td>
                            <td class='docblock-short'>
                                 <p>This trait extends many common integer types (both unsigned and signed)
 with a few trivial methods so that they can be used
@@ -137,8 +137,8 @@ with the bitstream handling traits.</p>
                            </td>
                        </tr>
                        <tr class=' module-item'>
-                           <td><a class='trait' href='trait.SignedNumeric.html'
-                                  title='bitstream_io::SignedNumeric'>SignedNumeric</a></td>
+                           <td><a class="trait" href="trait.SignedNumeric.html"
+                                  title='trait bitstream_io::SignedNumeric'>SignedNumeric</a></td>
                            <td class='docblock-short'>
                                 <p>This trait extends many common signed integer types
 so that they can be used with the bitstream handling traits.</p>
@@ -146,15 +146,15 @@ so that they can be used with the bitstream handling traits.</p>
                        </tr></table><h2 id='types' class='section-header'><a href="#types">Type Definitions</a></h2>
 <table>
                        <tr class=' module-item'>
-                           <td><a class='type' href='type.BE.html'
-                                  title='bitstream_io::BE'>BE</a></td>
+                           <td><a class="type" href="type.BE.html"
+                                  title='type bitstream_io::BE'>BE</a></td>
                            <td class='docblock-short'>
                                 <p>Big-endian, or most significant bits first</p>
                            </td>
                        </tr>
                        <tr class=' module-item'>
-                           <td><a class='type' href='type.LE.html'
-                                  title='bitstream_io::LE'>LE</a></td>
+                           <td><a class="type" href="type.LE.html"
+                                  title='type bitstream_io::LE'>LE</a></td>
                            <td class='docblock-short'>
                                 <p>Little-endian, or least significant bits first</p>
                            </td>

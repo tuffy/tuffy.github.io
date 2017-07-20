@@ -17,7 +17,7 @@
     
     
 </head>
-<body class="rustdoc">
+<body class="rustdoc struct">
     <!--[if lte IE 8]>
     <div class="warning">
         This old browser is unsupported and will most likely display funky
@@ -29,7 +29,7 @@
 
     <nav class="sidebar">
         
-        <p class='location'><a href='../index.html'>bitstream_io</a>::<wbr><a href='index.html'>huffman</a></p><script>window.sidebarCurrent = {name: 'WriteHuffmanTree', ty: 'struct', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+        <p class='location'>Struct WriteHuffmanTree</p><div class="block items"><ul><li><a href="#methods">Methods</a></li></ul></div><p class='location'><a href='../index.html'>bitstream_io</a>::<wbr><a href='index.html'>huffman</a></p><script>window.sidebarCurrent = {name: 'WriteHuffmanTree', ty: 'struct', relpath: ''};</script><script defer src="sidebar-items.js"></script>
     </nav>
 
     <nav class="sub">
@@ -43,18 +43,18 @@
         </form>
     </nav>
 
-    <section id='main' class="content struct">
-<h1 class='fqn'><span class='in-band'>Struct <a href='../index.html'>bitstream_io</a>::<wbr><a href='index.html'>huffman</a>::<wbr><a class='struct' href=''>WriteHuffmanTree</a></span><span class='out-of-band'><span id='render-detail'>
+    <section id='main' class="content">
+<h1 class='fqn'><span class='in-band'>Struct <a href='../index.html'>bitstream_io</a>::<wbr><a href='index.html'>huffman</a>::<wbr><a class="struct" href=''>WriteHuffmanTree</a></span><span class='out-of-band'><span id='render-detail'>
                    <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                        [<span class='inner'>&#x2212;</span>]
                    </a>
                </span><a class='srclink' href='../../src/bitstream_io/huffman.rs.html#317-320' title='goto source code'>[src]</a></span></h1>
-<pre class='rust struct'>pub struct WriteHuffmanTree&lt;E:&nbsp;<a class='trait' href='../../bitstream_io/trait.Endianness.html' title='bitstream_io::Endianness'>Endianness</a>, T:&nbsp;<a class='trait' href='https://doc.rust-lang.org/nightly/core/cmp/trait.Ord.html' title='core::cmp::Ord'>Ord</a>&gt; { /* fields omitted */ }</pre><div class='docblock'><p>A compiled Huffman tree for use with the <code>write_huffman</code> method.
+<pre class='rust struct'>pub struct WriteHuffmanTree&lt;E:&nbsp;<a class="trait" href="../../bitstream_io/trait.Endianness.html" title="trait bitstream_io::Endianness">Endianness</a>, T:&nbsp;<a class="trait" href="https://doc.rust-lang.org/nightly/core/cmp/trait.Ord.html" title="trait core::cmp::Ord">Ord</a>&gt; { /* fields omitted */ }</pre><div class='docblock'><p>A compiled Huffman tree for use with the <code>write_huffman</code> method.
 Returned by <code>compiled_write_tree</code>.</p>
-</div><h2 id='methods'>Methods</h2><h3 class='impl'><span class='in-band'><code>impl&lt;E:&nbsp;<a class='trait' href='../../bitstream_io/trait.Endianness.html' title='bitstream_io::Endianness'>Endianness</a>, T:&nbsp;<a class='trait' href='https://doc.rust-lang.org/nightly/core/cmp/trait.Ord.html' title='core::cmp::Ord'>Ord</a> + <a class='trait' href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html' title='core::clone::Clone'>Clone</a>&gt; <a class='struct' href='../../bitstream_io/huffman/struct.WriteHuffmanTree.html' title='bitstream_io::huffman::WriteHuffmanTree'>WriteHuffmanTree</a>&lt;E, T&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../../src/bitstream_io/huffman.rs.html#322-333' title='goto source code'>[src]</a></span></h3>
-<div class='impl-items'><h4 id='method.has_symbol' class='method'><span id='has_symbol.v' class='invisible'><code>fn <a href='#method.has_symbol' class='fnname'>has_symbol</a>(&amp;self, symbol: T) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></span></h4>
+</div><h2 id='methods'>Methods</h2><h3 class='impl'><span class='in-band'><code>impl&lt;E:&nbsp;<a class="trait" href="../../bitstream_io/trait.Endianness.html" title="trait bitstream_io::Endianness">Endianness</a>, T:&nbsp;<a class="trait" href="https://doc.rust-lang.org/nightly/core/cmp/trait.Ord.html" title="trait core::cmp::Ord">Ord</a> + <a class="trait" href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html" title="trait core::clone::Clone">Clone</a>&gt; <a class="struct" href="../../bitstream_io/huffman/struct.WriteHuffmanTree.html" title="struct bitstream_io::huffman::WriteHuffmanTree">WriteHuffmanTree</a>&lt;E, T&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../../src/bitstream_io/huffman.rs.html#322-333' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.has_symbol' class="method"><span id='has_symbol.v' class='invisible'><code>fn <a href='#method.has_symbol' class='fnname'>has_symbol</a>(&amp;self, symbol: T) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></code></span></h4>
 <div class='docblock'><p>Returns true if symbol is in tree.</p>
-</div><h4 id='method.get' class='method'><span id='get.v' class='invisible'><code>fn <a href='#method.get' class='fnname'>get</a>(&amp;self, symbol: T) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.slice.html'>&amp;[</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>(</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u32.html'>u32</a>, <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u32.html'>u32</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>)</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.slice.html'>]</a></code></span></h4>
+</div><h4 id='method.get' class="method"><span id='get.v' class='invisible'><code>fn <a href='#method.get' class='fnname'>get</a>(&amp;self, symbol: T) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.slice.html">&amp;[</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.tuple.html">(</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>, <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.tuple.html">)</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.slice.html">]</a></code></span></h4>
 <div class='docblock'><p>Given symbol, returns (bits, value) pairs for writing code.
 Panics if symbol is not found.</p>
 </div></div></section>
