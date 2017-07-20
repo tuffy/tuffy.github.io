@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="Source to the Rust file `src/ids.rs`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang">
+
+    <title>ids.rs.html -- source</title>
+
+    <link rel="stylesheet" type="text/css" href="../../normalize.css">
+    <link rel="stylesheet" type="text/css" href="../../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc source">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content"><pre class="line-numbers"><span id="1"> 1</span>
+<span id="2"> 2</span>
+<span id="3"> 3</span>
+<span id="4"> 4</span>
+<span id="5"> 5</span>
+<span id="6"> 6</span>
+<span id="7"> 7</span>
+<span id="8"> 8</span>
+<span id="9"> 9</span>
+<span id="10">10</span>
+<span id="11">11</span>
+<span id="12">12</span>
+<span id="13">13</span>
+<span id="14">14</span>
+<span id="15">15</span>
+<span id="16">16</span>
+<span id="17">17</span>
+<span id="18">18</span>
+<span id="19">19</span>
+<span id="20">20</span>
+<span id="21">21</span>
+<span id="22">22</span>
+<span id="23">23</span>
+<span id="24">24</span>
+<span id="25">25</span>
+<span id="26">26</span>
+<span id="27">27</span>
+<span id="28">28</span>
+<span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
+<span id="32">32</span>
+<span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
+<span id="44">44</span>
+<span id="45">45</span>
+<span id="46">46</span>
+<span id="47">47</span>
+<span id="48">48</span>
+<span id="49">49</span>
+<span id="50">50</span>
+<span id="51">51</span>
+<span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
+<span id="55">55</span>
+<span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
+<span id="59">59</span>
+<span id="60">60</span>
+<span id="61">61</span>
+<span id="62">62</span>
+</pre><pre class="rust ">
+<span class="comment">// Copyright 2017 Brian Langenberger</span>
+<span class="comment">//</span>
+<span class="comment">// Licensed under the Apache License, Version 2.0 &lt;LICENSE-APACHE or</span>
+<span class="comment">// http://www.apache.org/licenses/LICENSE-2.0&gt; or the MIT license</span>
+<span class="comment">// &lt;LICENSE-MIT or http://opensource.org/licenses/MIT&gt;, at your</span>
+<span class="comment">// option. This file may not be copied, modified, or distributed</span>
+<span class="comment">// except according to those terms.</span>
+
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SEGMENT</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x18538067</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SEEKHEAD</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x114D9B74</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SEEK</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x4DBB</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SEEKID</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x53AB</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SEEKPOSITION</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x53AC</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">INFO</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x1549A966</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">TITLE</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x7BA9</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">MUXINGAPP</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x4D80</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">WRITINGAPP</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x5741</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">DATEUTC</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x4461</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">TIMECODESCALE</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x2AD7B1</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">DURATION</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x4489</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">TRACKS</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x1654AE6B</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">TRACKENTRY</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0xAE</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">TRACKNUMBER</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0xD7</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">TRACKUID</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x73C5</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">TRACKTYPE</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x83</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">FLAGENABLED</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0xB9</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">FLAGDEFAULT</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x88</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">FLAGFORCED</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x55AA</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">FLAGLACING</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x9C</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">DEFAULTDURATION</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x23E383</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">NAME</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x536E</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">LANGUAGE</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x22B59C</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">CODEC_ID</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x86</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">CODEC_NAME</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x258688</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">VIDEO</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0xE0</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">PIXELWIDTH</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0xB0</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">PIXELHEIGHT</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0xBA</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">DISPLAYWIDTH</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x54B0</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">DISPLAYHEIGHT</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x54BA</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">AUDIO</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0xE1</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SAMPLINGFREQUENCY</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0xB5</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">CHANNELS</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x9F</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">BITDEPTH</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x6264</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ATTACHMENTS</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x1941A469</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ATTACHEDFILE</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x61A7</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">FILEDESCRIPTION</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x467E</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">FILENAME</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x466E</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">FILEMIMETYPE</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x4660</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">FILEDATA</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x465C</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">CHAPTERS</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x1043A770</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">EDITIONENTRY</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x45B9</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">EDITIONFLAGHIDDEN</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x45BD</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">EDITIONFLAGDEFAULT</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x45DB</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">EDITIONFLAGORDERED</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x45DD</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">CHAPTERATOM</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0xB6</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">CHAPTERTIMESTART</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x91</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">CHAPTERTIMEEND</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x92</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">CHAPTERFLAGHIDDEN</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x98</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">CHAPTERFLAGENABLED</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x4598</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">CHAPTERDISPLAY</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x80</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">CHAPSTRING</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x85</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">CHAPLANGUAGE</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x437C</span>;
+</pre>
+</section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../../";
+        window.currentCrate = "matroska";
+    </script>
+    <script src="../../jquery.js"></script>
+    <script src="../../main.js"></script>
+    <script defer src="../../search-index.js"></script>
+</body>
+</html>
